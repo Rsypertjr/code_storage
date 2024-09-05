@@ -5,6 +5,7 @@ import ResolutionDropdown from '../ResolutionDropdown';
 import AnalyticsBar from './AnalyticsBar';
 import { Container, Row, Col, Button } from 'react-bootstrap';
 import '../../../css/app.css';
+import $ from 'jquery';
 import {
     Chart,
     ArcElement,
@@ -385,7 +386,7 @@ export default function SpikesLineChart(props) {
                 <h4>Vote Spikes Line Chart</h4>
                 </Col>
             </Row>
-            <AnalyticsBar handleCloseChart={props.handleCloseChart} {...props} theResolutions={props.theResolutions} selectResolution={props.selectResolution} 
+            <AnalyticsBar navigate={props.navigate} {...props} theResolutions={props.theResolutions} selectResolution={props.selectResolution} 
                 selectAnalytics={props.selectAnalytics} chartData={props.chartData} chartType={'SpikesLineChart'}/>
          
             <Row>

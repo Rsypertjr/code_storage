@@ -5,6 +5,7 @@ import { Interaction } from 'chart.js';
 import ResolutionDropdown from '../ResolutionDropdown';
 import AnalyticsBar from './AnalyticsBar';
 import { Container, Row, Col, Button } from 'react-bootstrap';
+import $ from 'jquery';
 
 import {
     Chart,
@@ -367,7 +368,7 @@ export default function PieChart(props) {
                     <h4>Votes Pie Chart</h4>
                 </Col>
             </Row>
-            <AnalyticsBar handleCloseChart={props.handleCloseChart} {...props} theResolutions={props.theResolutions} selectResolution={props.selectResolution} 
+            <AnalyticsBar navigate={props.navigate} {...props} theResolutions={props.theResolutions} selectResolution={props.selectResolution} 
               selectAnalytics={props.selectAnalytics} chartData={props.chartData} chartType={'PieChart'}/>
          
             <Row>

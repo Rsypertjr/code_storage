@@ -7,7 +7,6 @@ import Dropdown from 'react-dropdown';
 import 'react-dropdown/style.css';
 import { map, takeRightWhile } from 'lodash';
 import {Container, Row, Col } from 'react-bootstrap';
-
 import $ from 'jquery';
 
 
@@ -62,6 +61,7 @@ export default class VotesApp extends React.Component {
           theCurrentPage: [],
           theCurrentPages: [],
           thePageSize:0,
+          thePageSetNumber:1,
           selectedState:states[0],
           pageNo:1,
           raceId: '',
@@ -1156,6 +1156,7 @@ async checkForVotes(state){
 
   resetCharts(e){
        this.selectResolution(1);
+       window.location.reload('/');
   }
 
 

@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom';
 import Dropdown from 'react-dropdown';
 import 'react-dropdown/style.css';
 import { Button, Tooltip, Container, Row, Col } from 'react-bootstrap';
+import $ from 'jquery';
 
 const resolution_values = [
     ['1','one'],
@@ -103,7 +104,7 @@ export default function ResolutionDropdown(props){
     });
 
     useEffect(() => {
-        $('[data-toggle="tooltip"]').tooltip();
+      //  $('[data-toggle="tooltip"]').tooltip();
        // setResolution(props.parse_resolution);
 
         if(props.analytics !== null && props.analytics === 'analytics'){

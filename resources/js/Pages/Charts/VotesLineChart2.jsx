@@ -4,6 +4,7 @@ import { getRelativePosition } from 'chart.js/helpers';
 import ResolutionDropdown from '../ResolutionDropdown';
 import AnalyticsBar from './AnalyticsBar';
 import { Container, Row, Col, Button } from 'react-bootstrap';
+import $ from 'jquery';
 import {
     Chart,
     ArcElement,
@@ -369,7 +370,7 @@ export default function VotesLineChart2(props) {
                 </Col>
             </Row>
           
-            <AnalyticsBar handleCloseChart={props.handleCloseChart} {...props} theResolutions={props.theResolutions} selectResolution={props.selectResolution} 
+            <AnalyticsBar navigate={props.navigate} {...props} theResolutions={props.theResolutions} selectResolution={props.selectResolution} 
                 selectAnalytics={props.selectAnalytics} chartData={props.chartData} chartType={'VotesLineChart2'}/>
             <Row>
                 <Col className="w-100 d-flex justify-content-center">

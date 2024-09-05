@@ -7,7 +7,7 @@ import 'react-dropdown/style.css';
 
 export default function ChartPager(props){
     const [pg, setPG] = useState(0);
-
+    console.log("Chart Pager props",props);
     const handlePage = (e) => {
         let num = e.target.value;
         let obj = {};
@@ -64,9 +64,9 @@ export default function ChartPager(props){
     return(
             <Col className="d-flex justify-content-center">
                 <input className="page" type="button" value="<" onClick={leftArrow} readOnly/>
-                {
+                { 
 
-                props.theChartArrray != 'undefined' && props.theChartArray.length > 0 && props.theChartArray[parseInt(props.thePageSetNumber)-1].map((num,j) => (
+                props.theChartArray != 'undefined' && props.theChartArray.length > 0 && props.theChartArray[parseInt(props.thePageSetNumber)-1].map((num,j) => (
                     <span key={j}>
                     { (num < (props.chartData.dateHeadersStore.length)) && < input type="button" className="page" id={`page-${num+1}`} value={num+1} onClick={handlePage} readOnly/> }
                     </span>

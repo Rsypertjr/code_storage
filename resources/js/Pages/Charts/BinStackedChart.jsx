@@ -4,6 +4,7 @@ import { getRelativePosition } from 'chart.js/helpers';
 import ResolutionDropdown from '../ResolutionDropdown';
 import AnalyticsBar from './AnalyticsBar';
 import { Container, Row, Col, Button, Stack } from 'react-bootstrap';
+import $ from 'jquery';
 import {
     Chart,
     ArcElement,
@@ -367,7 +368,7 @@ export default function BinStackedChart(props) {
                   <h4>Total Votes Bin Stacked Chart</h4>
                 </Col>
             </Row>
-            <AnalyticsBar handleCloseChart={props.handleCloseChart} {...props} theResolutions={props.theResolutions} selectResolution={props.selectResolution} 
+            <AnalyticsBar navigate={props.navigate} {...props} theResolutions={props.theResolutions} selectResolution={props.selectResolution} 
                 selectAnalytics={props.selectAnalytics} chartData={props.chartData} chartType={'BinStackedChart'}/>
          
             <Row>

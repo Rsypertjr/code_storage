@@ -50,9 +50,7 @@ function CloseButton(props){
     );
 }
 
-const handleCloseChart = () => {
-    $('.chart-viewer').removeClass('upslide').addClass('downslide').addClass('hidden');
-    };
+
 
 
 
@@ -118,7 +116,10 @@ const OuterTable = (props) => {
 
 export default function VoteTableReact(props)  {
 
-     
+        const handleCloseChart = () => {
+            $('.chart-viewer').removeClass('upslide').addClass('downslide').addClass('hidden');
+            props.navigate('/');
+            };
      
         console.log("votes table props:", props);
 

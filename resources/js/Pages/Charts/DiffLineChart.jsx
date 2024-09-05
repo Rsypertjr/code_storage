@@ -4,6 +4,7 @@ import { getRelativePosition } from 'chart.js/helpers';
 import ResolutionDropdown from '../ResolutionDropdown';
 import AnalyticsBar from './AnalyticsBar';
 import { Container, Row, Col, Button } from 'react-bootstrap';
+import $ from 'jquery';
 
 import {
     Chart,
@@ -368,7 +369,7 @@ export default function DiffLineChart(props) {
                     <h4>Difference Line Chart</h4>
                 </Col>
             </Row>
-            <AnalyticsBar handleCloseChart={props.handleCloseChart} {...props} theResolutions={props.theResolutions} selectResolution={props.selectResolution} 
+            <AnalyticsBar navigate={props.navigate} {...props} theResolutions={props.theResolutions} selectResolution={props.selectResolution} 
                 selectAnalytics={props.selectAnalytics} chartData={props.chartData} chartType={'DiffLineChart'} />
             <Row>
                 <Col className="w-100 d-flex justify-content-center">
@@ -379,7 +380,7 @@ export default function DiffLineChart(props) {
                 <div><canvas id="myChart"></canvas></div>
             </Row>
             <Row className="h-100 p-1 mt-3 d-flex justify-content-center">
-                <ChartPager  getPageNumber={getPageNumber} type={'line'} leftArrow={leftArrow} rightArrow={rightArrow} pageNo={pageNo}
+                <ChartPager getPageNumber={getPageNumber} type={'line'} leftArrow={leftArrow} rightArrow={rightArrow} pageNo={pageNo}
                     thePagingArray={thePagingArray} thePageSetNumber={thePageSetNumber} chartData={chartData} thePageSize={thePageSize}
                     theChartArray={theChartArray} />
             </Row>

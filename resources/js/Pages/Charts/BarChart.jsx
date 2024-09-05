@@ -3,6 +3,7 @@ import ChartPager from '../ChartPager';
 import { getRelativePosition } from 'chart.js/helpers';
 import ResolutionDropdown from '../ResolutionDropdown';
 import AnalyticsBar from './AnalyticsBar';
+import $ from 'jquery';
 import {
     Chart,
     ArcElement,
@@ -354,7 +355,7 @@ export default function BarChart(props) {
                 </Col>
             </Row>
             
-            <AnalyticsBar handleCloseChart={props.handleCloseChart} {...props} theResolutions={props.theResolutions} selectResolution={props.selectResolution}
+            <AnalyticsBar navigate={props.navigate} {...props} theResolutions={props.theResolutions} selectResolution={props.selectResolution}
                selectAnalytics={props.selectAnalytics} chartData={props.chartData} chartType={'BarChart'} />
          
             <Row>

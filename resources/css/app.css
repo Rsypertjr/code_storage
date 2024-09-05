@@ -286,8 +286,14 @@ nav.navbar {
 .menu-tab {
   position:relative;
   padding:1%;
-  font-size:0.7em;
+  font-size:0.75em;
   margin:1em;
   background-color:black;
   color:white;
+  text-decoration:none;
 }
+
+.menu-tab:hover {
+    text-decoration: underline;
+}
+

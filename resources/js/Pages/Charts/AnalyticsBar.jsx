@@ -2,6 +2,7 @@ import {React, useEffect, useState} from 'react';
 import ChartPager from '../ChartPager';
 import ResolutionDropdown from '../ResolutionDropdown';
 import { Container, Row, Col, Button } from 'react-bootstrap';
+import $ from 'jquery';
 import {
     Chart,
     ArcElement,
@@ -61,11 +62,15 @@ import { auto } from '@popperjs/core';
 
 
 export default function AnalyticsBar(props) {
+    const handleCloseChart = () => {
+        $('.chart-viewer').removeClass('upslide').addClass('downslide').addClass('hidden');
+        props.navigate('/');
+    };
 
     return(
             <Container>
                 <Row className="mb-4" >
-                    <Button variant="outline-success" onClick={props.handleCloseChart} className="viewerClose">Close Chart</Button>{' '}
+                    <Button variant="outline-success" onClick={handleCloseChart} className="viewerClose">Close Chart</Button>{' '}
                 </Row>
                
                 <Row className="mb-3 p-2" style={{backgroundColor:"beige",fontSize:"0.8em", height:auto}}>
