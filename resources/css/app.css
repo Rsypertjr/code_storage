@@ -1,0 +1,293 @@
+@import url("https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.2/font/bootstrap-icons.min.css");
+/*
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+*/
+
+/*
+table.table.table-sm {
+    zoom:75%;
+
+}
+*/
+body{
+    background-color: rgb(187, 223, 223);
+}
+li.nav-item{
+    -webkit-transition: background-color 1s;
+    transition: background-color 1s;
+}
+li.nav-item:hover {
+    background-color:rgb(187, 223, 223);
+}
+
+
+li.nav-item a:hover{
+    text-decoration: underline;
+    color:white;
+
+}
+
+.linkStyle {
+    margin: 1rem;
+    text-decoration: none;
+    color:black;
+    font-size: 0.8em;
+}
+
+nav.navbar {
+    margin-bottom: 1em;
+}
+.col-4 {
+    margin-top: -2em;
+}
+
+.col-1 {
+    margin-top: -1.5em;
+}
+
+.row.justify-content-start{
+    margin-bottom:2em;
+}
+/*
+.jumbotron {
+    transform:scale(0.65);
+    margin-top:-4em;
+}
+*/
+
+.vertical-scrollable > .row {
+    position: relative;
+    height: 50em;
+    width:80%;
+    margin-left: 10%;
+    overflow-y: scroll;
+  }
+.col-sm-12 {
+      font-size:13px;
+      padding-bottom: 20px;
+      padding-top: 18px;
+      transform: scale(0.85);
+  }
+
+  .smaller {
+      height:65%;
+      width:65%;
+  }
+
+  .csmaller {
+    height:50%;
+    width:50%;
+
+}
+
+.chart-viewer {
+
+    opacity:0.97;
+    transform:scale(0.85);
+    z-index:10;
+    margin-top:-22em;
+    border-style:outset;
+    background-color:white;
+}
+
+
+.upslide{
+    opacity:1;
+    z-index:10;
+    -webkit-animation: slideup 0.5s forwards;
+    -webkit-animation-delay: 0.5s;
+    animation: slideup 0.5s forwards;
+    animation-delay: 0.5s;
+}
+
+.upslide-votestable{
+    opacity:1;
+    z-index:10;
+    margin-top:22em;
+    -webkit-animation: slideup 0.5s forwards;
+    -webkit-animation-delay: 0.5s;
+    animation: slideup 0.5s forwards;
+    animation-delay: 0.5s;
+}
+
+.downslide{
+    z-index:1.0;
+    opacity:1.0;
+    margin-top:-22em;
+    -webkit-animation: slidedown 0.5s forwards;
+    -webkit-animation-delay: 0.5s;
+    animation: slidedown 0.5s forwards;
+    animation-delay: 0.5s;
+}
+
+.turntopheader{
+    z-index:1.0;
+    opacity:1.0;
+    -webkit-animation: turntop 1s forwards;
+    -webkit-animation-delay: 0.5s;
+    animation: turntop 1s forwards;
+    animation-delay: 0.5s;
+}
+
+.hidden {
+    visibility: hidden;
+    opacity: 0;
+    transition: visibility 0s 2s, opacity 2s linear;
+  }
+
+.visible {
+    visibility: visible;
+    opacity: 1;
+    transition: visibility 0s 2s, opacity 2s linear;
+  }
+
+@-webkit-keyframes slideup {
+    100% { margin-top: -35em; }
+}
+
+@keyframes slideup {
+    100% { margin-top: -35em; }
+}
+
+
+@-webkit-keyframes turntop {
+    100% {  transform: rotateX(360deg); }
+}
+
+@keyframes turntop {
+    100% {  transform: rotateX(360deg); }
+}
+
+@-webkit-keyframes slidedown {
+    100% { margin-top: 0em; display:none;}
+}
+
+@keyframes slidedown {
+    100% { margin-top: 0em; display:none;}
+}
+.col-md-8{
+    margin-top:1em;
+  }
+ 
+
+ #resolution_message{
+     margin-top: -1em;
+     padding: 1em;
+     color:red;
+     background-color:lightcyan;
+     text-align: center;
+ }
+
+ .page:hover {
+     background-color: grey;
+ }
+
+.page {
+    width:3em;
+    height:3em;
+}
+
+.page-arrow {
+    width:3em;
+}
+
+
+ .carousel-indicators{
+     top:13em;
+ }
+
+ .top{
+     background-color:lightgrey;
+     height:20em;
+ }
+
+ nav.navbar{
+    padding-left:5em;
+ }
+
+ .nav-link, .nav-item.dropdown{
+    margin-right:2em;
+    height:75%;
+ }
+ #basic-navbar-nav > div > div:nth-child(3) > a,#basic-navbar-nav > div > div:nth-child(4) > a, a.nav-link > a   {
+     color:white;
+ }
+
+ #basic-navbar-nav > div > div:nth-child(3) > a:hover, #basic-navbar-nav > div > div:nth-child(4) > a:hover, a.nav-link > a:hover{
+     color:lightgrey;
+ }
+
+ .carousel-inner{
+     position:relative;
+     padding:1em;
+     height:auto;
+     margin-top:-2em;
+ }
+
+ .lamp{
+     margin-top:1em;
+     transform:scale(3);
+ }
+
+.cover{
+    position:absolute;
+    top: 0;
+    z-index:20;
+    height:100%;
+    padding:10% 5% 0 5%;
+    display:block;
+    background-color:black;
+    opacity:0.85;
+}
+ .cover i, .cover h1, .cover p {
+     color:white;
+ }
+
+ object:hover {
+     height: 700px;
+
+ }
+
+ object>*:hover{
+     transition: scale(.6);
+ }
+
+ .desc{
+     border-style:inset;
+     border-color:lightgrey;
+     border-width:0.5em;
+     padding: 0.5em;
+ }
+
+.list-group-item {
+    border-style:inset;
+    border-color:darkslategrey;
+    border-width:0.5em;
+    padding: 0.5em;
+}
+
+.centerit {
+    text-align: center;
+}
+
+ 
+.tooltip-arrow {
+    display: none !important;
+}
+
+.tooltip .tooltip-inner {
+    width: 40em;
+    font-size:2em;
+    white-space: normal;
+  }
+
+.menu-tab {
+  position:relative;
+  padding:1%;
+  font-size:0.7em;
+  margin:1em;
+  background-color:black;
+  color:white;
+}

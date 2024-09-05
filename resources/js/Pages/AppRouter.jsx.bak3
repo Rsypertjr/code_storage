@@ -1,0 +1,389 @@
+import React, { useState, useEffect } from 'react';
+//import { BrowserRouter, Link, Route, Routes} from 'react-router-dom';
+import { BrowserRouter, Routes, Route, Outlet, Link } from "react-router-dom";
+import VotesLineChart2 from './Charts/VotesLineChart2';
+import SpikesLineChart from './Charts/SpikesLineChart';
+import DiffLineChart from './Charts/DiffLineChart';
+import PerLineChart from './Charts/PerLineChart';
+import PieChart from './Charts/PieChart';
+import BarChart from './Charts/BarChart';
+import BinStackedChart from './Charts/BinStackedChart';
+import VoteTableReact from './VoteTableReact';
+import { Container, Row, Col, Nav, Navbar } from 'react-bootstrap';
+import {LinkContainer} from 'react-router-bootstrap';
+
+
+
+import styled from "styled-components";
+const linkStyle = {
+  margin: "1rem",
+  textDecoration: "none",
+  color: 'white',
+  fontSize: '0.8em'
+};
+
+export default function AppRouter(props){
+  const [isChartClosed,setIsChartClosed] = useState(false);
+
+  useEffect(() => {
+    /*
+    $("#navbarNav > ul > li > a").on('mouseover',function(){
+      $(this).css('color','grey');
+    });
+    $("#navbarNav > ul > li > a").on('mouseover',function(){
+      $(this).css('color','white');
+    });
+
+    $("#navbarNav > ul > li > a").on('click',function(){
+      $("#navbarNav > ul > li > a").css('color','white');
+      $(this).css('color','grey');
+    });
+    */
+   console.log("Incoming Props",props);
+
+  });
+
+   function openViewer(){
+   // $('.chart-viewer').removeClass('hidden').removeClass('downslide').addClass('upslide');
+    setChartOpen();
+   }
+
+   function setChartOpen(){
+    setIsChartClosed(false);
+   }
+   
+
+   const handleCloseChart = () => {
+  //  $('.chart-viewer').removeClass('upslide').addClass('downslide').addClass('hidden');
+    setIsChartClosed(true);
+    props.resetCharts();
+   }
+
+
+
+  function Layout2() {
+    return (
+      <div>
+        {/* A "layout route" is a good place to put markup you want to
+            share across all the pages on your site, like navigation. */}
+        <nav>
+          <ul>
+            <li>
+              <Link to="/">Voter Table</Link>
+            </li>
+            <li>
+              <Link to="/voteslinechart">Votes Line Chart</Link>
+            </li>
+            <li>
+              <Link to="/spikeslinechart">Spikes Line Chart</Link>
+            </li>
+            <li>
+              <Link to="/difflinechart">Difference Line Chart</Link>
+            </li>
+            <li>
+              <Link to="/perlinechart">Percentage Line Chart</Link>
+            </li>
+            <li>
+              <Link to="/piechart">Pie Chart</Link>
+            </li>
+            <li>
+              <Link to="/barchart">Bar Chart</Link>
+            </li>
+            <li>
+              <Link to="/binstackedchart">Bin Stacked Chart</Link>
+            </li>
+          </ul>
+        </nav>
+  
+        <hr />
+  
+        {/* An <Outlet> renders whatever child route is currently active,
+            so you can think about this <Outlet> as a placeholder for
+            the child routes we defined above. */}
+        <Outlet />
+      </div>
+    );
+  }
+  
+
+  function Layout() {
+    return (
+      <div>
+        {/* A "layout route" is a good place to put markup you want to
+            share across all the pages on your site, like navigation. */}
+        <nav>
+          <ul>
+            <li>
+              <Link to="/" onClick={props.selectAChart('VoteTableReact')}>Home</Link>
+            </li>
+            <li>
+              <Link to="/about">About</Link>
+            </li>
+            <li>
+              <Link to="/dashboard">Dashboard</Link>
+            </li>
+            <li>
+              <Link to="/nothing-here">Nothing Here</Link>
+            </li>
+            <li>
+              <Link to="/voteslinechart">Votes Line Chart</Link>
+            </li>
+            <li>
+              <Link to="/spikeslinechart">Spikes Line Chart</Link>
+            </li>
+            <li>
+              <Link to="/difflinechart">Difference Line Chart</Link>
+            </li>
+            <li>
+              <Link to="/perlinechart">Percentage Line Chart</Link>
+            </li>
+            <li>
+              <Link to="/piechart">Pie Chart</Link>
+            </li>
+            <li>
+              <Link to="/barchart">Bar Chart</Link>
+            </li>
+            <li>
+              <Link to="/binstackedchart">Bin Stacked Chart</Link>
+            </li>
+          </ul>
+        </nav>
+  
+        <hr />
+  
+        {/* An <Outlet> renders whatever child route is currently active,
+            so you can think about this <Outlet> as a placeholder for
+            the child routes we defined above. */}
+        <Outlet />
+      </div>
+    );
+  }
+  
+
+
+
+  function Home() {
+    return (
+      <div>
+        <h2>Home</h2>
+      </div>
+    );
+  }
+  
+  function About() {
+    return (
+      <div>
+        <h2>About</h2>
+      </div>
+    );
+  }
+  
+  function Dashboard() {
+    return (
+      <div>
+        <h2>Dashboard</h2>
+      </div>
+    );
+  }
+  
+  function NoMatch() {
+    return (
+      <div>
+        <h2>Nothing to see here!</h2>
+        <p>
+          <Link to="/">Go to the home page</Link>
+        </p>
+      </div>
+    );
+  }
+
+
+    return(
+      <>
+      {/*
+          <BrowserRouter>
+          <Navbar collapseOnSelect expand="lg" className="bg-info navbar navbar-expand-lg navbar-dark bg-dark w-100">              
+
+            <Navbar.Toggle aria-controls="responsive-navbar-nav" />
+            <Navbar.Collapse id="responsive-navbar-nav" className="w-100">
+              <Nav className="navbar-nav w-100 d-flex justify-content-center">
+                <Row>
+                  <LinkContainer to="/" className="col-1 m-2">
+                    <Nav.Link onClick={openViewer} className="text-white " href="#" style={linkStyle}>                   
+                        <i className="bi bi-x-circle" style={{color:"tomato",paddingLeft:"1rem"}}><p className="text-secondary mr-2">Reset<br/>Tables</p></i>
+                    </Nav.Link>
+                  </LinkContainer>
+                  <LinkContainer to="/" className="col-1 m-2">
+                    <Nav.Link onClick={openViewer} className="text-white" href="#" style={linkStyle}>                    
+                        <i className="bi bi-table" style={{color:"dodgerblue",paddingLeft:"1rem"}}><p className="text-secondary">Votes<br/>Tables</p></i>
+                    </Nav.Link>
+                  </LinkContainer>
+                  
+                  <LinkContainer to="/voteslinechart" className="col-1 m-2" >
+                    <Nav.Link onClick={openViewer} className="text-white" href="#" style={linkStyle}>
+                        <i className="bi bi-graph-up-arrow" style={{color:"slateblue",paddingLeft:"1rem"}}><p className="text-secondary">Votes<br/>Lines<br/>Chart</p></i>
+                    </Nav.Link>
+                  </LinkContainer>
+                  
+                  <LinkContainer to="/spikeslinechart" className="col-1 m-2">
+                    <Nav.Link onClick={openViewer} className="text-white" href="#" style={linkStyle}>                     
+                        <i className="bi bi-graph-up-arrow" style={{color:"lightgray",paddingLeft:"1rem"}}><p className="text-secondary">Spike<br/>Line<br/>Chart</p></i>
+                    </Nav.Link>
+                  </LinkContainer>
+                  
+                  <LinkContainer to="/difflinechart" className="col-1 m-2">
+                    <Nav.Link onClick={openViewer} className="text-white" href="#" style={linkStyle}>  
+                        <i className="bi bi-graph-up-arrow" style={{color:"orange",paddingLeft:"1rem"}}><p className="text-secondary">Diff<br/>Line<br/>Chart</p></i>
+                    </Nav.Link>
+                  </LinkContainer>
+                  
+                  <LinkContainer to="/perlinechart" className="col-1 m-2">
+                    <Nav.Link onClick={openViewer} className="text-white" href="#" style={linkStyle}>                    
+                        <i className="bi bi-graph-up-arrow" style={{color:"violet",paddingLeft:"1rem"}}><p className="text-secondary">Percent<br/>Line<br/>Chart</p></i>
+                    </Nav.Link>
+                  </LinkContainer>
+                
+                  <LinkContainer to="/piechart" className="col-1 m-2">
+                    <Nav.Link onClick={openViewer} className="text-white" href="#" style={linkStyle}>                       
+                        <i className="bi bi-pie-chart-fill" style={{color:"green",paddingLeft:"1rem"}}><p className="text-secondary">Votes<br/>Pie<br/>Chart</p></i>
+                    </Nav.Link>tsx
+                  </LinkContainer>
+                  
+                  <LinkContainer to="/barchart" className="col-1 m-2">
+                    <Nav.Link onClick={openViewer} className="text-white" href="#" style={linkStyle}>                     
+                        <i className="bi bi-bar-chart-line-fill" style={{color:"azure",paddingLeft:"1rem"}}><p className="text-secondary">Votes<br/>Bar<br/>Chart</p></i>
+                    </Nav.Link>
+                  </LinkContainer>
+                  
+                  <LinkContainer to="/binstackedchart" className="col-1 m-2" >
+                    <Nav.Link onClick={openViewer} className="text-white" href="#"  style={linkStyle}>                     
+                      <i className="bi bi-bar-chart-line-fill" style={{color:"darksalmon",paddingLeft:"1rem"}}><p className="text-secondary">Bin<br/>Stacked Chart</p></i>
+                    </Nav.Link>
+                  </LinkContainer>
+                </Row> 
+              </Nav>
+            </Navbar.Collapse>
+          </Navbar>
+          <Routes>
+              <Route path='/home'/>
+              <Route exact path="/" element={<VoteTableReact {...props} resetCharts={props.resetCharts}  getPageNumber={props.getPageNumber} type={'table'} rightArrow={props.rightArrow} leftArrow={props.leftArrow} handleCloseChart={handleCloseChart}/>}/>
+              <Route path="/voteslinechart" element={<VotesLineChart2 {...props}  resetCharts={props.resetCharts} selectResolution={props.selectResolution} getPageNumber={props.getPageNumber} type={'line'}  rightArrow={props.rightArrow} leftArrow={props.leftArrow} handleCloseChart={handleCloseChart}/>}/>
+              <Route path="/spikeslinechart" element={<SpikesLineChart {...props} resetCharts={props.resetCharts}  selectResolution={props.selectResolution}  getPageNumber={props.getPageNumber} type={'line'}  rightArrow={props.rightArrow} leftArrow={props.leftArrow} handleCloseChart={handleCloseChart}/>}/>
+              <Route path="/difflinechart" element={<DiffLineChart  {...props} resetCharts={props.resetCharts}  selectResolution={props.selectResolution} getPageNumber={props.getPageNumber} type={'line'}  rightArrow={props.rightArrow} leftArrow={props.leftArrow} handleCloseChart={handleCloseChart}/>}/>
+              <Route path="/perlinechart" element={<PerLineChart  {...props} resetCharts={props.resetCharts}  selectResolution={props.selectResolution} getPageNumber={props.getPageNumber} type={'line'}  rightArrow={props.rightArrow} leftArrow={props.leftArrow} handleCloseChart={handleCloseChart}/>}/>
+              <Route path="/piechart" element={<PieChart {...props} resetCharts={props.resetCharts}  selectResolution={props.selectResolution}  getPageNumber={props.getPageNumber} type={'pie'}  rightArrow={props.rightArrow} leftArrow={props.leftArrow}  handleCloseChart={handleCloseChart}/>}/>
+              <Route path="/barchart" element={<BarChart  {...props} resetCharts={props.resetCharts}  selectResolution={props.selectResolution}  getPageNumber={props.getPageNumber} type={'bar'}  rightArrow={props.rightArrow} leftArrow={props.leftArrow} handleCloseChart={handleCloseChart}/>}/>
+              <Route path="/binstackedchart" element={<BinStackedChart {...props} resetCharts={props.resetCharts}  selectResolution={props.selectResolution}  getPageNumber={props.getPageNumber} type={'bar'}  rightArrow={props.rightArrow} leftArrow={props.leftArrow} handleCloseChart={handleCloseChart}/>}/>
+          </Routes>
+      </BrowserRouter>
+      */}
+      {/*
+      <BrowserRouter>
+        <Routes>
+            <Route path="/" element={<Layout />}>
+              <Route index element={<VoteTableReact {...props} resetCharts={props.resetCharts}  getPageNumber={props.getPageNumber} type={'table'} rightArrow={props.rightArrow} leftArrow={props.leftArrow} handleCloseChart={handleCloseChart}/>}/>
+              <Route path="voteslinechart" element={<VotesLineChart2 {...props}  resetCharts={props.resetCharts} selectResolution={props.selectResolution} getPageNumber={props.getPageNumber} type={'line'}  rightArrow={props.rightArrow} leftArrow={props.leftArrow} handleCloseChart={handleCloseChart}/>}/>
+              <Route path="spikeslinechart" element={<SpikesLineChart {...props} resetCharts={props.resetCharts}  selectResolution={props.selectResolution}  getPageNumber={props.getPageNumber} type={'line'}  rightArrow={props.rightArrow} leftArrow={props.leftArrow} handleCloseChart={handleCloseChart}/>}/>
+              <Route path="difflinechart" element={<DiffLineChart  {...props} resetCharts={props.resetCharts}  selectResolution={props.selectResolution} getPageNumber={props.getPageNumber} type={'line'}  rightArrow={props.rightArrow} leftArrow={props.leftArrow} handleCloseChart={handleCloseChart}/>}/>
+              <Route path="perlinechart" element={<PerLineChart  {...props} resetCharts={props.resetCharts}  selectResolution={props.selectResolution} getPageNumber={props.getPageNumber} type={'line'}  rightArrow={props.rightArrow} leftArrow={props.leftArrow} handleCloseChart={handleCloseChart}/>}/>
+              <Route path="piechart" element={<PieChart {...props} resetCharts={props.resetCharts}  selectResolution={props.selectResolution}  getPageNumber={props.getPageNumber} type={'pie'}  rightArrow={props.rightArrow} leftArrow={props.leftArrow}  handleCloseChart={handleCloseChart}/>}/>
+              <Route path="barchart" element={<BarChart  {...props} resetCharts={props.resetCharts}  selectResolution={props.selectResolution}  getPageNumber={props.getPageNumber} type={'bar'}  rightArrow={props.rightArrow} leftArrow={props.leftArrow} handleCloseChart={handleCloseChart}/>}/>
+              <Route path="binstackedchart" element={<BinStackedChart {...props} resetCharts={props.resetCharts}  selectResolution={props.selectResolution}  getPageNumber={props.getPageNumber} type={'bar'}  rightArrow={props.rightArrow} leftArrow={props.leftArrow} handleCloseChart={handleCloseChart}/>}/>
+          </Route>             
+        </Routes>
+      </BrowserRouter>
+      */}
+        <div>
+      {/* A "layout route" is a good place to put markup you want to
+          share across all the pages on your site, like navigation. */}
+    <BrowserRouter>
+    <nav>
+          <ul>
+            <li>
+              <Link to="/">Home</Link>
+            </li>
+            <li>
+              <Link to="/about">About</Link>
+            </li>
+            <li>
+              <Link to="/dashboard">Dashboard</Link>
+            </li>
+            <li>
+              <Link to="/nothing-here">Nothing Here</Link>
+            </li>
+            <li>
+              <Link to="/voteslinechart">Votes Line Chart</Link>
+            </li>
+            <li>
+              <Link to="/spikeslinechart">Spikes Line Chart</Link>
+            </li>
+            <li>
+              <Link to="/difflinechart">Difference Line Chart</Link>
+            </li>
+            <li>
+              <Link to="/perlinechart">Percentage Line Chart</Link>
+            </li>
+            <li>
+              <Link to="/piechart">Pie Chart</Link>
+            </li>
+            <li>
+              <Link to="/barchart">Bar Chart</Link>
+            </li>
+            <li>
+              <Link to="/binstackedchart">Bin Stacked Chart</Link>
+            </li>
+          </ul>
+        </nav>
+  
+        <hr />
+  
+        {/* An <Outlet> renders whatever child route is currently active,
+            so you can think about this <Outlet> as a placeholder for
+            the child routes we defined above. */}
+        <Outlet />
+        <Routes>          
+            <Route path="/" element={<VoteTableReact {...props} 
+                            resetCharts={props.resetCharts}  getPageNumber={props.getPageNumber} type={'table'} rightArrow={props.rightArrow} leftArrow={props.leftArrow} handleCloseChart={handleCloseChart}
+                            loader={() => {
+
+                            }}
+                            />}/>
+            <Route path="about" element={<About />} />
+            <Route path="dashboard" element={<Dashboard />} />
+
+            {/* Using path="*"" means "match anything", so this route
+                    acts like a catch-all for URLs that we don't have explicit
+                    routes for. */}
+            <Route path="*" element={<NoMatch />} />
+            <Route path="voteslinechart" element={<VotesLineChart2 {...props}  resetCharts={props.resetCharts} selectResolution={props.selectResolution} getPageNumber={props.getPageNumber} type={'line'}  rightArrow={props.rightArrow} leftArrow={props.leftArrow} handleCloseChart={handleCloseChart}/>}/>
+            <Route path="spikeslinechart" element={<SpikesLineChart {...props} resetCharts={props.resetCharts}  selectResolution={props.selectResolution}  getPageNumber={props.getPageNumber} type={'line'}  rightArrow={props.rightArrow} leftArrow={props.leftArrow} handleCloseChart={handleCloseChart}/>}/>
+            <Route path="difflinechart" element={<DiffLineChart  {...props} resetCharts={props.resetCharts}  selectResolution={props.selectResolution} getPageNumber={props.getPageNumber} type={'line'}  rightArrow={props.rightArrow} leftArrow={props.leftArrow} handleCloseChart={handleCloseChart}/>}/>
+            <Route path="perlinechart" element={<PerLineChart  {...props} resetCharts={props.resetCharts}  selectResolution={props.selectResolution} getPageNumber={props.getPageNumber} type={'line'}  rightArrow={props.rightArrow} leftArrow={props.leftArrow} handleCloseChart={handleCloseChart}/>}/>
+            <Route path="piechart" element={<PieChart {...props} resetCharts={props.resetCharts}  selectResolution={props.selectResolution}  getPageNumber={props.getPageNumber} type={'pie'}  rightArrow={props.rightArrow} leftArrow={props.leftArrow}  handleCloseChart={handleCloseChart}/>}/>
+            <Route path="barchart" element={<BarChart  {...props} resetCharts={props.resetCharts}  selectResolution={props.selectResolution}  getPageNumber={props.getPageNumber} type={'bar'}  rightArrow={props.rightArrow} leftArrow={props.leftArrow} handleCloseChart={handleCloseChart}/>}/>
+            <Route path="binstackedchart" element={<BinStackedChart {...props} resetCharts={props.resetCharts}  selectResolution={props.selectResolution}  getPageNumber={props.getPageNumber} type={'bar'}  rightArrow={props.rightArrow} leftArrow={props.leftArrow} handleCloseChart={handleCloseChart}/>}/>
+      
+        </Routes>
+    </BrowserRouter>
+
+      <hr />
+
+      {/* An <Outlet> renders whatever child route is currently active,
+          so you can think about this <Outlet> as a placeholder for
+          the child routes we defined above. */}
+      <Outlet />
+    </div>
+        { isChartClosed &&
+          <Container className="w-100 d-flex justify-content-center p-2 pt-3" style={{backgroundColor:"lightgray"}}>
+            <h4 style={{float:"left"}}>
+              <span>Please select a Chart Type above</span>
+              <i className="bi bi-arrow-up-square-fill" style={{marginLeft:"0.25em",marginRight:"0.25em"}}></i>
+              <span>and the chart will appear here below</span><i className="bi bi-file-arrow-down-fill" style={{marginLeft:"0.25em"}}></i>
+            </h4>
+          </Container>
+        }
+      </>
+        
+
+    );
+}
