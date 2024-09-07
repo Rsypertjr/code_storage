@@ -64,6 +64,7 @@ import { auto } from '@popperjs/core';
 export default function AnalyticsBar(props) {
     const handleCloseChart = () => {
         $('.chart-viewer').removeClass('upslide').addClass('downslide').addClass('hidden');
+        props.setIsChartClosed(true);
         props.navigate('/');
     };
 

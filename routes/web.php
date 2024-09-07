@@ -22,8 +22,8 @@ Route::get('/', function () {
     return Inertia::render('VotesApp');
 });
 
-Route::get('/basicroute', function () {
-    return Inertia::render('BasicRoute');
+Route::get('/portfolio', function () {
+    return Inertia::render('Portfolio');
 });
 
 

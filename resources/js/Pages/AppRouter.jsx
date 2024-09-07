@@ -22,7 +22,7 @@ const linkStyle = {
 };
 
 export default function AppRouter(props){  
-  const [isChartClosed,setIsChartClosed] = useState(false);
+  const [isChartClosed,setIsChartClosed] = useState(true);
   const [getNavigate,setGetNavigate] = useState();
 
   console.log("App Router props:",props);
@@ -51,10 +51,7 @@ export default function AppRouter(props){
     setIsChartClosed(false);
    }
 
-   const handleCloseChart = () => {
-    $('.chart-viewer').removeClass('upslide').addClass('downslide').addClass('hidden');
-    setIsChartClosed(true);
-   };
+   
 
    const NaviLinks = () => 
     {
@@ -63,7 +60,7 @@ export default function AppRouter(props){
             <>  
                 <Row className="d-flex justify-content-center align-items-center">
                     <LinkContainer to="/" className="col-1 menu-tab">
-                        <NavLink className='menu-tab rounded text-center' to="/" >Home</NavLink> 
+                        <NavLink className="menu-tab rounded text-center">Home</NavLink> 
                     </LinkContainer>
                     <LinkContainer to="/votestable" className="col-1 menu-tab"> 
                         <NavLink className='menu-tab rounded text-center' >Votes Table</NavLink>    
@@ -106,14 +103,14 @@ export default function AppRouter(props){
                 <NaviLinks/>
                 <Routes>
                     <Route path='/home' element={<div>Home</div>}/>
-                    <Route path="/votestable" element={<VoteTableReact {...props} navigate={navigate} resetCharts={props.resetCharts}  getPageNumber={props.getPageNumber} type={'table'} rightArrow={props.rightArrow} leftArrow={props.leftArrow} handleCloseChart={handleCloseChart}/>}/>
-                    <Route path="/voteslinechart" element={<VotesLineChart2 {...props} navigate={navigate} resetCharts={props.resetCharts} selectResolution={props.selectResolution} getPageNumber={props.getPageNumber} type={'line'}  rightArrow={props.rightArrow} leftArrow={props.leftArrow} handleCloseChart={handleCloseChart}/>}/>
-                    <Route path="/spikeslinechart" element={<SpikesLineChart {...props} navigate={navigate} resetCharts={props.resetCharts}  selectResolution={props.selectResolution}  getPageNumber={props.getPageNumber} type={'line'}  rightArrow={props.rightArrow} leftArrow={props.leftArrow} handleCloseChart={handleCloseChart}/>}/>
-                    <Route path="/difflinechart" element={<DiffLineChart  {...props} navigate={navigate} resetCharts={props.resetCharts}  selectResolution={props.selectResolution} getPageNumber={props.getPageNumber} type={'line'}  rightArrow={props.rightArrow} leftArrow={props.leftArrow} handleCloseChart={handleCloseChart}/>}/>
-                    <Route path="/perlinechart" element={<PerLineChart  {...props} navigate={navigate} resetCharts={props.resetCharts}  selectResolution={props.selectResolution} getPageNumber={props.getPageNumber} type={'line'}  rightArrow={props.rightArrow} leftArrow={props.leftArrow} handleCloseChart={handleCloseChart}/>}/>
-                    <Route path="/piechart" element={<PieChart {...props} navigate={navigate} resetCharts={props.resetCharts}  selectResolution={props.selectResolution}  getPageNumber={props.getPageNumber} type={'pie'}  rightArrow={props.rightArrow} leftArrow={props.leftArrow}  handleCloseChart={handleCloseChart}/>}/>
-                    <Route path="/barchart" element={<BarChart  {...props} navigate={navigate} resetCharts={props.resetCharts}  selectResolution={props.selectResolution}  getPageNumber={props.getPageNumber} type={'bar'}  rightArrow={props.rightArrow} leftArrow={props.leftArrow} handleCloseChart={handleCloseChart}/>}/>
-                    <Route path="/binstackedchart" element={<BinStackedChart {...props} navigate={navigate} resetCharts={props.resetCharts}  selectResolution={props.selectResolution}  getPageNumber={props.getPageNumber} type={'bar'}  rightArrow={props.rightArrow} leftArrow={props.leftArrow} handleCloseChart={handleCloseChart}/>}/>
+                    <Route path="/votestable" element={<VoteTableReact {...props} navigate={navigate} resetCharts={props.resetCharts}  getPageNumber={props.getPageNumber} type={'table'} rightArrow={props.rightArrow} leftArrow={props.leftArrow} setIsChartClosed={setIsChartClosed}/>}/>
+                    <Route path="/voteslinechart" element={<VotesLineChart2 {...props} navigate={navigate} resetCharts={props.resetCharts} selectResolution={props.selectResolution} getPageNumber={props.getPageNumber} type={'line'}  rightArrow={props.rightArrow} leftArrow={props.leftArrow} setIsChartClosed={setIsChartClosed}/>}/>
+                    <Route path="/spikeslinechart" element={<SpikesLineChart {...props} navigate={navigate} resetCharts={props.resetCharts}  selectResolution={props.selectResolution}  getPageNumber={props.getPageNumber} type={'line'}  rightArrow={props.rightArrow} leftArrow={props.leftArrow} setIsChartClosed={setIsChartClosed}/>}/>
+                    <Route path="/difflinechart" element={<DiffLineChart  {...props} navigate={navigate} resetCharts={props.resetCharts}  selectResolution={props.selectResolution} getPageNumber={props.getPageNumber} type={'line'}  rightArrow={props.rightArrow} leftArrow={props.leftArrow} setIsChartClosed={setIsChartClosed}/>}/>
+                    <Route path="/perlinechart" element={<PerLineChart  {...props} navigate={navigate} resetCharts={props.resetCharts}  selectResolution={props.selectResolution} getPageNumber={props.getPageNumber} type={'line'}  rightArrow={props.rightArrow} leftArrow={props.leftArrow} setIsChartClosed={setIsChartClosed}/>}/>
+                    <Route path="/piechart" element={<PieChart {...props} navigate={navigate} resetCharts={props.resetCharts}  selectResolution={props.selectResolution}  getPageNumber={props.getPageNumber} type={'pie'}  rightArrow={props.rightArrow} leftArrow={props.leftArrow}  setIsChartClosed={setIsChartClosed}/>}/>
+                    <Route path="/barchart" element={<BarChart  {...props} navigate={navigate} resetCharts={props.resetCharts}  selectResolution={props.selectResolution}  getPageNumber={props.getPageNumber} type={'bar'}  rightArrow={props.rightArrow} leftArrow={props.leftArrow} setIsChartClosed={setIsChartClosed}/>}/>
+                    <Route path="/binstackedchart" element={<BinStackedChart {...props} navigate={navigate} resetCharts={props.resetCharts}  selectResolution={props.selectResolution}  getPageNumber={props.getPageNumber} type={'bar'}  rightArrow={props.rightArrow} leftArrow={props.leftArrow} setIsChartClosed={setIsChartClosed}/>}/>
                 </Routes>
             </div>
         );

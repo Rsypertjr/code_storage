@@ -1,0 +1,98 @@
+body {
+    padding-top:4em;
+}
+
+.container {
+    width:120%;
+}
+
+#myJumboCarousel {	
+    background-image: linear-gradient(white, grey);
+    height:20em;
+    margin-top:5em;
+    padding:2em;
+}
+
+div.carousel {
+    height:20em;
+    padding:2em;
+    background-image: linear-gradient(white, grey);
+    border-style:ridge;
+
+}
+div.carousel-caption {
+    position:relative;
+    color:black;
+    width:80%;
+    margin: 5% 0 5% -5%;
+    padding:0;
+}
+
+div.carousel-item > img {
+    position:relative;
+    margin: 0 0 0 10%;
+}
+#topNav {
+    position:relative;
+    padding:0;
+    margin:0;
+    font-size:0.75em;
+}
+
+div.navbar-nav,#topNav > div > a, #topNav > div{
+    position:relative;
+    background-color: black;
+    margin-left:0%;
+    padding:1em;
+
+}
+
+a.navbar-brand {
+    position:relative;
+    background-color: black;
+    color:white;
+}
+
+#myNavbar > div > a, #basic-nav-dropdown {
+    position:relative;
+    color:white;
+}
+.nav-item.dropdown
+{
+    width:15%;
+    margin:0 1em 1em 1em;
+}
+
+object {
+    display:block;
+}
+
+
+
+object {
+    display:block;
+}
+
+
+
+object {
+    display:block;
+}
+
+
+.coverPanel {
+    position:absolute;
+    height:100%;
+    width:100%;
+    opacity:0.0;
+    top:0;
+    left:0;
+    background-color:black;
+    -webkit-transition: all .5s ease-in-out;
+    transition: all .5s ease-in-out;
+    }
+
+ .apanel {
+    margin-top: 2em;
+ }   
+

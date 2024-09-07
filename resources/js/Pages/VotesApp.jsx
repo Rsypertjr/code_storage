@@ -1156,7 +1156,6 @@ async checkForVotes(state){
 
   resetCharts(e){
        this.selectResolution(1);
-       window.location.reload('/');
   }
 
 
