@@ -670,15 +670,15 @@ export default function Portfolio(props){
                         </Dropdown.Toggle>
 
                         <Dropdown.Menu>
-                            <Dropdown.Item href="https://rsypertjr.net/amino">Amino Acid Sequence Analyzer</Dropdown.Item>
-                            <Dropdown.Item href="https://rsypertjr.net/orominer1">Human Organ System Analyzer 1</Dropdown.Item>
-                            <Dropdown.Item href="https://rsypertjr.net/orominer2">Human Organ System Analyzer 2</Dropdown.Item>
-                            <Dropdown.Item href="https://rsypertjr.net/mobile">Mobile Web Portfolio</Dropdown.Item>
-                            <Dropdown.Item href="https://github.com/Rsypertjr/fuelCMS/blob/latest-prod-fuelCMS">GIT Repository</Dropdown.Item>
-                            <Dropdown.Item href="https://rsypertjr.net/othello">Play Othello Game</Dropdown.Item>
-                            <Dropdown.Item href="https://laravelvotes.rsypertjr.net/votes-table">Sample Laravel 1</Dropdown.Item>
-                            <Dropdown.Item href="https://preselections.rsypertjr.net">Sample Laravel 2</Dropdown.Item>
-                            <Dropdown.Item href="https://wbcarinfo.rsypertjr.net">Mern stack</Dropdown.Item>
+                            <Dropdown.Item href="https://rsypertjr.net/amino" target="_blank">Amino Acid Sequence Analyzer</Dropdown.Item>
+                            <Dropdown.Item href="https://rsypertjr.net/orominer1" target="_blank">Human Organ System Analyzer 1</Dropdown.Item>
+                            <Dropdown.Item href="https://rsypertjr.net/orominer2" target="_blank">Human Organ System Analyzer 2</Dropdown.Item>
+                            <Dropdown.Item href="https://rsypertjr.net/mobile" target="_blank">Mobile Web Portfolio</Dropdown.Item>
+                            <Dropdown.Item href="https://github.com/Rsypertjr/fuelCMS/blob/latest-prod-fuelCMS" target="_blank">GIT Repository</Dropdown.Item>
+                            <Dropdown.Item href="https://rsypertjr.net/othello" target="_blank">Play Othello Game</Dropdown.Item>
+                            <Dropdown.Item href="https://laravelvotes.rsypertjr.net/votes-table" target="_blank">Sample Laravel 1</Dropdown.Item>
+                            <Dropdown.Item href="https://preselections.rsypertjr.net" target="_blank">Sample Laravel 2</Dropdown.Item>
+                            <Dropdown.Item href="https://wbcarinfo.rsypertjr.net" target="_blank">Mern stack</Dropdown.Item>
                         </Dropdown.Menu>
 
                         </Dropdown>
@@ -690,11 +690,11 @@ export default function Portfolio(props){
                                 Technical Writing
                             </Dropdown.Toggle>
                             <Dropdown.Menu>
-                                <Dropdown.Item href="https://rsypertjr.net/graingerABCDE">Grainger ABCDE Series B Product Manual</Dropdown.Item>
-                                <Dropdown.Item href="https://rsypertjr.net/graingerCDE">Grainger CDE Product Manual</Dropdown.Item>
-                                <Dropdown.Item href="https://rsypertjr.net/mecPManual">MEC Product Manual VT 1.6</Dropdown.Item>
-                                <Dropdown.Item href="https://rsypertjr.net/whitePaper">Technology White Paper</Dropdown.Item>
-                                <Dropdown.Item href="https://rsypertjr.net/engSpec">Engineering Specification</Dropdown.Item>
+                                <Dropdown.Item href="https://rsypertjr.net/graingerABCDE" target="_blank">Grainger ABCDE Series B Product Manual</Dropdown.Item>
+                                <Dropdown.Item href="https://rsypertjr.net/graingerCDE" target="_blank">Grainger CDE Product Manual</Dropdown.Item>
+                                <Dropdown.Item href="https://rsypertjr.net/mecPManual" target="_blank">MEC Product Manual VT 1.6</Dropdown.Item>
+                                <Dropdown.Item href="https://rsypertjr.net/whitePaper" target="_blank">Technology White Paper</Dropdown.Item>
+                                <Dropdown.Item href="https://rsypertjr.net/engSpec" target="_blank">Engineering Specification</Dropdown.Item>
                             </Dropdown.Menu>
                         </Dropdown>
                     </Col>                   
@@ -706,8 +706,8 @@ export default function Portfolio(props){
                             </Dropdown.Toggle>
 
                             <Dropdown.Menu>
-                                <Dropdown.Item href="https://rsypertjr.net/fuel2/index.php/pdfResume">PDF Resume</Dropdown.Item>
-                                <Dropdown.Item href="https://rsypertjr.net/dynResume">Dynamic Resume</Dropdown.Item>
+                                <Dropdown.Item href="https://rsypertjr.net/fuel2/index.php/pdfResume" target="_blank">PDF Resume</Dropdown.Item>
+                                <Dropdown.Item href="https://rsypertjr.net/dynResume" target="_blank">Dynamic Resume</Dropdown.Item>
                             </Dropdown.Menu>
                         </Dropdown>
                     </Col>
@@ -719,28 +719,13 @@ export default function Portfolio(props){
                             </Dropdown.Toggle>
 
                             <Dropdown.Menu>
-                                <Dropdown.Item href="linkedIn">Technologies Used</Dropdown.Item>
-                                <Dropdown.Item href="linkedIn">LinkedIn Profile</Dropdown.Item>
+                                <Dropdown.Item href="https://rsypertjr.net/webTech" target="_blank">Technologies Used</Dropdown.Item>
+                                <Dropdown.Item href="https://www.linkedin.com/in/rlsworks/" target="_blank">LinkedIn Profile</Dropdown.Item>
                             </Dropdown.Menu>
                         </Dropdown>
                     </Col>
 			    </Row>
 		    </Container>  {/* End of Footer Section */}
-
-         
-
-            {/*<script src="<?php echo $vars['jsBootPortfolio']; ?>"></script>
-            <script src="https://cdn.jsdelivr.net/npm/react/umd/react.production.min.js" crossorigin></script>
-
-            <script
-            src="https://cdn.jsdelivr.net/npm/react-dom/umd/react-dom.production.min.js"
-            crossorigin></script>
-
-            <script
-            src="https://cdn.jsdelivr.net/npm/react-bootstrap@next/dist/react-bootstrap.min.js"
-            crossorigin></script>
-
-            <script>var Alert = ReactBootstrap.Alert;</script>*/}
                     
         </>
                
