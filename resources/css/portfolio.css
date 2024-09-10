@@ -9,7 +9,7 @@ body {
 #myJumboCarousel {	
     background-image: linear-gradient(white, grey);
     height:20em;
-    margin-top:5em;
+    margin-top:2em;
     padding:2em;
 }
 
@@ -24,7 +24,8 @@ div.carousel-caption {
     position:relative;
     color:black;
     width:80%;
-    margin: 5% 0 5% -5%;
+    height:auto;
+    margin: 2% 0 5% -5%;
     padding:0;
 }
 
@@ -63,27 +64,13 @@ a.navbar-brand {
     margin:0 1em 1em 1em;
 }
 
-object {
-    display:block;
-}
-
-
-
-object {
-    display:block;
-}
-
-
-
-object {
-    display:block;
-}
 
 div#lampCover {
     position:absolute;
-    height:104em;
+    /*height:138.5em;*/
+    height:100%;
     width:100%;
-    opacity:0.8;
+    opacity:0.85;
     left:0;
     top:0;
     background-color:black;
@@ -102,9 +89,9 @@ div#lampCover {
 
 div#mobileCover {
     position:absolute;
-    height:26em;
+    height:100%;
     width:100%;
-    opacity:0.8;
+    opacity:0.85;
     left:0;
     top:0;
     z-index:2;
@@ -117,16 +104,16 @@ div#mobileCover {
     width:80%;
     margin:0 10% 0 10%;
     background-color:black;
-    font-size:1.5em;
+    font-size:1.75em;
     color:white;    
  }
 
 
  div#aboutCover {
     position:absolute;
-    height:58.5em;
+    height:100%;
     width:100%;
-    opacity:0.8;
+    opacity:0.85;
     left:0;
     top:0;
     z-index:2;
@@ -139,9 +126,170 @@ div#mobileCover {
     width:80%;
     margin:0 10% 0 10%;
     background-color:black;
-    font-size:1.5em;
+    font-size:1.75em;
     color:white;    
  }
+
+ div#frameworksCover {
+    position:absolute;
+    height:100%;
+    width:100%;
+    opacity:0.85;
+    left:0;
+    top:0;
+    z-index:2;
+    background-color:black;
+    -webkit-transition: all .5s ease-in-out;
+    transition: all .5s ease-in-out;
+    }
+
+ div#frameworksCover > div.card {
+    width:80%;
+    margin:0 10% 0 10%;
+    background-color:black;
+    font-size:1.75em;
+    color:white;    
+ }
+
+
+
+ div#manualsCover {
+    position:absolute;
+    height:100%;
+    width:100%;
+    opacity:0.85;
+    left:0;
+    top:0;
+    z-index:2;
+    background-color:black;
+    -webkit-transition: all .5s ease-in-out;
+    transition: all .5s ease-in-out;
+    }
+
+ div#manualsCover > div.card {
+    width:80%;
+    margin:0 10% 0 10%;
+    background-color:black;
+    font-size:1.75em;
+    color:white;    
+ }
+
+
+
+ div#specificationsCover {
+    position:absolute;
+    height:100%;
+    width:100%;
+    opacity:0.85;
+    left:0;
+    top:0;
+    z-index:2;
+    background-color:black;
+    -webkit-transition: all .5s ease-in-out;
+    transition: all .5s ease-in-out;
+    }
+
+ div#specificationsCover > div.card {
+    width:80%;
+    margin:0 10% 0 10%;
+    background-color:black;
+    font-size:1.75em;
+    color:white;    
+ }
+
+
+
+ div#resumeCover {
+    position:absolute;
+    height:100%;
+    width:100%;
+    opacity:0.85;
+    left:0;
+    top:0;
+    z-index:2;
+    background-color:black;
+    -webkit-transition: all .5s ease-in-out;
+    transition: all .5s ease-in-out;
+    }
+
+ div#resumeCover > div.card {
+    width:80%;
+    margin:0 10% 0 10%;
+    background-color:black;
+    font-size:1.75em;
+    color:white;    
+ }
+
+
+
+ div#livingCover {
+    position:absolute;
+    height:100%;
+    width:100%;
+    opacity:0.85;
+    left:0;
+    top:0;
+    z-index:2;
+    background-color:black;
+    -webkit-transition: all .5s ease-in-out;
+    transition: all .5s ease-in-out;
+    }
+
+ div#livingCover > div.card {
+    width:80%;
+    margin:0 10% 0 10%;
+    background-color:black;
+    font-size:1.75em;
+    color:white;    
+ }
+
+
+
+ div#frontCover {
+    position:absolute;
+    height:100%;
+    width:100%;
+    opacity:0.85;
+    left:0;
+    top:0;
+    z-index:2;
+    background-color:black;
+    -webkit-transition: all .5s ease-in-out;
+    transition: all .5s ease-in-out;
+    }
+
+ div#frontCover > div.card {
+    width:80%;
+    margin:0 10% 0 10%;
+    background-color:black;
+    font-size:1.75em;
+    color:white;    
+ }
+
+
+ div#homeCover {
+    position:absolute;
+    height:100%;
+    width:100%;
+    opacity:0.85;
+    left:0;
+    top:0;
+    z-index:2;
+    background-color:black;
+    -webkit-transition: all .5s ease-in-out;
+    transition: all .5s ease-in-out;
+    }
+
+ div#homeCover > div.card {
+    width:80%;
+    height:auto;
+    margin:0 10% 0 10%;
+    background-color:black;
+    font-size:1.75em;
+    color:white;    
+ }
+
+
 
 
  div.panel-container {
@@ -156,8 +304,6 @@ div#mobileCover {
  }   
 
  .panel-container > .card{
-    border:none;
-    background-color:rgb(218, 217, 205);
     margin:1em 0 1em 0;
  }
 
@@ -195,3 +341,25 @@ div#mobileCover {
  a.card-link {
     font-size:1.5em;
  }
+
+
+ div#footer {
+    height:25em;
+    width:95%;
+    padding:2em;
+    background-image: linear-gradient(white, grey);
+    border-style:ridge;
+ }
+
+.top-carousel.carousel.slide > div.carousel-inner > div > div > h4 {
+    background-color: black;
+    color: white;
+    padding: 1em;
+}
+
+.top-carousel.carousel.slide > div.carousel-inner > div > div > p {
+ padding:2em;
+ width:100%;
+ margin-left: 0;
+
+}
