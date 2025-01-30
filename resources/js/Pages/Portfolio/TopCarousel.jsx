@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import Carousel from 'react-bootstrap/Carousel';
-import CarouselImage from '../Components/CarouselImage';
+import CarouselImage from '../../Components/CarouselImage';
 
 export default function TopCarousel(props){
     return (

@@ -2,9 +2,9 @@ import React, { useState, useEffect } from 'react';
 import { Container, Row, Col, Nav, Navbar, CardText, Tooltip, OverlayTrigger } from 'react-bootstrap';
 import Card from 'react-bootstrap/Card';
 import Dropdown from 'react-bootstrap/Dropdown';
-import TopCarousel from './TopCarousel';
-import MidCarousel from './MidCarousel';
-import TopNav from './TopNav';
+import TopCarousel from './Portfolio/TopCarousel';
+import MidCarousel from './Portfolio/MidCarousel';
+import TopNav from './Portfolio/TopNav';
 import $ from 'jquery';
 
 import technologyideas from '../../images/technologyideas.jpg';

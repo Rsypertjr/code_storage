@@ -1,16 +1,16 @@
 import React, { useState, useEffect } from 'react';
 import Carousel from 'react-bootstrap/Carousel';
-import CarouselImage from '../Components/CarouselImage';
-import worksImg from '../../images/worksImg.jpg';
-import mechEngImage2 from '../../images/mechEngImage.jpg';
-import engImg from '../../images/engImg.jpg';
-import topLabel from '../../images/topLabel.jpg';
-import compSciImage from '../../images/compSciImage.jpg';
-import mathhonorimg from '../../images/mathhonorimg.jpg';
-import procprojengimg from '../../images/procprojengimg.jpg';
-import techWriter from '../../images/techWriter.jpg';
-import dataanalysis from '../../images/dataanalysis.jpg';
-import websiteconstruction from '../../images/websiteconstruction.jpg';
+import CarouselImage from '../../Components/CarouselImage';
+import worksImg from '../../../images/worksImg.jpg';
+import mechEngImage2 from '../../../images/mechEngImage.jpg';
+import engImg from '../../../images/engImg.jpg';
+import topLabel from '../../../images/topLabel.jpg';
+import compSciImage from '../../../images/compSciImage.jpg';
+import mathhonorimg from '../../../images/mathhonorimg.jpg';
+import procprojengimg from '../../../images/procprojengimg.jpg';
+import techWriter from '../../../images/techWriter.jpg';
+import dataanalysis from '../../../images/dataanalysis.jpg';
+import websiteconstruction from '../../../images/websiteconstruction.jpg';
 
 export default function MidCarousel(props){
     return (

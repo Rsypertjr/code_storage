@@ -4,6 +4,7 @@ use App\Http\Controllers\ProfileController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
+use App\Http\Controllers\AminoController;
 
 Route::get('/notused', function () {
     return Inertia::render('Welcome', [
@@ -25,6 +26,16 @@ Route::get('/', function () {
 Route::get('/portfolio', function () {
     return Inertia::render('Portfolio');
 });
+
+
+Route::get('/amino', function () {
+    return Inertia::render('Amino');
+});
+
+
+Route::get('/migrations', [AminoController::class, 'view_migrations']);
+Route::post('/makerequest', [AminoController::class, 'index']);
+
 
 
 
