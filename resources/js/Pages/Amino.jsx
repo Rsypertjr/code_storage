@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Container, Row, Col, Nav, Navbar, CardText, Tooltip, OverlayTrigger, Form, Button, Table, Image } from 'react-bootstrap';
+import parse from "html-react-parser";
 import Card from 'react-bootstrap/Card';
 import Dropdown from 'react-bootstrap/Dropdown';
 import DropdownButton from 'react-bootstrap/DropdownButton';
@@ -34,27 +35,30 @@ const pa_values = ['X','1','2','3','4','5'];
 
 
 export default function Amino(props){  
-    const [startMotif, setStartMotif] = useState('X');
-    const [endMotif, setEndMotif] = useState('X');
-    const [aminoString, setAminoString] = useState(startMotif + '......' + endMotif);
+    const [startMotif, setStartMotif] = useState('Start Motif');
+    const [endMotif, setEndMotif] = useState('End Motif');
+    const [aminoString, setAminoString] = useState('X......X');
     const [waitStyle, setWaitStyle] = useState({});
-    const [motifAnalytic, setMotifAnalytic] = useState('');
+    const [motifAnalytic, setMotifAnalytic] = useState('Select an Analytic');
     const [motifAnalyticIndex,setMotifAnalyticIndex] = useState(0);
     const [showResults, setShowResults] = useState(false);
     const [headers, setHeaders] = useState([]);
     const [rows, setRows] = useState([]);
     const [loaderMessage, setLoaderMessage] = useState('');
     const [showLoader, setShowLoader] = useState(false);
+    const [loaderImage, setLoaderImage] = useState(null);
+    const [tableStatusMessage, setTableStatusMessage] = useState(null);
+    const [dropTableConfirm,setDropTableConfirm] = useState(false)
 
 
     const handleStartMotif = (e) => {
         setStartMotif(e.target.value.toString());
-        setAminoString(e.target.value.toString() + '......' + endMotif);
+        setAminoString(e.target.value.toString() + aminoString.slice(1,8));
     };
 
     const handleEndMotif = (e) => {
         setEndMotif(e.target.value.toString());
-        setAminoString(startMotif + '......' + e.target.value.toString());
+        setAminoString(aminoString.slice(0,-1) + e.target.value.toString());
     };
 
     const closeResults = (e) => {
@@ -88,11 +92,12 @@ export default function Amino(props){
 
     const resultsStyle = {
         position: 'relative',
-        height: '20em',
+        height: '30em',
         width: '70%',
         marginLeft:'15%',
         backgroundColor: '#F0FFFF',
-        marginTop: '-20em',
+        marginTop: '-30em',
+        opacity:'0.90',
         zIndex: '10',
         overflowY:'scroll',
         padding:'2em'
@@ -121,15 +126,42 @@ export default function Amino(props){
     const Mobile_Loader = (props) => {
         return (
             <>
-                <div className="d-flex justify-content-center"> 
-                    <p id='loaderMessage'>{props.message}</p>
-                </div>
-                <div className="d-flex justify-content-center"> 
-                    <Image src={props.image}></Image>
-                </div> 
-               
+                <Container>
+                    <Row className="d-flex justify-content-center mb-3">
+                            <Button className="" type="button" onClick={closeResults}>Close</Button> 
+                    </Row>
+                    <Row>
+                        <div className="d-flex justify-content-center"> 
+                            <p id='loaderMessage'>{parse(props.message)}</p>
+                        </div>
+                        <div className="d-flex justify-content-center"> 
+                            <Image src={props.image}></Image>
+                        </div> 
+                    </Row>
+                </Container> 
             </>               
         );
+    };
+
+    const Table_Status = (props) => {
+        return (
+            <>
+                <Container>
+                    <Row className="d-flex justify-content-center">
+                        <p className="d-flex justify-content-center" ><span style={{color:'blue', fontSize:'1.3em', marginRight:'1em'}}>Current Database Status:</span>
+                        <span style={{color:'green', fontSize:'1.3em'}}> {props.table_status_message}</span></p>
+                    </Row>
+                    { 
+                        !dropTableConfirm &&  
+                        <Row className="p-2" style={{fontSize:"1.25em"}}>
+                            <p className="d-flex justify-content-center">You can use 'Drop Button' to get rid of these tables and load a new FASTA format file with a (.txt) extension</p>
+                        </Row>  
+                    }                  
+                </Container>
+            </>
+
+        );
+
     };
 
 
@@ -138,7 +170,7 @@ export default function Amino(props){
             <>
                 <Container >
                     <Row className="d-flex justify-content-center mb-3">
-                        <Button className="" type="button" onClick={closeResults}>Close Results</Button> 
+                        <Button className="" type="button" onClick={closeResults}>Close</Button> 
                     </Row>
                     <Row className="d-flex justify-content-center">
                         <Table striped bordered hover>
@@ -183,14 +215,20 @@ export default function Amino(props){
         var fnm = inform.elements["fname"].value;
         var input = fnm.toString();
         var n = fnm.includes("input");
+
+        const extension = ".txt";
+
+      
         
         var rcvid = "wait";
 
         if(!fnm.match(/(\w|\d|(\Q-_\E))*\.txt/))
         {
-        var inform = document.forms["filein"];
-        inform.elements["fname"].value = "Please input a FASTA type file";
-        alert("Ops! You Forgot File Name or Its not a Text File (.txt)");
+            var inform = document.forms["filein"];
+            inform.elements["fname"].value = "Please input a FASTA type file";
+           
+            alert("Ops! You Forgot File Name or Its not a Text File (.txt)");
+
         }
         else
         {
@@ -201,11 +239,45 @@ export default function Amino(props){
         }
     }
 
+    const checkStatus = () => {
+        axios.get('/checkstatus')
+        .then( 
+          response => {
+             //alert(JSON.stringify(response.data));
+             if(response.data.data.toString().includes('The Protein and MimiMotif Tables are Dropped')){
+                setDropTableConfirm(true);
+                setTableStatusMessage("There are presently no Database Tables.");
+               
+             }
+             else{
+                setDropTableConfirm(false);
+                setTableStatusMessage(response.data.data.toString());
+             }
+             
+          } 
+        )
+        .catch(error => {
+            console.log("ERROR:: ",error);
+         });
+
+    }
+
+
     const makeRequest = (snd,recid,drp,mess) => {
        
        if(!mess.includes('Drop'))
-            mobileLoader(mess);
-        
+            mobileLoader(mess);   
+       else {
+            if (confirm("Are You sure that you want to Drop Tables?")) {
+                // User clicked "Yes" (OK)
+                console.log("User clicked Yes");
+                setDropTableConfirm(true);
+            } else {
+                // User clicked "No" (Cancel)
+                console.log("User clicked No");
+                return;
+            }
+        }     
 
        const packets = {
             dropDb: drp,
@@ -213,15 +285,43 @@ export default function Amino(props){
             motif:null
        };
 
+       if(snd != null){
+            $('#wait').fadeIn('fast');
+            setLoaderMessage("Protein and MiniMotif Tables are Now Building. This could take a While.");
+            setTableStatusMessage("Protein and MiniMotif Tables are Now Building. This could take a While.");
+            setDropTableConfirm(true);  //tables are dropped until fully rebuilt
+            setShowLoader(true);
+            setLoaderImage(spiral);
+            mobileLoader();
+       }
+
        axios.post('/makerequest', packets)
        .then( 
          response => {
             //alert(response.data);
             if(response.data.includes('Database already built'))
+            {               
+                $('#wait').fadeIn('fast');
+                setLoaderMessage("Database Tables already Exist!  Click 'Drop Table' button if you want to start new tables.");
+                setShowLoader(true);
+                setLoaderImage(null);
+                //mobileLoader();
+            }   
+            else if(response.data.includes('Dropping'))
+                {               
+                    $('#wait').fadeIn('fast');
+                    setLoaderMessage(response.data);
+                    setShowLoader(true);
+                    setLoaderImage(null);                
+                    setWaitStyle(resultsStyle);
+                }        
+            else
             {
-                $('#wait').html('');
-                let message = 'Database Tables are already Built!';
-                $("#wait").append(`<p id='loaderMessage'>${message}</p><img src=''></img>`).fadeOut(5000);
+                $('#wait').fadeIn('fast');
+                setLoaderMessage("Protein and MiniMotif Tables are Done Building.");
+                setShowLoader(true);
+                setLoaderImage(null);
+                //mobileLoader();
             }
          } 
        )
@@ -254,7 +354,7 @@ export default function Amino(props){
     const dropTables = () =>
     {
       var mess = "Trying to Drop Exisiting Tables!";
-      makeRequest("none","wait","yes",mess);
+      makeRequest(null,"wait","yes",mess);
     };
 
 
@@ -269,6 +369,7 @@ export default function Amino(props){
         $('#wait').fadeIn('fast');
         setLoaderMessage("Please Wait for Database Response!");
         setShowLoader(true);
+        setLoaderImage(spiral);
         mobileLoader();
         makeRequest2(fnm,recid,"no");
             
@@ -300,10 +401,20 @@ const makeRequest2 = (snd,recid,drp) => {
     .catch(error => {
         console.log("ERROR:: ",error);
      });
-  
-   
 };
 
+useEffect(() => {
+    $('#fname').on('click',function(){
+        var inform = document.forms["filein"];
+        inform.elements["fname"].value = "";
+    });
+
+    checkStatus();
+},[]);
+
+useEffect(() => {   
+    checkStatus();
+},[dropTableConfirm]);
 
     return(
        
@@ -311,22 +422,24 @@ const makeRequest2 = (snd,recid,drp) => {
             <Container id="mmContainer" className="viewer">
                 <Card>
                     <Card.Body>
-                        <Card.Title><h1>Input Form for Minimotif Search</h1></Card.Title>
-                           
-                                    <Form id="filein">
-                                        <Form.Group className="mb-2" controlId="filein.ControlInput1">
-                                            <Form.Label className="p-2" style={{backgroundColor:"lightGrey" }}>
-                                                <h3>Input the file name below</h3>
-                                                <p>(<i><b>FASTA-TEST.txt</b> is an example file that will work.&nbsp;&nbsp;However, the database tables take several minutes to build since with 10's thousands of entries.</i>)&nbsp;&nbsp;If tables already exist you can <b>'Drop Tables'</b> to restart.&nbsp;&nbsp;Another file can be used but it must be in the <b>FASTA format</b> and <b>.txt</b> extension.
-                                                </p>
-                                            </Form.Label>
-                                            <Form.Control type="input" name="fname" placeholder="Input File Name" />                                            
-                                        </Form.Group>     
-                                        <Form.Group className="mb-2 inline">
-                                            <Button className="aButton2" type="button" style={{marginRight:"1em"}} onClick={valInput}>Verify File and Start Database Build</Button>
-                                            <Button className="aButton2" type="button" onClick={dropTables}>Drop Tables</Button>                                       
-                                        </Form.Group>                                 
-                                    </Form>
+                        <Card.Title><h1>Input Form for Minimotif Search</h1></Card.Title>                           
+                            <Form id="filein">
+                                <Form.Group className="mb-2" >
+                                    <Form.Label className="p-2" style={{backgroundColor:"lightGrey" }}>
+                                        <h3>Input the file name below</h3>
+                                        <p>(<i><b>FASTA-TEST.txt</b> is an example file that will work.&nbsp;&nbsp;However, the database tables take several minutes to build since with 10's thousands of entries.</i>)&nbsp;&nbsp;If tables already exist you can <b>'Drop Tables'</b> to restart.&nbsp;&nbsp;Another file can be used but it must be in the <b>FASTA format</b> and <b>.txt</b> extension.
+                                        </p>
+                                    </Form.Label>
+                                    <Form.Control type="input" id="fname" name="fname" placeholder="Input File Name" />                                            
+                                </Form.Group>     
+                                <Form.Group className="mb-2 inline">
+                                    <Button className="aButton2" type="button" style={{marginRight:"1em"}} onClick={valInput}>Verify File and Start Database Build</Button>
+                                    <Button className="aButton2" type="button" onClick={dropTables}>Drop Tables</Button>                                       
+                                </Form.Group>                                 
+                            </Form>
+                            <Container className="d-flex justify-content-center" style={{heigth:'auto', padding:'1em', backgroundColor:'beige'}}>
+                                {tableStatusMessage != null && <Table_Status table_status_message={tableStatusMessage}/> }
+                            </Container>
                     </Card.Body>
                 </Card>
             </Container>
@@ -341,13 +454,13 @@ const makeRequest2 = (snd,recid,drp) => {
                             </Row>
                             <Row >
                                 <Col>     
-                                    <Form_Select id="am1" name="am1" first_option={"Start Motif"} names={acid_names} initials={acid_initials} handleMotif={handleStartMotif}/>
+                                    <Form_Select id="am1" name="am1" first_option={startMotif} names={acid_names} initials={acid_initials} handleMotif={handleStartMotif}/>
                                 </Col>
                                 <Col>
                                     <h2 id="mobX" className="text-center" style={{color:"green", zoom:"110%"}}>{aminoString}</h2>
                                 </Col>
                                 <Col>
-                                    <Form_Select id="am2" name="am2" first_option={"End Motif"}  names={acid_names} initials={acid_initials} handleMotif={handleEndMotif}/>
+                                    <Form_Select id="am2" name="am2" first_option={endMotif}  names={acid_names} initials={acid_initials} handleMotif={handleEndMotif}/>
                                 </Col>
                             </Row>
                         </Container>
@@ -355,7 +468,7 @@ const makeRequest2 = (snd,recid,drp) => {
                             <Row>
                                 {/*<hr className="rounded" style={{borderTop:'8px solid #bbb', borderRadius:'5px'}}/>*/}
                                 <p className="mt-1 p-3 rounded" style={{backgroundColor:"lightGrey"}}>Select an Analytic to be performed on the MiniMotif Table.</p>
-                                <Form_Select id="qu" name="qu" first_option={"Select an Analytic"}  names={protein_analytics} initials={protein_analytics} handleMotif={handleMotifAnalytic} />
+                                <Form_Select id="qu" name="qu" first_option={motifAnalytic}  names={protein_analytics} initials={protein_analytics} handleMotif={handleMotifAnalytic} />
                                 <p className="mt-2"><span style={{color:'blue',zoom:'110%'}}>Analytic to be Performed:</span><span style={{color:'green',zoom:'110%', marginLeft:'1em'}} >{motifAnalytic}</span></p>
                             </Row>
                         </Container>                                           
@@ -369,7 +482,7 @@ const makeRequest2 = (snd,recid,drp) => {
                 </Form>
             </Container>
 			<div id="wait" style={waitStyle}>
-                { showLoader && <Mobile_Loader message={loaderMessage} image={spiral} /> }
+                { showLoader && <Mobile_Loader message={loaderMessage} image={loaderImage} /> }
                 { showResults && <Result_Table headers={headers} rows={rows} /> }
             </div>			    
 		

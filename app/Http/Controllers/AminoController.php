@@ -17,7 +17,52 @@ class AminoController extends Controller
             echo $migration->migration;
         }
     }
+    
+    public function checkStatus(Request $request){
 
+        $protein_exists = false;
+        $mimiMotif_exists = false;
+        $sql = "SELECT EXISTS (
+                    SELECT 1
+                    FROM INFORMATION_SCHEMA.TABLES 
+                    WHERE TABLE_SCHEMA = 'laravel' 
+                    AND TABLE_NAME = 'proteins'
+                ) AS table_exists";
+
+            try {
+
+                    $check = DB::select($sql); 
+                    $protein_exits = $check[0]->table_exists;
+                } catch (\Exception $e) {
+                    echo $e->getMessage();
+            }  
+
+        $sql = "SELECT EXISTS (
+                SELECT 1
+                FROM INFORMATION_SCHEMA.TABLES 
+                WHERE TABLE_SCHEMA = 'laravel' 
+                AND TABLE_NAME = 'miniMotif'
+            ) AS table_exists";
+
+        try {
+
+                $check = DB::select($sql); 
+                $miniMotif_exits = $check[0]->table_exists;
+            } catch (\Exception $e) {
+                echo $e->getMessage();
+        }   
+
+        $data = null;
+        if($protein_exits)
+            $data = array("data" => "The Protein Table Exist");
+        if($miniMotif_exits)
+            $data["data"] .= " and the miniMotif Table Exist Already";
+
+        if($data)
+            echo json_encode($data);
+        else
+            echo json_encode(array("data" => "The Protein and MimiMotif Tables are Dropped"));
+    }
 
       
     public function index(Request $request)
@@ -27,7 +72,7 @@ class AminoController extends Controller
         $file = $request->file;
         $motif = $request->motif;
 
-        echo $file;
+        //echo $file;
 
         if($dropDb == 'yes')
         {
@@ -35,9 +80,18 @@ class AminoController extends Controller
             $sql = 'DROP TABLE proteins';
             try {
                 DB::statement($sql);
+                echo "Dropping proteins table";
             } catch (\Exception $e) {
-                echo $e->getMessage();
+                echo '<div>'.$e->getMessage().'</div>';
+            }
 
+            echo '<br/>';
+            $sql = 'DROP TABLE miniMotif';
+            try {
+                DB::statement($sql);
+                echo "Dropping miniMotif table";
+            } catch (\Exception $e) {
+                echo '<div>'.$e->getMessage().'</div>';
             }
     
         }
@@ -306,14 +360,20 @@ function buildProteinDb($filestr,$request)  // function for building Protein Dat
   try {
 
         DB::statement($sql); 
-        $count = DB::statement('SELECT COUNT(*) AS row_count FROM proteins');
+        $count = DB::select('SELECT COUNT(*) AS row_count FROM proteins');
+        //print_r($count[0]->row_count);
+        $count = $count[0]->row_count;
+        
 
     } catch (\Exception $e) {
         echo $e->getMessage();
     }  
-if($count == 0)
+  echo $count;
+  if((int) $count == 0)
     {
-
+        $data = json_encode(array('data' => 'Starting Build of Tables'));
+        echo $data;
+        
         $pattern = '/gi\|[0-9]+\|ref/';
 
 
@@ -348,12 +408,6 @@ if($count == 0)
         $trns5=$this->assocArray($matches5,$spcName,0,0,$trns4);
         $num_Names=$trns5-$trns4;
         //echo "Number of Species Names: ".$num_Names.'<br/>';
-
-
-            $data['data'] .= "Connection to MySQL Made\n"."<br>";
-            $data['data'] .= "Now Checking Database!\n";
-            $data['data'] .= "<br>";
-
         
 
         for($i=0;$i<$num_Seqs-1;$i++)  // clean up strings and fill protein database

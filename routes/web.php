@@ -36,6 +36,8 @@ Route::get('/amino', function () {
 Route::get('/migrations', [AminoController::class, 'view_migrations']);
 Route::post('/makerequest', [AminoController::class, 'index']);
 
+Route::get('/checkstatus', [AminoController::class, 'checkStatus']);
+
 
 
 
