@@ -1,0 +1,263 @@
+table.table.table-sm {
+    zoom:75%;
+
+}
+body{
+    background-color: rgb(187, 223, 223);
+}
+li.nav-item{
+    transition: background-color 1s;
+}
+li.nav-item:hover {
+    background-color:rgb(187, 223, 223);
+}
+
+
+li.nav-item a:hover{
+    text-decoration: underline;  
+    color:white;
+}
+
+
+.linkStyle {
+    margin: 1rem;
+    text-decoration: none;
+    color:black;
+    font-size: 0.8em;
+}
+
+.navbar-nav {
+    padding-left: 10em;
+}
+
+nav.navbar {
+    margin-bottom: 1em;
+    margin-top:-5em;
+}
+
+.col-4 {
+    margin-top: -2em;
+}
+
+.col-1 {
+    margin-top: -1.5em;
+}
+
+.row.justify-content-start{
+    margin-bottom:2em;
+}
+/*
+.jumbotron {
+    transform:scale(0.65);
+    margin-top:-4em;
+}  
+*/
+
+.vertical-scrollable > .row {
+    position: relative;
+    height: 50em;
+    width:80%;
+    margin-left: 10%;
+    overflow-y: scroll; 
+  }
+.col-sm-12 { 
+      font-size:13px;
+      padding-bottom: 20px; 
+      padding-top: 18px; 
+      transform: scale(0.85);
+  } 
+  
+  .smaller {
+      height:65%;
+      width:65%;
+  } 
+
+  .csmaller {
+    height:50%;
+    width:50%;
+
+} 
+
+.chart-viewer {
+  
+    opacity:0.90;
+    transform:scale(0.85);
+    z-index:10;
+    border-style:outset;
+    background-color:white;
+    padding:2em;
+    -webkit-animation: slideup 0.5s forwards;
+    -webkit-animation-delay: 0.5s;
+    animation: slideup 0.5s forwards;
+    animation-delay: 0.5s;
+}
+
+.upslide{    
+    opacity:1;
+    z-index:10;
+    margin-top:0em;
+    -webkit-animation: slideup 0.5s forwards;
+    -webkit-animation-delay: 0.5s;
+    animation: slideup 0.5s forwards;
+    animation-delay: 0.5s;
+}
+
+.downslide{
+    z-index:1.0;
+    opacity:1.0;
+    margin-top:-22em;
+    -webkit-animation: slidedown 0.5s forwards;
+    -webkit-animation-delay: 0.5s;
+    animation: slidedown 0.5s forwards;
+    animation-delay: 0.5s;
+}
+
+.hidden {
+    visibility: hidden;
+    opacity: 0;
+    transition: visibility 0s 2s, opacity 2s linear;
+  }
+
+.visible {
+    visibility: visible;
+    opacity: 1;
+    transition: visibility 0s 2s, opacity 2s linear;
+  }
+
+@keyframes slideup {
+    100% { margin-top: -20em; }
+}
+
+@keyframes slidedown {
+    100% { margin-top: 0em; }
+}
+.col-md-8{
+    margin-top:1em;
+  }
+
+ .pie-chart {
+     margin-top:0em;
+     margin-left:35%;
+ }
+
+ .pie-pager {
+     margin-top: 2em;
+ }
+ 
+
+ .viewerClose{
+    
+     position:relative;
+     float:left;
+     display:block;
+     cursor:pointer;
+     color:rgb(77, 85, 85)
+     
+ }
+
+ #interval_message{
+     margin-top: -1em;
+     color:red;
+     background-color:lightcyan;
+     text-align: center;
+ }
+
+ .page:hover {
+     background-color: grey;
+ }
+
+ .carousel-indicators{
+     top:16em;
+ }
+
+ .top{
+     background-color:lightgrey;
+     height:25em;     
+ }
+ 
+ .nav-bar{
+     margin-left:0em;
+ }
+
+ .nav-link, .nav-item.dropdown{
+    margin-right:2em;
+    height:75%;
+ }
+ #basic-navbar-nav > div > div:nth-child(3) > a,#basic-navbar-nav > div > div:nth-child(4) > a, a.nav-link > a   {
+     color:white;
+ }
+
+ #basic-navbar-nav > div > div:nth-child(3) > a:hover, #basic-navbar-nav > div > div:nth-child(4) > a:hover, a.nav-link > a:hover{
+     color:lightgrey;
+ }
+
+ .carousel-inner{
+     position:relative;
+     padding:1em;
+     height:auto;
+     margin-top:-2em;
+ }
+
+ .carousel.slide {
+    background-color: whitesmoke;
+    border-radius: 15px;
+    margin-top:1em 0 0.5em;
+    padding:2em 0 0 0;
+ }
+
+ .lamp{
+     margin-top:1em;
+     transform:scale(3);
+ }
+
+.cover{
+    position:absolute;
+    top: 0;
+    z-index:20;
+    height:100%;
+    padding:10% 5% 0 5%;
+    display:block;
+    background-color:black;
+    opacity:0.85;
+}
+ .cover i, .cover h1, .cover p {
+     color:white;
+ }
+
+ object:hover {
+     height: 700px;
+
+ }
+
+ object>*:hover{
+     transition: scale(.6);
+ }
+
+ .desc{
+     border-style:inset;
+     border-color:lightgrey;
+     border-width:0.5em;
+     padding: 0.5em;
+ }
+
+.list-group-item {
+    border-style:inset;
+    border-color:darkslategrey;
+    border-width:0.5em;
+    padding: 0.5em;
+}
+
+.centerit {
+    text-align: center;
+}
+
+  /*
+  .col-sm-12:nth-child(2n+1) { 
+      background: green; 
+  } 
+    
+  .col-sm-12:nth-child(2n+2) { 
+      background: black; 
+  } 
+  */
+  
