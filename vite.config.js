@@ -20,7 +20,7 @@ export default defineConfig({
   build: {
     outDir: 'dist',
     rollupOptions: {
-      input: ['resources/js/app.jsx', './index.html']
+      input: ['resources/js/app.jsx']
     }
   }
 });
