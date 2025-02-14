@@ -9,8 +9,8 @@ export default function TopCarousel(props){
                 <Carousel.Item>                    
                     <Carousel.Caption>
                         <h4>Richard L. Sypert Jr's Work Portfolio</h4> 
-                        <p className="top-desc rounded">This site shows my experience as a Software Developer,Technical Writer,and Engineer.  t has been updated to Bootstrap 4.0. Please View thru 
-                            this carousel for info about my work history.</p>
+                        <p className="top-desc rounded">This site shows my experience as a Software Developer, Technical Writer, and Manufacturing Engineer (resume).&nbsp;&nbsp;It is coded with Laravel11, React, Vite, and Bootstrap 5, as well as 
+                            other technologies.&nbsp;&nbsp;Please view this carousel for information about my work history.</p>
                     </Carousel.Caption>								
                 </Carousel.Item>				
                 <Carousel.Item>
