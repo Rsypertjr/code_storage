@@ -34,6 +34,8 @@ Route::get('/amino', function () {
 
 
 Route::get('/migrations', [AminoController::class, 'view_migrations']);
+
+Route::get('/minimotifsize', [AminoController::class, 'miniMotif_size']);
 Route::post('/makerequest', [AminoController::class, 'index']);
 
 Route::get('/checkstatus', [AminoController::class, 'checkStatus']);

@@ -18,7 +18,7 @@ export default defineConfig({
       },
   },
   build: {
-    outDir: 'dist',
+    outDir: 'public/build',
     rollupOptions: {
       input: ['resources/js/app.jsx']
     }

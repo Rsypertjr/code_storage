@@ -49,6 +49,10 @@ export default function Amino(props){
     const [loaderImage, setLoaderImage] = useState(null);
     const [tableStatusMessage, setTableStatusMessage] = useState(null);
     const [dropTableConfirm,setDropTableConfirm] = useState(false)
+    const [numRows, setNumRows] = useState(0);
+    const [droppingTables, setDroppingTables] = useState(false);
+    const [alreadyBuilding, setAlreadyBuilding] = useState(false);
+    const [checkingStatus, setCheckingStatus ] = useState(false);
 
 
     const handleStartMotif = (e) => {
@@ -148,8 +152,17 @@ export default function Amino(props){
             <>
                 <Container>
                     <Row className="d-flex justify-content-center">
-                        <p className="d-flex justify-content-center" ><span style={{color:'blue', fontSize:'1.3em', marginRight:'1em'}}>Current Database Status:</span>
-                        <span style={{color:'green', fontSize:'1.3em'}}> {props.table_status_message}</span></p>
+                        <p className="d-flex justify-content-center" >
+                            <span style={{color:'blue', fontSize:'1.3em', marginRight:'1em'}}>Current Database Status (May need to use Update button):</span>
+                            <span style={{color:'green', fontSize:'1.3em'}}> {props.table_status_message}</span>
+                          
+                        </p>
+                        {   numRows > 0 && 
+                            <p className="d-flex justify-content-center">                          
+                                <span style={{color:'blue', fontSize:'1.3em', marginRight:'1em'}}>Number of Rows in miniMotif Table: </span>
+                                <span style={{color:'green', fontSize:'1.3em'}}>{numRows} </span> 
+                            </p>
+                        }
                     </Row>
                     { 
                         !dropTableConfirm &&  
@@ -234,12 +247,27 @@ export default function Amino(props){
         {
            
                 var mess = "Please Wait while Database Tables are being Built!";
-                makeRequest(fnm,rcvid,"no",mess);
+                //setTableStatusMessage(mess);       
+                if(!alreadyBuilding){
+                    setDroppingTables(false);
+                    setAlreadyBuilding(true);
+                    setShowLoader(true);
+                    setLoaderImage(spiral);
+                    setWaitStyle(resultsStyle);
+                    setLoaderMessage("Building the Protein and miniMotif Tables.");
+                    setTableStatusMessage("Building the Protein and miniMotif Tables.");                
+                    makeRequest(fnm,rcvid,"no",mess);
+                    setAlreadyBuilding(true);  
+                }
+            
+                 
+                   
 
         }
     }
 
     const checkStatus = () => {
+        setCheckingStatus(true);
         axios.get('/checkstatus')
         .then( 
           response => {
@@ -247,8 +275,10 @@ export default function Amino(props){
              if(response.data.data.toString().includes('The Protein and MimiMotif Tables are Dropped')){
                 setDropTableConfirm(true);
                 setTableStatusMessage("There are presently no Database Tables.");
-               
+                setNumRows(0);
+         
              }
+            
              else{
                 setDropTableConfirm(false);
                 setTableStatusMessage(response.data.data.toString());
@@ -262,6 +292,37 @@ export default function Amino(props){
 
     }
 
+    const checkMiniMotifSize = () => {
+        axios.get('/minimotifsize')
+        .then( 
+            response => {
+                //alert(JSON.stringify(response.data));
+                console.log(JSON.stringify(response));
+                if(response.data.num_rows != undefined)
+                {
+                    setNumRows(response.data.num_rows);
+                    setShowLoader(false);
+                    setWaitStyle({});
+
+                }
+                else    
+                    setNumRows(0);
+
+                setDroppingTables(false);
+                   
+        
+            } 
+            )
+            .catch(error => {
+                console.log("ERROR:: ",error);
+            });
+
+    }
+
+    const updateDatabase = () => {
+
+        checkMiniMotifSize();
+    };
 
     const makeRequest = (snd,recid,drp,mess) => {
        
@@ -284,51 +345,89 @@ export default function Amino(props){
             file:snd,
             motif:null
        };
-
+/*
        if(snd != null){
             $('#wait').fadeIn('fast');
             setLoaderMessage("Protein and MiniMotif Tables are Now Building. This could take a While.");
             setTableStatusMessage("Protein and MiniMotif Tables are Now Building. This could take a While.");
             setDropTableConfirm(true);  //tables are dropped until fully rebuilt
+           
+
+       }
+            */
+        setNumRows(0);
+        if(alreadyBuilding){
+            setLoaderMessage("Now Building the Protein and miniMotif Tables.");
+            setTableStatusMessage("Now Building the Protein and miniMotif Tables.");
             setShowLoader(true);
             setLoaderImage(spiral);
-            mobileLoader();
-       }
+            setAlreadyBuilding(true);
+            mobileLoader();          
+            
+        }
+        else if(droppingTables && !checkingStatus && !alreadyBuilding){
+            setLoaderMessage("Now Dropping the Protein and miniMotif Tables.");
+            setTableStatusMessage("Now Dropping the Protein and miniMotif Tables.");
+            setNumRows(0);
+        }
+        if(numRows > 0 && !droppingTables && !alreadyBuilding){
+            setLoaderMessage("The Protein and miniMotif Tables are now built.");
+            setTableStatusMessage("The Protein and miniMotif Tables are now built.");
+            clearTimeout();
+        }
+        
+        fetchData(packets);   
+        checkMiniMotifSize();
+          
+    };
 
-       axios.post('/makerequest', packets)
-       .then( 
-         response => {
-            //alert(response.data);
-            if(response.data.includes('Database already built'))
-            {               
-                $('#wait').fadeIn('fast');
-                setLoaderMessage("Database Tables already Exist!  Click 'Drop Table' button if you want to start new tables.");
-                setShowLoader(true);
-                setLoaderImage(null);
-                //mobileLoader();
-            }   
-            else if(response.data.includes('Dropping'))
+
+
+     function fetchData(packets) {
+         axios.post('/makerequest', packets)
+        .then( 
+            response => {
+                //alert(response.data);
+                if(response.data.includes('Database already built'))
                 {               
                     $('#wait').fadeIn('fast');
-                    setLoaderMessage(response.data);
+                    setLoaderMessage("Database Tables already Exist!  Click 'Drop Table' button if you want to start new tables.");
+                    setTableStatusMessage("Database Tables already Exist!  Click 'Drop Table' button if you want to start new tables.");
                     setShowLoader(true);
-                    setLoaderImage(null);                
-                    setWaitStyle(resultsStyle);
-                }        
-            else
-            {
-                $('#wait').fadeIn('fast');
-                setLoaderMessage("Protein and MiniMotif Tables are Done Building.");
-                setShowLoader(true);
-                setLoaderImage(null);
-                //mobileLoader();
-            }
-         } 
-       )
-       .catch(error => {
-           console.log("ERROR:: ",error.response.data);
-        });
-    };
+                    setLoaderImage(null);
+                    setAlreadyBuilding(true);
+                    //mobileLoader();
+                }   
+                else if(response.data.includes('Dropping') || response.data.message.includes('Base table or view not found'))
+                    {               
+                        $('#wait').fadeIn('fast');
+                        setLoaderMessage(response.data);
+                        setNumRows(0)
+                        setTableStatusMessage("Proteins and miniMotif Tables are Dropped!");
+                        setShowLoader(false);
+                        setDroppingTables(true);
+                        //setLoaderImage(null);    
+                        setAlreadyBuilding(false);            
+                        setWaitStyle({});                        
+                    }        
+                else
+                {
+                    $('#wait').fadeIn('fast');
+                    checkMiniMotifSize();
+                    setLoaderMessage("Protein and MiniMotif Tables are Done Building.");
+                    setAlreadyBuilding(true);
+                    setShowLoader(true);
+                    setLoaderImage(null);
+                    //mobileLoader();
+                }
+            } 
+        )
+        .catch(error => {
+            console.log("ERROR:: ",error.response.data);
+            });
+
+        return;
+    }
     
     const LoaderMessage = (props) => {
         return (
@@ -353,8 +452,14 @@ export default function Amino(props){
 
     const dropTables = () =>
     {
-      var mess = "Trying to Drop Exisiting Tables!";
+      var mess = "Starting to Drop Exisiting Tables! (use Update Database Status to see if finished!)";
+      setDroppingTables(true);
+      setCheckingStatus(false);
+      setAlreadyBuilding(false);
+      setNumRows(0);
+      setTableStatusMessage(mess);
       makeRequest(null,"wait","yes",mess);
+     
     };
 
 
@@ -410,11 +515,14 @@ useEffect(() => {
     });
 
     checkStatus();
+    checkMiniMotifSize();
 },[]);
-
+/*
 useEffect(() => {   
     checkStatus();
-},[dropTableConfirm]);
+    checkMiniMotifSize();
+},[dropTableConfirm, tableStatusMessage]);
+*/
 
     return(
        
@@ -434,7 +542,8 @@ useEffect(() => {
                                 </Form.Group>     
                                 <Form.Group className="mb-2 inline">
                                     <Button className="aButton2" type="button" style={{marginRight:"1em"}} onClick={valInput}>Verify File and Start Database Build</Button>
-                                    <Button className="aButton2" type="button" onClick={dropTables}>Drop Tables</Button>                                       
+                                    <Button className="aButton2" type="button" onClick={dropTables}>Drop Tables</Button>     
+                                    <Button className="aButton2" type="button" style={{marginLeft:"1em"}} onClick={updateDatabase}>Update Database Status</Button>                                    
                                 </Form.Group>                                 
                             </Form>
                             <Container className="d-flex justify-content-center" style={{heigth:'auto', padding:'1em', backgroundColor:'beige'}}>
@@ -477,7 +586,10 @@ useEffect(() => {
 
                     </Form.Group>
                     <Form.Group className="mb-2 inline">
-                        <Button id="subButton" as="input" type="submit" style={{marginRight:"1em"}} onClick={doSearch} value="Submit Search"></Button>                                    
+                        {
+                            numRows > 0 && 
+                            <Button id="subButton" as="input" type="submit" style={{marginRight:"1em"}} onClick={doSearch} value="Submit Search"></Button>  
+                        }                                  
                     </Form.Group>                                 
                 </Form>
             </Container>

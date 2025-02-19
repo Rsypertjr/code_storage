@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Schema;
 
 class AminoController extends Controller
 {
@@ -16,6 +17,37 @@ class AminoController extends Controller
         foreach ($migrations as $migration) {
             echo $migration->migration;
         }
+    }
+
+
+    public function miniMotif_size(): void
+    {
+       
+        
+        $check = null;
+        try {
+              $sql = 'SELECT TABLE_NAME 
+                      FROM INFORMATION_SCHEMA.TABLES 
+                      WHERE TABLE_SCHEMA = "laravel" 
+                      AND TABLE_NAME = "miniMotif"';
+
+              $check = DB::select($sql);     
+              
+              if($check != null)
+              {
+                //$count = DB::select('select Count(*) as num_rows from miniMotif'); 
+                $sql = 'select Count(*) as num_rows from miniMotif';
+                $count = DB::select($sql); 
+                echo json_encode($count[0]); 
+              }
+              else echo json_encode('miniMotif table does not exist');
+            
+            } 
+        catch (\Exception $e) {
+              echo $e->getMessage();
+        }  
+
+        
     }
     
     public function checkStatus(Request $request){
@@ -54,9 +86,10 @@ class AminoController extends Controller
 
         $data = null;
         if($protein_exits)
-            $data = array("data" => "The Protein Table Exist");
+            $data = array("data" => "The Protein Table is Built");
         if($miniMotif_exits)
-            $data["data"] .= " and the miniMotif Table Exist Already";
+            $data["data"] .= " and the miniMotif Table is Built";
+        
 
         if($data)
             echo json_encode($data);
@@ -142,7 +175,8 @@ class AminoController extends Controller
                         array('AVG(DISTINCT p.proteinLength)','motifPattern')
                     );
             
-                    $headers = array(array('Accession Number','Motif Pattern'),
+                    $headers = array(
+                        array('Accession Number','Motif Pattern'),
                         array('Actual Motif','Motif Pattern','Accession Number','Motif Length'),
                         array('Start Position','Motif Pattern','Accession Number'),
                         array('Accession Number','Motif Count with Pattern '.$moPatt),
@@ -261,8 +295,8 @@ function findMotifs($seq,$first,$last,$patt,$acc,$sName,$sLength)
     $soSeq = strlen((string)$seq);
     $seqStr = array();
     $seqStr = str_split($seq);
-
-    for($i=0;$i<$soSeq;$i++)
+    $bindex = 0;
+    for($i=$bindex;$i<$soSeq;$i++)
       {
         if($seqStr[$i]==$first)
           {
@@ -285,52 +319,15 @@ function findMotifs($seq,$first,$last,$patt,$acc,$sName,$sLength)
             
                     }            
                     
-                    $i = $j;
-                    $j = $j + $soSeq;
+                    $bindex = $j;
+                    break 1;
+                   // $j = $j + $soSeq;
                   }
               }              
           }
       }
   }
 
-
-function proteinDatabaseCreate($sql,$dbhandle)
-{
- 
-  mysqli_query($dbhandle,$sql);
-  if (mysqli_error($dbhandle)) 
-    {
-      echo "Error message: ". mysqli_error($dbhandle);
-      echo "<br>";
-      //exit();
-      return false;
-    }
-  else if(!mysqli_error($dbhandle))
-    {
-      echo "Database being created";
-      echo "<br>";
-      //exit();
-      return true;
-    }   
-}
-
-function executeSQL($sql,$conn,&$message)
-{
-  //execute SQL
-  set_time_limit(300);
-  $querySucceeded = "Query succeeded";
-
-  if($result = $conn->query($sql))
-    {
-      $message = $querySucceeded;
-      return $result;
-    }
-  else 
-    {
-      $message= "<br/>Query error: ". mysqli_error($conn);
-      return NULL;
-    }
-}
 
 
 function buildProteinDb($filestr,$request)  // function for building Protein Database
@@ -527,7 +524,7 @@ function buildMinimotifDatabase()
   
 }  // end of buildMinimotifDatabase
 
-
+/*
   function query3($dbhandle,&$cntarr,$mopat)
     {
         // Begin calculation of count of motifs for all accession numbers, subst. for query 3 below query 0 is the first
@@ -556,6 +553,7 @@ function buildMinimotifDatabase()
                   } 
           }
     }
+          */
   
   
 
