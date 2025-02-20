@@ -322,6 +322,7 @@ export default function Amino(props){
     const updateDatabase = () => {
 
         checkMiniMotifSize();
+        window.location.reload();
     };
 
     const makeRequest = (snd,recid,drp,mess) => {

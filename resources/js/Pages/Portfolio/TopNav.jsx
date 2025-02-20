@@ -3,6 +3,7 @@ import Container from 'react-bootstrap/Container';
 import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
 import NavDropdown from 'react-bootstrap/NavDropdown';
+import { Link } from "@inertiajs/react";
 
 export default function TopNav() {
     return (       
@@ -10,7 +11,7 @@ export default function TopNav() {
           <Navbar expand="lg" className="bg-body-tertiary d-flex justify-content-center" id="topNav">  {/* Beginning of Navigation */}
                     {/*<a className="navbar-brand" href="#">Bootstrap Work Portfolio</a>*/}
                     <Container>
-                        <Navbar.Brand href="#home">Bootstrap Work Portfolio</Navbar.Brand>
+                        <Navbar.Brand href="/#home">Bootstrap Work Portfolio</Navbar.Brand>
                         <Navbar.Toggle aria-controls="basic-navbar-nav" />
                         {/*<button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                             <span className="navbar-toggler-icon"></span>
@@ -31,10 +32,10 @@ export default function TopNav() {
                                     <NavDropdown.Divider />
                                     <NavDropdown.Item href="#specifications">Technical Specification Manuals</NavDropdown.Item>
                                 </NavDropdown>
-                                <Nav.Link href="#resume">My Resume</Nav.Link>
-                                <Nav.Link href="#living">Living In Vegas</Nav.Link>
-                                <Nav.Link href="#front">Non-Bootstrap Portfolio</Nav.Link>
-                                <Nav.Link href="#laravelreact">Laravel React Bootstrap Portfolio</Nav.Link>                                
+                                <Nav.Link as={Link} to="#resume">My Resume</Nav.Link>
+                                <Nav.Link as={Link} to="#living">Living In Vegas</Nav.Link>
+                                <Nav.Link as={Link} to="#front">Non-Bootstrap Portfolio</Nav.Link>
+                                <Nav.Link as={Link} to="#laravelreact">Laravel React Bootstrap Portfolio</Nav.Link>                                
                             </Nav>
                         </Navbar.Collapse>
                         

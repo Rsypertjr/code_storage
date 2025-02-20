@@ -10,6 +10,7 @@ import $ from 'jquery';
 import technologyideas from '../../images/technologyideas.jpg';
 import myFace from '../../images/myFace.jpg';
 import technicalwritingimage from '../../images/technicalwritingimage.jpg';
+import techWriter from '../../images/techWriter.jpg';
 import lampTechs from '../../images/lampTechs.jpg';
 import jobdone from '../../images/jobdone.jpg';
 import engProcessSpec from '../../images/engProcessSpec.jpg';
@@ -17,6 +18,9 @@ import dataanalysis from '../../images/dataanalysis.jpg';
 import websiteconstruction from '../../images/websiteconstruction.jpg';
 import othellogameimage from '../../images/othellogameimage.jpg';
 import mobiledevelopmentimage from '../../images/mobiledevelopmentimage.jpg';
+import tictactoe from '../../images/tictactoe.png';
+import mern from '../../images/mern.jpeg';
+import vegas from '../../images/vegas/vegas6.jpg';
 
 export default function Portfolio(props){  
     const [putLampCover, setPutLampCover] = useState(false);
@@ -102,9 +106,10 @@ export default function Portfolio(props){
     };
 
      useEffect(() => {
-        $( window ).scroll(function() {
+     //   $( window ).scroll(function() {
         
             // Adjusting Cover Panels
+            
                 $('#home').on('mouseenter',function(){
                     $('#homeCover').css('visibility','visible');           
             
@@ -172,7 +177,7 @@ export default function Portfolio(props){
             
                
                 });
-        });
+    //    });
 
 
 
@@ -198,8 +203,9 @@ export default function Portfolio(props){
 
             {/* Home Panel */}
             <OverlayTrigger placement="top" overlay={(tooltip("Click to Toggle Cover Layer"))}>
-                <Container id="home" className="panel-container d-flex justify-content-center align-items-center" onClick={hideHomeCover} style={{ height:'17em'}} fluid>                
-                    <Card >
+                <Container id="home" className="panel-container d-flex justify-content-center align-items-center" onClick={hideHomeCover} 
+                    style={{ height:'17em', backgroundColor:'#F5F5DC'}} fluid>                
+                    <Card style={{backgroundColor:'#F0FFFF'}}>
                         <img src={websiteconstruction} height="55%" width="55%" style={{margin:'1em 0 0 22.5%'}} alt="Website Construction"/>
                         <Card.Body>
                             <Card.Body>
@@ -228,9 +234,9 @@ export default function Portfolio(props){
 		
             {/* About Panel */}
             <OverlayTrigger placement="top" overlay={(tooltip("Click to Toggle Cover Layer"))}>
-                <Container id="about" className="panel-container" onClick={hideAboutCover} fluid>
+                <Container id="about" className="panel-container" style={{backgroundColor:'#FFE4C4'}} onClick={hideAboutCover} fluid>
                     <Card>
-                        <img src={technologyideas} height="15%" width="15%" style={{margin:'1em 0 0 42.5%'}} alt="Technology Ideas"/>
+                        <img src={technologyideas} height="15%" width="15%" style={{margin:'1em 0 0 42.5%', backgroundColor:'#FFE4C4'}} alt="Technology Ideas"/>
                         <Card.Body>
                             <OverlayTrigger placement="top" overlay={(tooltip("Click to see Technologies Used"))}>
                                 <Card.Link href="https://rsypertjr.net/webTech" target="_blank">Web Technologies Used</Card.Link>
@@ -245,7 +251,7 @@ export default function Portfolio(props){
                             <Card.Text>You can email me if you like.&nbsp;&nbsp;Also more contact info is given in my resume.</Card.Text>
                         </Card.Body>
                     </Card>*/}
-                    <Card>
+                    <Card style={{backgroundColor:'#DCDCDC'}} >
                         <img variant="top" src={myFace} height="15%" width="15%" style={{margin:'1em 0 0 42.5%'}}  alt="My Face"/>
                         <Card.Body>
                             <Card.Link href="https://www.linkedin.com/in/rlsworks/" target="_blank" data-toggle="tooltip" data-placement="right" title="Click to See My Profile!">Personal Profile</Card.Link>
@@ -270,8 +276,8 @@ export default function Portfolio(props){
 
             {/* Lamp Panel */}
             <OverlayTrigger placement="top" overlay={(tooltip("Click to Toggle Cover Layer"))}>
-                <Container id="lamp" className="panel-container" onClick={hideLampCover} fluid>
-                    <Card>
+                <Container id="lamp" className="panel-container" onClick={hideLampCover} style={{backgroundColor:'#FAFAD2'}} fluid>
+                    <Card style={{backgroundColor:'#90EE90'}}>
                         <img src={dataanalysis} height="15%" width="15%" style={{margin:'1em 0 0 42.5%'}} alt="Data Analysis"/> 
                         <Card.Body>
                             <Card.Link href="https://rsypertjr.net/amino" target="_blank">Amino Acid Code Sequence Analyzer</Card.Link>
@@ -283,7 +289,7 @@ export default function Portfolio(props){
                             </Card.Text>
                         </Card.Body>
                     </Card>
-                    <Card >
+                    <Card style={{backgroundColor:'#FAF0E6'}}>
                         <Card.Body>
                             <Card.Link href="https://rsypertjr.net/orominer1" target="_blank">Human Organ System Analyzer 1</Card.Link>
                             <Card.Text><object data="https://rsypertjr.net/orominer1" height="200" width="300"></object></Card.Text>
@@ -299,7 +305,7 @@ export default function Portfolio(props){
                             </Card.Text>
                         </Card.Body>
                     </Card>
-                    <Card >
+                    <Card style={{backgroundColor:'#F5FFFA'}}>
                         <Card.Body>
                             <Card.Link href="https://rsypertjr.net/orominer2" target="_blank">Human Organ System Analyzer 2</Card.Link>
                             <Card.Text><object data="https://rsypertjr.net/orominer2" height="200" width="300"></object></Card.Text>
@@ -312,7 +318,7 @@ export default function Portfolio(props){
                             </Card.Text>
                         </Card.Body>
                     </Card>
-                    <Card>
+                    <Card style={{backgroundColor:'#D8BFD8'}}>
                         <img src={othellogameimage} height="15%" width="15%" style={{margin:'1em 0 0 42.5%'}} alt="Othello Game Image"/> 
                         <Card.Body>
                             <Card.Link href="https://rsypertjr.net/othello" target="_blank">Play Othello Game thru AJAX</Card.Link>
@@ -347,8 +353,8 @@ export default function Portfolio(props){
           
             {/* Mobile Panel */}
             <OverlayTrigger placement="top" overlay={(tooltip("Click to Toggle Cover Layer"))}>
-                <Container id="mobile" className="panel-container" onClick={hideMobileCover} fluid>
-                    <Card >
+                <Container id="mobile" style={{backgroundColor:'#BC8F8F'}} className="panel-container" onClick={hideMobileCover} fluid>
+                    <Card style={{backgroundColor:'#FFEFD5'}}>
                         <img src={mobiledevelopmentimage} height="15%" width="15%" style={{margin:'1em 0 0 42.5%'}} alt="Mobile Development Image"/> 
                         <Card.Body>
                             <Card.Body>
@@ -379,12 +385,14 @@ export default function Portfolio(props){
 
 
             {/* Frameworks Panel */}
+            <section id="frameworks">
             <OverlayTrigger placement="top" overlay={(tooltip("Click to Toggle Cover Layer"))}>
-                    <Container id="frameworks" className="panel-container" onClick={hideFrameworksCover} fluid>
+                <Container  style={{backgroundColor:'#6A5ACD'}} className="panel-container" onClick={hideFrameworksCover} fluid>
                     
-                    <Card>
-                        <Card.Body>
-                            <Card.Link href="https://rsypertjr.net/tictactoe" target="_blank">React Javascript Tic-Tac-Toe</Card.Link>
+                    <Card style={{backgroundColor:'#F5DEB3'}}>
+                        <img src={tictactoe} class="rounded mb-2" height="15%" width="15%" style={{margin:'1em 0 0 42.5%'}} alt="Tic Tac Toe Image"/> 
+                        <Card.Body>             
+                            <Card.Link href="tictactoe" target="_blank">React Javascript Tic-Tac-Toe</Card.Link>
                             <Card.Text><object data="https://rsypertjr.net/tictactoe" height="200" width="300"></object></Card.Text>
                             <Card.Text>
                                 <p>React Javascript Tic Tac Toe app with CSS animations for victory celebration.<br/>
@@ -393,41 +401,44 @@ export default function Portfolio(props){
                             </Card.Text>
                         </Card.Body>
                     </Card>
-                    <Card>
+                    <Card style={{backgroundColor:'#FFFAFA'}}>
+                        <img src={dataanalysis} class="rounded mb-2" height="15%" width="15%" style={{margin:'1em 0 0 42.5%'}} alt="Data Analysis Image"/> 
                         <Card.Body>
-                            <Card.Link href="https://laravelvotes.rsypertjr.net/votes-table" target="_blank">Laravel(Mix) w/React & Chart.js & Bootstrap.js Vote Parser</Card.Link>
-                            <Card.Text><object data="https://laravelvotes.rsypertjr.net/votes-table" height="200" width="300"></object></Card.Text>
+                            <Card.Link href="https://lar10reactmix.rsypertjr.net/votes-table" target="_blank">Laravel(Mix) w/React & Chart.js & Bootstrap.js Vote Parser</Card.Link>
+                            <Card.Text><object data="https://lar10reactmix.rsypertjr.net/votes-table" height="200" width="300"></object></Card.Text>
                             <Card.Text> <p>This orominer program contains Histological Data within the Hierarchical Organization of Human Body 
                                         makeup. Histological Data is information about Human Organs and their tissues and cells. This 
                                         application uses JavaScript Objects to store active data requests from which graphics is generated.
                                         <br/>The Code for PHP-based apps is here: 
-                                        <a href="https://github.com/Rsypertjr/fuelCMS/tree/fuelPF/fuel/application"	target="_blank">PHP Code</a>
+                                        <a href="https://github.com/Rsypertjr/code_storage/tree/lar10-react-mix-prod-v2"	target="_blank">PHP Code</a>
                                     </p>
                             </Card.Text>
                         </Card.Body>
                     </Card>
-                    <Card>
+                    <Card style={{backgroundColor:'#EEE8AA'}}>
+                        <img src={dataanalysis} class="rounded mb-2" height="15%" width="15%" style={{margin:'1em 0 0 42.5%'}} alt="Data Analysis Image"/> 
                         <Card.Body>
-                            <Card.Link href="https://vuevotes.rsypertjr.net" target="_blank">Vue 3 Composition API & Chart.js & Bootstrap.js Vote Parser</Card.Link>
-                            <Card.Text><object data="https://vuevotes.rsypertjr.net"></object></Card.Text>
+                            <Card.Link href="https://vue3chartjs.rsypertjr.net/" target="_blank">Vue 3 Composition API & Chart.js & Bootstrap.js Vote Parser</Card.Link>
+                            <Card.Text><object data="https://vue3chartjs.rsypertjr.net/"></object></Card.Text>
                             <Card.Text>
                                 <p>The app uses Vue 3 Composition API. NPM is used to managed the Node-based Vue 3 dependencies. 
                                     Vue 3 Composition API allows for function-based components which is inspired by React w/Hooks.  Here is code link: 
-                                    <a href="https://github.com/Rsypertjr/Vue3-Chartjs-Bootstrap.git" target="_blank">Vue3(Composition API)/Chart.js/Bootstrap.js Vote Parser Code</a>
+                                    <a href="https://github.com/Rsypertjr/Vue3-Chartjs-Bootstrap/tree/vue-chart-v2" target="_blank">Vue3(Composition API)/Chart.js/Bootstrap.js Vote Parser Code</a>
                                 </p>
                             </Card.Text>
                         </Card.Body>
                     </Card>
-                    <Card>
+                    <Card style={{backgroundColor:'#FDF5E6'}}>
+                        <img src={mern} class="rounded mb-2" height="15%" width="15%" style={{margin:'1em 0 0 42.5%'}} alt="Mern Stack Image"/>                        
                         <Card.Body>
-                            <Card.Link href="https://wbcarinfo.rsypertjr.net" target="_blank">React-Bootstrap with Express ATLAS Cloud MongoDb Backend</Card.Link>
-                            <Card.Text><object data="https://wbcarinfo.rsypertjr.net" height="200" width="300"></object></Card.Text>
+                            <Card.Link href="https://carinfo.rsypertjr.net" target="_blank">React-Bootstrap with Express ATLAS Cloud MongoDb Backend</Card.Link>
+                            <Card.Text><object data="https://carinfo.rsypertjr.net" height="200" width="300"></object></Card.Text>
                             <Card.Text>
                                 <p className="text-center">
                                     <h4>React using Google Programmable API with Express Backend using ATLAS Cloud API with Webpack and NPM compiling and PM2 process management.</h4>
                                 </p> 
-                                <p>Google Programmable API is used to target searches at selected Web Sites and Customize Return Info:<br/><a href="http://wbcarinfo.rsypertjr.net" target="_blank">Mern Stack Application with React-Bootstrap</a><br/>
-                                React-Bootstrap Components are used to enhance responsiveness.<br/><a href="https://github.com/Rsypertjr/webpack-express-carinfo/tree/webpack-express-carinfo" target="_blank">Front End/Back End Code</a>.
+                                <p>Google Programmable API is used to target searches at selected Web Sites and Customize Return Info and React-Bootstrap Components are used to enhance responsiveness.<br/>
+                                <a href="https://github.com/Rsypertjr/webpack-express-carinfo/tree/car-info-prod-v2" target="_blank">Front End/Back End Code</a>.
                                 </p>
                             </Card.Text>
                         </Card.Body>
@@ -462,11 +473,13 @@ export default function Portfolio(props){
           
             {/* End of Frameworks Panel */}
             
+            </section>
+            
 
             {/* Manuals Panel */}                
             <OverlayTrigger placement="top" overlay={(tooltip("Click to Toggle Cover Layer"))}>
-                <Container id="manuals" className="panel-container" onClick={hideManualsCover} fluid>
-                    <Card>
+                <Container id="manuals" style={{backgroundColor:'#708090'}} className="panel-container" onClick={hideManualsCover} fluid>
+                    <Card style={{backgroundColor:'#D3D3D3'}}>
                         <img src={technicalwritingimage} height="15%" width="15%" style={{margin:'1em 0 0 42.5%'}} alt="Technical Writing"/> 
                         <Card.Body>
                             <Card.Link href="https://rsypertjr.net/graingerABCDE" target="_blank">Grainger ABCDE Series B</Card.Link>
@@ -479,7 +492,8 @@ export default function Portfolio(props){
                             </Card.Text>
                         </Card.Body>
                     </Card>
-                    <Card>
+                    <Card style={{backgroundColor:'#5F9EA0'}}>
+                        <img src={technicalwritingimage} height="15%" width="15%" style={{margin:'1em 0 0 42.5%'}} alt="Technical Writing"/>                       
                         <Card.Body>
                             <Card.Link href="https://rsypertjr.net/graingerCDE" target="_blank">Grainger CDE</Card.Link>
                             <Card.Text><object data="https://rsypertjr.net/graingerCDE" height="200" width="300"></object></Card.Text>
@@ -491,7 +505,8 @@ export default function Portfolio(props){
                             </Card.Text>
                         </Card.Body>
                     </Card>
-                    <Card>
+                    <Card style={{backgroundColor:'#F0E68C'}}>
+                        <img src={techWriter} height="15%" width="15%" style={{margin:'1em 0 0 42.5%'}} alt="Technical Writer"/>  
                         <Card.Body>
                             <Card.Link href="https://rsypertjr.net/mecPManual" target="_blank">MEC Product Manual VT 1.6</Card.Link>
                             <Card.Text><object data="https://rsypertjr.net/mecPManual" height="200" width="300"></object></Card.Text>
@@ -521,8 +536,8 @@ export default function Portfolio(props){
         
             {/* Specifications Panel */}
             <OverlayTrigger placement="top" overlay={(tooltip("Click to Toggle Cover Layer"))}>
-                <Container id="specifications" className="panel-container" onClick={hideSpecificationsCover} fluid>
-                    <Card>
+                <Container id="specifications" style={{backgroundColor:'#D2691E'}} className="panel-container" onClick={hideSpecificationsCover} fluid>
+                    <Card style={{backgroundColor:'#DEB887'}}>
                         <img src={engProcessSpec} height="15%" width="15%" style={{margin:'1em 0 0 42.5%'}} alt="Engineering Process Specification"/>   
                         <Card.Body>
                             <Card.Link href="https://rsypertjr.net/whitePaper" target="_blank">Technical Writing</Card.Link>
@@ -534,7 +549,7 @@ export default function Portfolio(props){
                             </Card.Text>
                         </Card.Body>
                     </Card>
-                    <Card>
+                    <Card style={{backgroundColor:'#FFF8DC'}}>
                         <Card.Body>
                             <Card.Link href="https://rsypertjr.net/engSpec" target="_blank">Engineering Specification</Card.Link>
                             <Card.Text><object data="https://rsypertjr.net/engSpec" height="200" width="300"></object></Card.Text>
@@ -564,8 +579,8 @@ export default function Portfolio(props){
               
             {/* Resume Panel */}
             <OverlayTrigger placement="top" overlay={(tooltip("Click to Toggle Cover Layer"))}>
-                <Container id="resume" className="panel-container" onClick={hideResumeCover} fluid>
-                    <Card>
+                <Container id="resume" style={{backgroundColor:'#000000'}} className="panel-container" onClick={hideResumeCover} fluid>
+                    <Card style={{backgroundColor:'#8B0000'}}>
                         <img src={jobdone} height="15%" width="15%" style={{margin:'1em 0 0 42.5%'}} alt="Job Done"/>
                         <Card.Body>
                             <Card.Link href="https://rsypertjr.net/dynResume" target="_blank">Dynamic HTML Resume w/Downloads</Card.Link>
@@ -595,8 +610,9 @@ export default function Portfolio(props){
 
             {/* Living Panel */}
             <OverlayTrigger placement="top" overlay={(tooltip("Click to Toggle Cover Layer"))}>
-                <Container id="living" className="panel-container" onClick={hideLivingCover} fluid>
-                    <Card>                   
+                <Container style={{backgroundColor:'#FFFACD'}} id="living" className="panel-container" onClick={hideLivingCover} fluid>
+                    <Card style={{backgroundColor:'#ADD8E6'}}>        
+                        <img src={vegas} height="15%" width="15%" style={{margin:'1em 0 0 42.5%'}} alt="Welcome to Las Vegas"/>           
                         <Card.Body>
                             <Card.Link href="https://rsypertjr.net/inVegas" target="_blank">Having Vegas Family Fun</Card.Link>
                             <Card.Text><object type="text/html" data="https://rsypertjr.net/inVegas" height="200" width="300"></object></Card.Text>
@@ -622,7 +638,7 @@ export default function Portfolio(props){
 
             {/* Front Panel */}
             <OverlayTrigger placement="top" overlay={(tooltip("Click to Toggle Cover Layer"))}>
-                <Container id="front" className="panel-container" onClick={hideFrontCover} fluid>
+                <Container id="front" style={{backgroundColor:'#B0C4DE'}} className="panel-container" onClick={hideFrontCover} fluid>
                     <Card>
                         <img src={lampTechs} height="20%" width="20%" style={{margin:'1em 0 0 40%'}} alt="Fuel CMS"/>
                         <Card.Body>
@@ -661,32 +677,32 @@ export default function Portfolio(props){
 
 
 			{/* Footer Section */}
-            <Container id="footer" className="d-flex justify-content-center" fluid>
+            <Container id="footer" style={{backgroundImage:'linear-gradient(white,)'}} className="d-flex justify-content-center" fluid>
                 <Row>     
                     <Col>              
-                        <Dropdown>
-                        <Dropdown.Toggle variant="success" id="dropdown-basic">
-                            Software Development
-                        </Dropdown.Toggle>
+                        <Dropdown >
+                            <Dropdown.Toggle variant="dark" id="dropdown-basic">
+                                Software Development
+                            </Dropdown.Toggle>
 
-                        <Dropdown.Menu>
-                            <Dropdown.Item href="https://rsypertjr.net/amino" target="_blank">Amino Acid Sequence Analyzer</Dropdown.Item>
-                            <Dropdown.Item href="https://rsypertjr.net/orominer1" target="_blank">Human Organ System Analyzer 1</Dropdown.Item>
-                            <Dropdown.Item href="https://rsypertjr.net/orominer2" target="_blank">Human Organ System Analyzer 2</Dropdown.Item>
-                            <Dropdown.Item href="https://rsypertjr.net/mobile" target="_blank">Mobile Web Portfolio</Dropdown.Item>
-                            <Dropdown.Item href="https://github.com/Rsypertjr/fuelCMS/blob/latest-prod-fuelCMS" target="_blank">GIT Repository</Dropdown.Item>
-                            <Dropdown.Item href="https://rsypertjr.net/othello" target="_blank">Play Othello Game</Dropdown.Item>
-                            <Dropdown.Item href="https://laravelvotes.rsypertjr.net/votes-table" target="_blank">Sample Laravel 1</Dropdown.Item>
-                            <Dropdown.Item href="https://preselections.rsypertjr.net" target="_blank">Sample Laravel 2</Dropdown.Item>
-                            <Dropdown.Item href="https://wbcarinfo.rsypertjr.net" target="_blank">Mern stack</Dropdown.Item>
-                        </Dropdown.Menu>
+                            <Dropdown.Menu>
+                                <Dropdown.Item href="https://rsypertjr.net/amino" target="_blank">Amino Acid Sequence Analyzer</Dropdown.Item>
+                                <Dropdown.Item href="https://rsypertjr.net/orominer1" target="_blank">Human Organ System Analyzer 1</Dropdown.Item>
+                                <Dropdown.Item href="https://rsypertjr.net/orominer2" target="_blank">Human Organ System Analyzer 2</Dropdown.Item>
+                                <Dropdown.Item href="https://rsypertjr.net/mobile" target="_blank">Mobile Web Portfolio</Dropdown.Item>
+                                <Dropdown.Item href="https://github.com/Rsypertjr/fuelCMS/blob/latest-prod-fuelCMS" target="_blank">GIT Repository</Dropdown.Item>
+                                <Dropdown.Item href="https://rsypertjr.net/othello" target="_blank">Play Othello Game</Dropdown.Item>
+                                <Dropdown.Item href="https://laravelvotes.rsypertjr.net/votes-table" target="_blank">Sample Laravel 1</Dropdown.Item>
+                                <Dropdown.Item href="https://preselections.rsypertjr.net" target="_blank">Sample Laravel 2</Dropdown.Item>
+                                <Dropdown.Item href="https://wbcarinfo.rsypertjr.net" target="_blank">Mern stack</Dropdown.Item>
+                            </Dropdown.Menu>
 
                         </Dropdown>
                     </Col>
                    
                     <Col>              
                         <Dropdown>
-                            <Dropdown.Toggle variant="success" id="dropdown-basic">
+                            <Dropdown.Toggle variant="dark" id="dropdown-basic">
                                 Technical Writing
                             </Dropdown.Toggle>
                             <Dropdown.Menu>
@@ -701,7 +717,7 @@ export default function Portfolio(props){
                    
                     <Col>              
                         <Dropdown>
-                            <Dropdown.Toggle variant="success" id="dropdown-basic">
+                            <Dropdown.Toggle variant="dark" id="dropdown-basic">
                                 Resumes
                             </Dropdown.Toggle>
 
@@ -714,7 +730,7 @@ export default function Portfolio(props){
                    
                     <Col>              
                         <Dropdown>
-                            <Dropdown.Toggle variant="success" id="dropdown-basic">
+                            <Dropdown.Toggle variant="dark" id="dropdown-basic">
                                 Contact
                             </Dropdown.Toggle>
 
