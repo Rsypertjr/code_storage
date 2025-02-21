@@ -422,15 +422,13 @@ export default function Portfolio(props){
                     <Card style={{backgroundColor:'#7FFFD4'}}>
                         <img src={dataanalysis} class="rounded mb-2" height="15%" width="15%" style={{margin:'1em 0 0 42.5%'}} alt="Data Analysis Image"/> 
                         <Card.Body>             
-                            <Card.Link href="amino" target="_blank">Amino Acid Code Sequence Analyzer</Card.Link>
+                            <Card.Link href="/amino" target="_blank">Amino Acid Code Sequence Analyzer</Card.Link>
                             <Card.Text><object data="/amino" height="200" width="300"></object></Card.Text>
-                            <Card.Text className="text-center app-description">This program gives statistics for all combinations of 
-									amino acid sequences within a protein. The protein sequence is 
-									parsed by regex techniques from a text file, into a MySQL database. 
-									The first and last amino acid is chosen in the GUI, as well as, 
-									the desired statistical output. The database accessed by JavaScript-AJAX to PHP-MySQL 
-									on the server side which returns the statistics.
-                                    &nbsp;&nbsp;<a href="https://github.com/Rsypertjr/fuelCMS/tree/fuelPF/fuel/application" target="_blank">Here is the Code.</a>
+                            <Card.Text className="text-center app-description">
+                                This App is refactored and improved using Laravel11 with controller back-end for Mysql operations using Laravel's DB facade.  
+                                The front end code is formulated with React components rendered as routes by Vite technology.  
+                                State variables are maintained within components to enable dynamic data/status representations.
+                                &nbsp;&nbsp;<a href="https://github.com/Rsypertjr/code_storage/tree/laravel-portfolio-dev" target="_blank">Here is the Code.</a>
                             </Card.Text>
                         </Card.Body>
                     </Card>
