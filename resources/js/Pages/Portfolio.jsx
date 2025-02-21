@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { Container, Row, Col, Nav, Navbar, CardText, Tooltip, OverlayTrigger } from 'react-bootstrap';
 import Card from 'react-bootstrap/Card';
 import NavDropdown from 'react-bootstrap/NavDropdown';
-import { Link } from "@inertiajs/react";
 
 import Dropdown from 'react-bootstrap/Dropdown';
 import TopCarousel from './Portfolio/TopCarousel';
@@ -218,42 +217,13 @@ export default function Portfolio(props){
                                     <NavDropdown.Divider />
                                     <NavDropdown.Item href="#specifications">Technical Specification Manuals</NavDropdown.Item>
                                 </NavDropdown>
-                                <Nav.Link as={Link} to="#resume">My Resume</Nav.Link>
-                                <Nav.Link as={Link} to="#living">Living In Vegas</Nav.Link>
-                                <Nav.Link as={Link} to="#front">Non-Bootstrap Portfolio</Nav.Link>
-                                <Nav.Link as={Link} to="#laravelreact">Laravel React Bootstrap Portfolio</Nav.Link>                                
+                                <Nav.Link href="#resume">My Resume</Nav.Link>
+                                <Nav.Link href="#living">Living In Vegas</Nav.Link>
+                                <Nav.Link href="#front">Non-Bootstrap Portfolio</Nav.Link>               
                             </Nav>
                         </Navbar.Collapse>
                         
-                        {/*<div className="collapse navbar-collapse d-flex justify-content-center" id="myNavbar">
-                            <ul className="navbar-nav">
-                                <li className="nav-item active">
-                                    <a className="nav-link" href="#home">Home/Code Repos</a>
-                                </li>
-                                <li>
-                                    <a className="nav-link" href="#about">About</a>
-                                </li>
-                                <li className="nav-item dropdown">
-                                    <a className="nav-link dropdown-toggle" data-toggle="dropdown" href="#" aria-haspopup="true" aria-expanded="false" >Software Development <span className="caret"></span></a>
-                                    <div className="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                                        <a className="dropdown-item" href="#lamp">LAMP - based</a>
-                                        <a className="dropdown-item" href="#mobile">JQuery Mobile</a>
-                                        <a className="dropdown-item" href="#frameworks">Frameworks</a>
-                                    </div>
-                                </li>
-                                <li className="nav-item dropdown">
-                                    <a className="nav-link dropdown-toggle" data-toggle="dropdown" href="#" aria-haspopup="true" aria-expanded="false" >Technical Writing <span className="caret"></span></a>
-                                    <div className="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                                        <a className="dropdown-item" href="#manuals">Production and Maintenance Manuals</a>
-                                        <a className="dropdown-item" href="#specifications">Technical Specification Manuals</a>
-                                    </div>
-                                </li>
-                                <li className="nav-item"><a className="nav-link" href="#resume">My Resume</a></li>
-                                <li className="nav-item"><a className="nav-link"  href="#living">Living In Vegas</a></li>
-                                <li className="nav-item" ><a className="nav-link"  href="#front">Non-Bootstrap Portfolio</a></li>
-                                <li className="nav-item"><a className="nav-link"  href="laravelreact" target="_blank">Laravel React Bootstrap Portfolio</a></li>
-                            </ul>
-                        </div>*/}
+                       
                     </Container>
                    
             </Navbar>    {/*---- End of Navigation Header ---------------------------------*/}	
