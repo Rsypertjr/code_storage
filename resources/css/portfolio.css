@@ -363,3 +363,7 @@ div#mobileCover {
  margin-left: 0;
 
 }
+.dropdown-item:hover {
+   background-color: #A9A9A9
+
+}
