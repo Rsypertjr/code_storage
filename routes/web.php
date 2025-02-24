@@ -33,9 +33,17 @@ Route::get('/amino', function () {
 });
 
 
+
+Route::get('/orominer1', function () {
+    return Inertia::render('Orominer1');
+});
+
 Route::get('/migrations', [AminoController::class, 'view_migrations']);
 
 Route::get('/minimotifsize', [AminoController::class, 'miniMotif_size']);
+
+
+Route::get('/getxmlfile', [OrominerOneController::class, 'get_xml_file']);
 Route::post('/makerequest', [AminoController::class, 'index']);
 
 Route::get('/checkstatus', [AminoController::class, 'checkStatus']);
