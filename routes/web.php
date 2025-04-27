@@ -5,6 +5,7 @@ use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 use App\Http\Controllers\AminoController;
+use App\Http\Controllers\Orominer1Controller;
 
 Route::get('/notused', function () {
     return Inertia::render('Welcome', [
@@ -43,12 +44,12 @@ Route::get('/migrations', [AminoController::class, 'view_migrations']);
 Route::get('/minimotifsize', [AminoController::class, 'miniMotif_size']);
 
 
-Route::get('/getxmlfile', [OrominerOneController::class, 'get_xml_file']);
 Route::post('/makerequest', [AminoController::class, 'index']);
 
 Route::get('/checkstatus', [AminoController::class, 'checkStatus']);
 
 
+Route::get('/getxmlfile', [Orominer1Controller::class, 'get_xml_file']);
 
 
 

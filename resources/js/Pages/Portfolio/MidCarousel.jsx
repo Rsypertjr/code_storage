@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import Carousel from 'react-bootstrap/Carousel';
+import { Carousel } from 'react-bootstrap';
 import CarouselImage from '../../Components/CarouselImage';
 import worksImg from '../../../images/worksImg.jpg';
 import mechEngImage2 from '../../../images/mechEngImage.jpg';
@@ -13,9 +13,11 @@ import dataanalysis from '../../../images/dataanalysis.jpg';
 import websiteconstruction from '../../../images/websiteconstruction.jpg';
 
 export default function MidCarousel(props){
+
+  
     return (
         <>
-         <Carousel className="d-flex justify-content-center mid-carousel">
+         <Carousel id="midCarousel" className="d-flex justify-content-center mid-carousel">
                 <Carousel.Item>
                     <CarouselImage text="work1" image={worksImg} /> 
                     <Carousel.Caption></Carousel.Caption>								
