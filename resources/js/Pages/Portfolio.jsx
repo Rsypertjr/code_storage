@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { Container, Row, Col, Nav, Navbar, CardText, Tooltip, OverlayTrigger } from 'react-bootstrap';
+import { Container, Row, Col, Nav, Navbar, CardText, Tooltip, OverlayTrigger} from 'react-bootstrap';
+import { Link } from 'react-router-dom';
 import Card from 'react-bootstrap/Card';
 import NavDropdown from 'react-bootstrap/NavDropdown';
 
@@ -25,6 +26,7 @@ import vegas from '../../images/vegas/vegas6.jpg';
 
 export default function Portfolio(props){  
     const [putLampCover, setPutLampCover] = useState(false);
+
 
     const hideLampCover = (e) => {
         if($('#lampCover').css('visibility') == 'visible')
@@ -97,6 +99,18 @@ export default function Portfolio(props){
             $('#homeCover').css('visibility','visible');
     };
 
+    const selectNavItem = (e) => {
+      // console.log(e.target);
+      var targetEl = $(e.target.getAttribute('href'));
+      if (targetEl.length) {
+        e.preventDefault();
+        $('html, body').animate({
+          scrollTop: targetEl.offset().top
+        }, 500); // Adjust the duration (in milliseconds) for the animation speed
+      }
+    };
+
+
 
     const tooltip = (text) => {
         return(
@@ -115,58 +129,50 @@ export default function Portfolio(props){
                .css('margin-top','1em').css('border-radius','5px').css('font-size','1.5em');
             
                 $('#home').on('mouseenter',function(){
-                    $('#homeCover').css('visibility','visible');           
-            
+                    $('#homeCover').css('visibility','visible');  
                 });
                 
                 
       
                 $('#about').on('mouseenter',function(){
-                    $('#aboutCover').css('visibility','visible');           
-            
-               
+                    $('#aboutCover').css('visibility','visible'); 
                 });
                     
             
       
     
                 $('#frameworks').on('mouseenter',function(){
-                    $('#frameworksCover').css('visibility','visible');           
-            
-              
+                    $('#frameworksCover').css('visibility','visible');   
                 });
-                    
-                
+                                    
     
                 $('#manuals').on('mouseenter',function(){
-                    $('#manualsCover').css('visibility','visible');           
-            
-                
+                    $('#manualsCover').css('visibility','visible');  
                 });
     
                 $('#specifications').on('mouseenter',function(){
-                    $('#specificationsCover').css('visibility','visible');           
-            
-               
+                    $('#specificationsCover').css('visibility','visible'); 
                 });
     
                 $('#resume').on('mouseenter',function(){
-                    $('#resumeCover').css('visibility','visible');           
-            
-            
+                    $('#resumeCover').css('visibility','visible');  
                 });
                 
       
                 $('#living').on('mouseenter',function(){
-                    $('#livingCover').css('visibility','visible');           
-            
-               
+                    $('#livingCover').css('visibility','visible');     
                 });
        
                 $('#front').on('mouseenter',function(){
-                    $('#frontCover').css('visibility','visible');           
-            
-               
+                    $('#frontCover').css('visibility','visible');    
+                });
+
+                $('.nav-link').add('.dropdown').on('mouseover', function() {
+                    $(this).css('background-color','#515a5a');
+                });
+
+                $('.nav-link').add('.dropdown').on('mouseout', function() {
+                    $(this).css('background-color','black');
                 });
     //    });
 
@@ -181,35 +187,35 @@ export default function Portfolio(props){
 					
            
 			<Container style={{width:"95%"}} fluid>
-                 <TopCarousel /> 
+                 <TopCarousel/> 
                  <Container className="d-flex justify-content-center" style={{backgroundColor:"black"}} fluid>
-                 <Navbar expand="lg" className="bg-body-tertiary d-flex justify-content-center" id="topNav">  {/* Beginning of Navigation */}
+                 <Navbar expand="lg"  style={{zIndex:200}} className="bg-body-tertiary d-flex justify-content-center" id="topNav">  {/* Beginning of Navigation */}
                     {/*<a className="navbar-brand" href="#">Bootstrap Work Portfolio</a>*/}
                     <Container>
-                        <Navbar.Brand href="/#home">Bootstrap Work Portfolio</Navbar.Brand>
+                        <Navbar.Brand href="/#home" onClick={(e) => selectNavItem(e)}>Bootstrap Work Portfolio</Navbar.Brand>
                         <Navbar.Toggle aria-controls="basic-navbar-nav" />
                         {/*<button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                             <span className="navbar-toggler-icon"></span>
                         </button>*/}
                         <Navbar.Collapse id="myNavbar">
                             <Nav className="me-auto">
-                                <Nav.Link href="#home">Home/Code Repos</Nav.Link>
-                                <Nav.Link href="#about">About</Nav.Link>
+                                <Nav.Link href="#home" onClick={(e) => selectNavItem(e)}>Home/Code Repos</Nav.Link>
+                                <Nav.Link href="#about" onClick={(e) => selectNavItem(e)}>About</Nav.Link>
                                 <NavDropdown title="Software Development" id="basic-nav-dropdown">
-                                    <NavDropdown.Item href="#lamp">LAMP - based</NavDropdown.Item>
+                                    <NavDropdown.Item href="#lamp" onClick={(e) => selectNavItem(e)}>LAMP - based</NavDropdown.Item>
                                     <NavDropdown.Divider />
-                                    <NavDropdown.Item href="#mobile">JQuery Mobile</NavDropdown.Item>
+                                    <NavDropdown.Item href="#mobile" onClick={(e) => selectNavItem(e)}>JQuery Mobile</NavDropdown.Item>
                                     <NavDropdown.Divider />
-                                    <NavDropdown.Item href="#frameworks">Frameworks</NavDropdown.Item>
+                                    <NavDropdown.Item href="#frameworks" onClick={(e) => selectNavItem(e)}>Frameworks</NavDropdown.Item>
                                 </NavDropdown>
                                 <NavDropdown title="Technical Writing" id="basic-nav-dropdown">
-                                    <NavDropdown.Item href="#manuals">Production and Maintenance Manuals</NavDropdown.Item>
+                                    <NavDropdown.Item href="#manuals" onClick={(e) => selectNavItem(e)}>Production and Maintenance Manuals</NavDropdown.Item>
                                     <NavDropdown.Divider />
-                                    <NavDropdown.Item href="#specifications">Technical Specification Manuals</NavDropdown.Item>
+                                    <NavDropdown.Item href="#specifications" onClick={(e) => selectNavItem(e)} >Technical Specification Manuals</NavDropdown.Item>
                                 </NavDropdown>
-                                <Nav.Link href="#resume">My Resume</Nav.Link>
-                                <Nav.Link href="#living">Living In Vegas</Nav.Link>
-                                <Nav.Link href="#front">Non-Bootstrap Portfolio</Nav.Link>               
+                                <Nav.Link href="#resume" onClick={(e) => selectNavItem(e)}>My Resume</Nav.Link>
+                                <Nav.Link href="#living" onClick={(e) => selectNavItem(e)}>Living In Vegas</Nav.Link>
+                                <Nav.Link href="#front" onClick={(e) => selectNavItem(e)}>Non-Bootstrap Portfolio</Nav.Link>               
                             </Nav>
                         </Navbar.Collapse>
                         
@@ -218,7 +224,7 @@ export default function Portfolio(props){
                    
             </Navbar>    {/*---- End of Navigation Header ---------------------------------*/}	
                  </Container>
-                 <MidCarousel />
+                 <MidCarousel/>
                  
             </Container>
 			
@@ -354,7 +360,7 @@ export default function Portfolio(props){
                         <Card>
                             <Card.Body>
                                 <Card.Title><h2>LAMP Technologies</h2></Card.Title>
-                                <Card.Text><i class="bi bi-lightbulb"></i></Card.Text>
+                                <Card.Text><i className="bi bi-lightbulb"></i></Card.Text>
                                 <Card.Text className="text-center">
                                     PHP/MySQL is used on the back-end for these apps. Regex is used to parse text files into a database.  
                                         I programmatically converted flat non-relational tables into a relational-XMLfile for app data.  PHP/SQL is
@@ -409,7 +415,7 @@ export default function Portfolio(props){
                 <Container  style={{backgroundColor:'#6A5ACD'}} className="panel-container" onClick={hideFrameworksCover} fluid>
                     
                     <Card style={{backgroundColor:'#F5DEB3'}}>
-                        <img src={tictactoe} class="rounded mb-2" height="15%" width="15%" style={{margin:'1em 0 0 42.5%'}} alt="Tic Tac Toe Image"/> 
+                        <img src={tictactoe} className="rounded mb-2" height="15%" width="15%" style={{margin:'1em 0 0 42.5%'}} alt="Tic Tac Toe Image"/> 
                         <Card.Body>             
                             <Card.Link href="tictactoe" target="_blank">React Javascript Tic-Tac-Toe</Card.Link>
                             <Card.Text><object data="https://rsypertjr.net/tictactoe" height="200" width="300"></object></Card.Text>
@@ -420,7 +426,7 @@ export default function Portfolio(props){
                         </Card.Body>
                     </Card>
                     <Card style={{backgroundColor:'#7FFFD4'}}>
-                        <img src={dataanalysis} class="rounded mb-2" height="15%" width="15%" style={{margin:'1em 0 0 42.5%'}} alt="Data Analysis Image"/> 
+                        <img src={dataanalysis} className="rounded mb-2" height="15%" width="15%" style={{margin:'1em 0 0 42.5%'}} alt="Data Analysis Image"/> 
                         <Card.Body>             
                             <Card.Link href="/amino" target="_blank">Amino Acid Code Sequence Analyzer</Card.Link>
                             <Card.Text><object data="/amino" height="200" width="300"></object></Card.Text>
@@ -433,7 +439,7 @@ export default function Portfolio(props){
                         </Card.Body>
                     </Card>
                     <Card style={{backgroundColor:'#FFFAFA'}}>
-                        <img src={dataanalysis} class="rounded mb-2" height="15%" width="15%" style={{margin:'1em 0 0 42.5%'}} alt="Data Analysis Image"/> 
+                        <img src={dataanalysis} className="rounded mb-2" height="15%" width="15%" style={{margin:'1em 0 0 42.5%'}} alt="Data Analysis Image"/> 
                         <Card.Body>
                             <Card.Link href="https://lar10reactmix.rsypertjr.net/votes-table" target="_blank">Laravel(Mix) w/React & Chart.js & Bootstrap.js Vote Parser</Card.Link>
                             <Card.Text><object data="https://lar10reactmix.rsypertjr.net/votes-table" height="200" width="300"></object></Card.Text>
@@ -446,7 +452,7 @@ export default function Portfolio(props){
                         </Card.Body>
                     </Card>
                     <Card style={{backgroundColor:'#EEE8AA'}}>
-                        <img src={dataanalysis} class="rounded mb-2" height="15%" width="15%" style={{margin:'1em 0 0 42.5%'}} alt="Data Analysis Image"/> 
+                        <img src={dataanalysis} className="rounded mb-2" height="15%" width="15%" style={{margin:'1em 0 0 42.5%'}} alt="Data Analysis Image"/> 
                         <Card.Body>
                             <Card.Link href="https://vue3chartjs.rsypertjr.net/" target="_blank">Vue 3 Composition API & Chart.js & Bootstrap.js Vote Parser</Card.Link>
                             <Card.Text><object data="https://vue3chartjs.rsypertjr.net/"></object></Card.Text>
@@ -457,7 +463,7 @@ export default function Portfolio(props){
                         </Card.Body>
                     </Card>
                     <Card style={{backgroundColor:'#FDF5E6'}}>
-                        <img src={mern} class="rounded mb-2" height="15%" width="15%" style={{margin:'1em 0 0 42.5%'}} alt="Mern Stack Image"/>                        
+                        <img src={mern} className="rounded mb-2" height="15%" width="15%" style={{margin:'1em 0 0 42.5%'}} alt="Mern Stack Image"/>                        
                         <Card.Body>
                             <Card.Link href="https://carinfo.rsypertjr.net" target="_blank">React-Bootstrap with Express ATLAS Cloud MongoDb Backend</Card.Link>
                             <Card.Text><object data="https://carinfo.rsypertjr.net" height="200" width="300"></object></Card.Text>
@@ -640,7 +646,7 @@ export default function Portfolio(props){
                             </Card.Text>
                         </Card.Body>
                     </Card>                
-                    <Container id="livingCover" className="coverPanel d-flex align-items-center" fluid>
+                    <Container id="livingCover" className="coverPanel" fluid>
                         <Card>
                             <Card.Body>
                                 <Card.Title><h2>Living In Vegas</h2></Card.Title>
