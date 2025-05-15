@@ -100,7 +100,7 @@ export default function Portfolio(props){
     };
 
     const selectNavItem = (e) => {
-      // console.log(e.target);
+      console.log(e.target);
       var targetEl = $(e.target.getAttribute('href'));
       if (targetEl.length) {
         e.preventDefault();
@@ -199,7 +199,7 @@ export default function Portfolio(props){
                         </button>*/}
                         <Navbar.Collapse id="myNavbar">
                             <Nav className="me-auto">
-                                <Nav.Link href="#home" onClick={(e) => selectNavItem(e)}>Home/Code Repos</Nav.Link>
+                                <Nav.Link href="#home" onClick={selectNavItem}>Home/Code Repos</Nav.Link>
                                 <Nav.Link href="#about" onClick={(e) => selectNavItem(e)}>About</Nav.Link>
                                 <NavDropdown title="Software Development" id="basic-nav-dropdown">
                                     <NavDropdown.Item href="#lamp" onClick={(e) => selectNavItem(e)}>LAMP - based</NavDropdown.Item>
