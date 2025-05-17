@@ -10,6 +10,8 @@ export default function Orominer(props){
     const [showItem, setShowItem] = useState([]);
     const [showOrganParts, setShowOrganParts] = useState([]);
     const [showOrganLayers, setShowOrganLayers] = useState([]);
+    const [showPartContents, setShowPartContents] = useState([]);
+
     const [systems, setSystems] = useState([]);
     const [allSystems,setAllSystems] = useState([]);
     const [systemSet, setSystemSet ] = useState([
@@ -95,8 +97,10 @@ export default function Orominer(props){
             let organs = Array.from(sys[0].childNodes).map((node) =>  { return node.nodeName == "Organ" ? node : null});
             //console.log(item.systemName +" Organs:",organs);
             let organArr = [];
+            let partArr = [];
             let showParts = [];
             let showOrganLayers = [];
+            let showPartContents = [];
             let filtered_organs = Array.from(organs).filter((organ) => {
                 return $(organ).val() != null;
             });
@@ -118,14 +122,56 @@ export default function Orominer(props){
                         organLayers.push({"name":$(layer).contents()[0].nodeValue});
                 });
 
+               
                 let p_arts = []; 
-                Array.from($(organ).find("Part")).map((part) => {
-                    if($(part).contents()[0].nodeValue != "null")
-                        p_arts.push({"name":$(part).contents()[0].nodeValue});   
-                });
+                Array.from($(organ).find("Part")).map((part,k) => {
+                    
+                    showPartContents[i] = [];
+                    showPartContents[i][j] = [];
+                    showPartContents[i][j][k] = false;
 
+                    let partContents = [];
+                    partContents[i] = [];
+                    partContents[i][j] = [];
+                    let subparts = [];
+                    let histo_layers = [];
+                    let other_structures = [];
+                    let part_contents = $(part).contents();
+                    //console.log("Part Contents: ",part_contents);
+                        
+                        Array.from(part_contents).map((content,k) => {
+                            //console.log("content: ", $(content));
+                            let name = $(content)[0].textContent;
+                            let desc = { "type":$(content)[0].nodeName, "name":name, "content":content };
+                            partContents[i][j][k] = [];
+                            //console.log("Part Content: ",$(content));
+                            
+                            switch ($(content)[0].nodeName) {
+                                case "#text":
+                                    other_structures.push(desc);
+                                    break;
+                                case "Subpart":
+                                    subparts.push(desc);
+                                    break;
+                                case "histo_Layer":
+                                    name = $(content)[0].innerHTML;
+                                    let nameArr = name.split('<');
+                                    let cont = nameArr.splice(0,1);
+                                    let remainder = nameArr.join('<');
+
+                                    desc = { "type":$(content)[0].nodeName, "name":cont[0], "content":"<"+remainder };
+                                    histo_layers.push(desc);
+                                    break;
+                            };
+                            partContents[i][j][k].push({"subparts":subparts, "histo_layers":histo_layers, "other_structures":other_structures});
+                            //console.log("Part Contents: ",partContents[i][j][k]);    
+        
+                        });    
+                        p_arts.push({"name":$(part).contents()[0].nodeValue,"contents":partContents[i][j][k]});   
+                    
+                });
+                organArr.push({"organ_name":organ_name,"organ_layers":organLayers,"parts":p_arts}); 
                 
-                organArr.push({"organ_name":organ_name,"organ_layers":organLayers,"parts":p_arts});
             });
             setShowOrganParts(showParts);
             setShowOrganLayers(showOrganLayers);
@@ -135,7 +181,7 @@ export default function Orominer(props){
 
 
         });
-        //console.log("SystemSet: ", setArr);
+        console.log("SystemSet: ", setArr);
         setSystemSet(setArr);
 
      },[systemsArr,systems]);
@@ -199,20 +245,9 @@ export default function Orominer(props){
                                                             </div>
                                                             
                                                         </Button>
-                                                        <Row style={{marginLeft:'3em'}} className="mb-2 d-flex justify-content-start">
-                                                            {/*
-                                                                    $(part).find('PartContactOrgan') != null &&  $(part).find('PartContactOrgan').length > 0 &&
-                                                                    Array.from($(part).find('PartContactOrgan')).map((partcontactorgan, m) => (
-                                                                    <>                                                                                               
-                                                                        <Button  key={l} style={{width:"20em",fontSize:"1em"}} variant="success" className="d-inline-flex justify-content-start inline">
-                                                                            <i className="bi bi-arrow-return-right" style={{marginLeft:''}}></i>
-                                                                            <span style={{marginLeft:'2em'}}>{$(partcontactorgan).html()}</span>
-                                                                        </Button>
-                                                                    </>
+                                                        {
 
-                                                                    ))
-                                                            */}
-                                                        </Row>
+                                                        }
                                                         
                                                     </>
                                                     ))
