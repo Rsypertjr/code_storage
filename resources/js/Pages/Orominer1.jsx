@@ -8,28 +8,30 @@ export default function Orominer(props){
     const [xmlDoc, setXmlDoc] = useState(null);
     const [systemsArr, setSystemsArr] = useState([]);
     const [showItem, setShowItem] = useState([]);
-    const [showOrganItems, setShowOrganItems] = useState([]);
+    const [showOrganParts, setShowOrganParts] = useState([]);
+    const [showOrganLayers, setShowOrganLayers] = useState([]);
     const [systems, setSystems] = useState([]);
     const [allSystems,setAllSystems] = useState([]);
+    const [systemSet, setSystemSet ] = useState([
+        {
+            "systemName" : "",
+            "organs": []
+        }
+    ]);
 
 
     const headerStyle = {
         fontSize:"1.25em", 
         border:"2px black solid"
      };
-     const systemsSet = [
-            {
-                "systemName" : "",
-                "organs": []
-            }
-    ];
+    
      const getXML = () => {
 
         axios.get('/getxmlfile')
         .then(function (response) {
             let xmlData = response.data;
          
-            console.log("xmlData: ",xmlData);
+            //console.log("xmlData: ",xmlData);
           
             let xml_doc = parser.parseFromString(xmlData,'text/xml');
             let systems = $(xml_doc).find('System');
@@ -59,9 +61,15 @@ export default function Orominer(props){
     const toggleOrganItems = (i,j) => {
         //alert(index);
         
-            const newItems2 = [...showOrganItems];
+            const newItems2 = [...showOrganParts];
             newItems2[i,j] = !newItems2[i,j];
-            setShowOrganItems(newItems2);
+            setShowOrganParts(newItems2);
+
+
+            const newItems3 = [...showOrganLayers];
+            newItems3[i,j] = !newItems3[i,j];
+            setShowOrganLayers(newItems3);
+ 
 
     }
    
@@ -73,38 +81,62 @@ export default function Orominer(props){
 
      useEffect(() => {
 
-        systemsArr.forEach((system,i) => {
+        let setArr = [];
+        systemsArr.filter((system) => {return $(system).contents()[0].nodeValue != "null"}).forEach((system,i) => {
             const newItems = [...showItem];
             newItems[i] = false;
             setShowItem(newItems);
             let item = {"systemName":"","organs":[]};
-            item.systemName = systemsArr[i].childNodes[0].nodeValue;
-            let sys = [...systems];
-            let organs = sys[i].getElementsByTagName('Organ');
+            //item.systemName = Array.from(system.childNodes).map((node) => { return node.nodeName == "#text" ?  node.nodeValue :  null  })
+            let sys = $(system);
+            //console.log("Check: ",sys[0].childNodes);
+            item.systemName = sys[0].childNodes[0].nodeValue;
+            // let sys = [...systems];
+            let organs = Array.from(sys[0].childNodes).map((node) =>  { return node.nodeName == "Organ" ? node : null});
             //console.log(item.systemName +" Organs:",organs);
             let organArr = [];
             let showParts = [];
-            Array.from(organs).forEach((organ,j) => {
-                //console.log("Organ",organ);
-                //const newItems2 = [];
+            let showOrganLayers = [];
+            let filtered_organs = Array.from(organs).filter((organ) => {
+                return $(organ).val() != null;
+            });
+            console.log("Filtered Organs: ", filtered_organs);
+            Array.from(filtered_organs).forEach((organ,j) => {
+               
+                 //const newItems2 = [];
                 showParts[i] = [];
                 showParts[i][j] = false;
 
-                let organName = organs[j].childNodes[0].nodeValue;
-                let organ_layers = organs[j].getElementsByTagName("Organ_Layer");
-                Array.from(organ_layers).map((layer) => {return layer.textContent != "null";});
-                let parts = organ.getElementsByTagName("Part");
-                organArr.push({"organName":"Organ: "+organName,"organLayers":organ_layers,"parts":parts})
+                showOrganLayers[i] = [];
+                showOrganLayers[j] = false;
+                
+                let organ_contents = $(organ).contents();
+                let organ_name  = $(organ).contents()[0].nodeValue;
+                let organLayers = [];
+                Array.from($(organ).find('Organ_Layer')).map((layer) => {
+                    if($(layer).text() != "null")
+                        organLayers.push({"name":$(layer).contents()[0].nodeValue});
+                });
 
+                let p_arts = []; 
+                Array.from($(organ).find("Part")).map((part) => {
+                    if($(part).contents()[0].nodeValue != "null")
+                        p_arts.push({"name":$(part).contents()[0].nodeValue});   
+                });
+
+                
+                organArr.push({"organ_name":organ_name,"organ_layers":organLayers,"parts":p_arts});
             });
-            setShowOrganItems(showParts);
+            setShowOrganParts(showParts);
+            setShowOrganLayers(showOrganLayers);
             item.organs = organArr;
-            systemsSet.push(item);
+            setArr.push(item);
+    
 
 
         });
-        console.log("SystemSet: ", systemsSet);
-        setAllSystems(systemsSet);
+        //console.log("SystemSet: ", setArr);
+        setSystemSet(setArr);
 
      },[systemsArr,systems]);
 
@@ -122,7 +154,7 @@ export default function Orominer(props){
                    
                     <div className="d-grid gap-1">
                         {/* console.log("System: ",system) */}
-                        {/* console.log("SystemsArr: ",systemsArr) */}
+                        {console.log("SystemsArr: ",systemsArr) }
                         { /*console.log("System split: ",$(system).html().split('<') ) */}
                        
                         {
@@ -130,7 +162,7 @@ export default function Orominer(props){
 
                              
                             systemsArr != null && systemsArr.length > 0 &&                                
-                            allSystems.map((system, j) => (                                
+                            systemSet.map((system, j) => (                                
                                 <>
                                 
                                 <Button key={j.toString()} variant="primary" onClick={() => toggleOrgans(j)} size="lg">{system.systemName}</Button>
@@ -145,21 +177,25 @@ export default function Orominer(props){
                                                 <Button style={{marginLeft:"1em"}} key={k} onClick={() => toggleOrganItems(j,k)} variant="info">
                                                     <div style={{position:"relative",width:"100%"}}>
                                                         <i style={{float:"left",marginLeft:"-0.5em",marginTop:"-0.25em",transform:"scale(0.75)"}} className="bi bi-arrow-return-right"></i>
-                                                        <span style={{float:"left",marginLeft:"1.5em",textWrap:"wrap",height:"auto"}}>{organ.organName}</span>     
-                                                        <span style={{width:"100%",float:"left"}}>{ organ.parts.length > 0 ? <span>has parts</span> : <span>no parts</span> }</span>
+                                                        <span style={{float:"left",marginLeft:"1.5em",textWrap:"wrap",height:"auto"}}>Organ: <font color="red">{organ.organ_name}</font></span>     
+                                                        <span style={{width:"100%",float:"left"}}>{ organ.parts.length > 0 ? <span><font color="red">{organ.parts.length}</font> Organ Parts</span> : 
+                                                            <span><font color="red">0</font> Organ Parts</span> }</span>
+                                                        <span style={{width:"100%",float:"left"}}>{ organ.organ_layers.length > 0 ? <span><font color="red">{organ.organ_layers.length}</font> Organ Layers</span> : 
+                                                            <span><font color="red">0</font> Organ Layers</span> }</span>
+                                                  
                                                     </div>
                                                     
                                                 </Button>
 
                                                 {
-                                                showOrganItems[j,k] && organ.parts.length > 0 &&
+                                                showOrganParts[j,k] && organ.parts.length > 0 &&
                                                     Array.from(organ.parts).map((part, l) => (
                                                     <>
                                                         
                                                         <Button  key={l} style={{width:"20em",fontSize:"1em",marginLeft:"2em"}} variant="light" className="d-inline-flex justify-content-start inline">
                                                             <div style={{position:"relative",width:"100%"}}>
                                                                 <i style={{float:"left",marginLeft:"-0.5em",marginTop:"-0.25em",transform:"scale(0.75)"}} className="bi bi-arrow-return-right"></i>
-                                                                <span style={{width:"100%",float:"left"}}>{part.textContent}</span>
+                                                                <div style={{width:"100%",float:"left",marginTop:"-3em"}}><span>Organ Part:</span><br/><font color="red">{part.name}</font></div>
                                                             </div>
                                                             
                                                         </Button>
@@ -180,12 +216,51 @@ export default function Orominer(props){
                                                         
                                                     </>
                                                     ))
+                                                
 
                                                 }
+
+
+{
+                                                showOrganLayers[j,k] && organ.organ_layers.length > 0 &&
+                                                    Array.from(organ.organ_layers).map((organ_layer, l) => (
+                                                    <>
+                                                        
+                                                        <Button  key={l} style={{width:"20em",fontSize:"1em",marginLeft:"2em",backgroundColor:"lightGray"}}  className="d-inline-flex justify-content-start inline">
+                                                            <div style={{position:"relative",width:"100%"}}>
+                                                                <i style={{float:"left",marginLeft:"-0.5em",marginTop:"-0.25em",transform:"scale(0.75)"}} className="bi bi-arrow-return-right"></i>
+                                                                <div style={{width:"100%",float:"left",marginTop:"-3em"}}><span style={{color:"black"}}>Organ Layer:</span><br/><font color="red">{organ_layer.name}</font></div>
+                                                            </div>
+                                                            
+                                                        </Button>
+                                                        <Row style={{marginLeft:'3em'}} className="mb-2 d-flex justify-content-start">
+                                                            {/*
+                                                                    $(part).find('PartContactOrgan') != null &&  $(part).find('PartContactOrgan').length > 0 &&
+                                                                    Array.from($(part).find('PartContactOrgan')).map((partcontactorgan, m) => (
+                                                                    <>                                                                                               
+                                                                        <Button  key={l} style={{width:"20em",fontSize:"1em"}} variant="success" className="d-inline-flex justify-content-start inline">
+                                                                            <i className="bi bi-arrow-return-right" style={{marginLeft:''}}></i>
+                                                                            <span style={{marginLeft:'2em'}}>{$(partcontactorgan).html()}</span>
+                                                                        </Button>
+                                                                    </>
+
+                                                                    ))
+                                                            */}
+                                                        </Row>
+                                                        
+                                                    </>
+                                                    ))
+                                                
+
+                                                }
+
+                                                
                                             </>
 
 
                                         ))
+
+                                        
 
 
                                     }
