@@ -100,7 +100,7 @@ export default function Portfolio(props){
     };
 
     const selectNavItem = (e) => {
-      console.log(e.target);
+      //console.log(e.target);
       var targetEl = $(e.target.getAttribute('href'));
       if (targetEl.length) {
         e.preventDefault();

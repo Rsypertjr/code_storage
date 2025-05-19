@@ -152,7 +152,7 @@ export default function Orominer(props){
                     //console.log("Part Contents: ",part_contents);
                     
                     let idx = partContentIndexes.length;
-                    console.log("show part content length",idx);
+                    //console.log("show part content length",idx);
                     partContentIndexes[idx] = false;
                     setShowPartContents(partContentIndexes);
 
@@ -164,6 +164,9 @@ export default function Orominer(props){
                         //console.log("content: ", $(content));
                         let name = $(content)[0].textContent;
                         let desc = { "type":$(content)[0].nodeName, "name":name, "content":content };
+                        let nameArr;
+                        let cont;
+                        let remainder;
                         partContents[i][j][k] = [];
                         
                         //console.log("Part Content: ",$(content));
@@ -173,16 +176,41 @@ export default function Orominer(props){
                             case "#text":
                                 other_structures.push(desc);
                                 break;
-                            case "Subpart":                               
+                            case "Subpart":     
+                                name = $(content)[0].innerHTML;
+                                nameArr = name.split('<');
+                                cont = nameArr.splice(0,1);
+                                remainder = nameArr.join('<');
+
+                                desc = { "type":$(content)[0].nodeName, "name":cont[0], "content":$(content).contents() };
+                                histo_layers.push(desc);
+                            
                                 subparts.push(desc);
                                 break;
                             case "histo_Layer":
                                 name = $(content)[0].innerHTML;
-                                let nameArr = name.split('<');
-                                let cont = nameArr.splice(0,1);
-                                let remainder = nameArr.join('<');
+                                nameArr = name.split('<');
+                                cont = nameArr.splice(0,1);
+                                remainder = nameArr.join('<');
+                                let contentObj = {
+                                    "histo_Sublayers":[]
+                                };
+                                let histo_Sublayers = $(content).find("histo_Sublayer");   
+                                // console.log("histo_Sublayers: ",histo_Sublayers);
+                                let histo_Layer_Obj = {
+                                    "histo_Sublayers":[]
+                                };
+                                Array.from(histo_Sublayers).map((sublayer) => {
+                                    let name = sublayer.innerHTML;
+                                    //console.log("sublayer contents", $(sublayer).contents());
+                                    let nameArr = name.split('<');
+                                    let cont = nameArr.splice(0,1);
+                                    histo_Layer_Obj.histo_Sublayers.push({"name":cont[0]})
+                                });
+                                // console.log("histo_Sublayer Obj: ", histo_Layer_Obj);
 
-                                desc = { "type":$(content)[0].nodeName, "name":cont[0], "content":"<"+remainder };
+                                desc = { "type":$(content)[0].nodeName, "name":cont[0], "content":histo_Layer_Obj };
+                                //console.log("histo_layer html/contents: ",$(content).contents());
                                 histo_layers.push(desc);
                                 break;
                         };
@@ -255,9 +283,9 @@ export default function Orominer(props){
                                                     <div style={{position:"relative",width:"100%"}}>
                                                         <i style={{float:"left",marginLeft:"-0.5em",marginTop:"-0.25em",transform:"scale(0.75)"}} className="bi bi-arrow-return-right"></i>
                                                         <span style={{float:"left",marginLeft:"1.5em",textWrap:"wrap",height:"auto"}}>Organ: <font color="red">{organ.organ_name}</font></span>     
-                                                        <span style={{width:"100%",float:"left"}}>{ organ.parts.length > 0 ? <span><font color="red">{organ.parts.length}</font> Organ Parts</span> : 
+                                                        <span style={{width:"100%",float:"left"}}>{ organ.parts.length > 0 ? <span><font color="charcoal"><b>Click to See</b></font>&nbsp;&nbsp;<font color="red">{organ.parts.length}</font> Organ Parts</span> : 
                                                             <span><font color="red">0</font> Organ Parts</span> }</span>
-                                                        <span style={{width:"100%",float:"left"}}>{ organ.organ_layers.length > 0 ? <span><font color="red">{organ.organ_layers.length}</font> Organ Layers</span> : 
+                                                        <span style={{width:"100%",float:"left"}}>{ organ.organ_layers.length > 0 ? <span><font color="charcoal"><b>Click to See</b></font>&nbsp;&nbsp;<font color="red">{organ.organ_layers.length}</font> Organ Layers</span> : 
                                                             <span><font color="red">0</font> Organ Layers</span> }</span>
                                                   
                                                     </div>
@@ -273,6 +301,12 @@ export default function Orominer(props){
                                                             <div style={{position:"relative",width:"100%"}}>
                                                                 <i style={{float:"left",marginLeft:"-0.5em",marginTop:"-0.25em",transform:"scale(0.75)"}} className="bi bi-arrow-return-right"></i>
                                                                 <div style={{width:"100%",float:"left",marginTop:"-3em"}}><span>Organ Part:</span><br/><font color="red">{part.name}</font></div>
+                                                                <span style={{width:"100%",float:"left"}}>{ part.contents[0].histo_layers.filter((item) => {return item.name != "null"}).length > 0 ? <span><font color="charcoal"><b>Click to See</b></font>&nbsp;&nbsp;<font color="red">{part.contents[0].histo_layers.filter((item) => {return item.name != "null"}).length}</font> Part Histo-Layers</span> : 
+                                                                <span><font color="red">0</font> Part Histo-Layers</span> }</span>
+                                                                <span style={{width:"100%",float:"left"}}>{ part.contents[0].other_structures.filter((item) => {return item.name != "null"}).length > 0 ? <span><font color="charcoal"><b>Click to See</b></font>&nbsp;&nbsp;<font color="red">{part.contents[0].other_structures.filter((item) => {return item.name != "null"}).length}</font> Part Structures</span> : 
+                                                                <span><font color="red">0</font> Part Structures</span> }</span>
+                                                                <span style={{width:"100%",float:"left"}}>{ part.contents[0].subparts.filter((item) => {return item.name != "null"}).length > 0 ? <span><font color="charcoal"><b>Click to See</b></font>&nbsp;&nbsp;<font color="red">{part.contents[0].subparts.filter((item) => {return item.name != "null"}).length}</font> Part Sub-Parts</span> : 
+                                                                <span><font color="red">0</font> Part Sub-Parts</span> }</span>
                                                             </div>
                                                             
                                                         </Button>
@@ -280,21 +314,48 @@ export default function Orominer(props){
                                                        
                                                         {   
                                                            showPartContents[part.showIdx] && part.contents[0].histo_layers.length > 0 &&
-                                                            part.contents[0].histo_layers.map((layer,m) => (
-                                                           <>
-                                                               <Button key={m.toString()} style={{width:"20em",fontSize:"1em",marginLeft:"2em"}} variant="light" className="d-inline-flex justify-content-start inline">
-                                                                   <div style={{position:"relative",width:"100%"}}>
-                                                                       <i style={{float:"left",marginLeft:"-0.5em",marginTop:"-0.25em",transform:"scale(0.75)"}} className="bi bi-arrow-return-right"></i>
-                                                                       <div style={{width:"100%",float:"left",marginTop:"-3em"}}><span>Part Histo_Layer:</span><br/><font color="red">test</font></div>
-                                                                   </div>
-                                                                   
-                                                               </Button>
-                                                           </>
+                                                            part.contents[0].histo_layers.filter((layer) => {return layer.name != "null"}).map((layer,m) => (
+                                                            <>
+                                                                <Button key={m.toString()} style={{width:"20em",fontSize:"1em",marginLeft:"3em",backgroundColor:"#58d68d"}} className="d-inline-flex justify-content-start inline">
+                                                                    <div style={{position:"relative",width:"100%"}}>
+                                                                        <i style={{float:"left",marginLeft:"-0.5em",marginTop:"-0.25em",transform:"scale(0.75)"}} className="bi bi-arrow-return-right"></i>
+                                                                        <div style={{width:"100%",float:"left",marginTop:"-3em"}}><span style={{color:"black"}}>Part Histo_Layer:</span><br/><font color="red">{layer.name}</font></div>
+                                                                    </div>
+                                                                    
+                                                                </Button>
+                                                            </>
                                                             ))
-
-                                                       }
+                                                        }
                                                          
-                                                        
+                                                        {   
+                                                           showPartContents[part.showIdx] && part.contents[0].other_structures.length > 0 &&
+                                                            part.contents[0].other_structures.filter((item) => {return item.name != "null"}).map((item,m) => (
+                                                            <>
+                                                                <Button key={m.toString()} style={{width:"20em",fontSize:"1em",marginLeft:"3em",backgroundColor:"#eb984e"}} className="d-inline-flex justify-content-start inline">
+                                                                    <div style={{position:"relative",width:"100%"}}>
+                                                                        <i style={{float:"left",marginLeft:"-0.5em",marginTop:"-0.25em",transform:"scale(0.75)"}} className="bi bi-arrow-return-right"></i>
+                                                                        <div style={{width:"100%",float:"left",marginTop:"-3em"}}><span style={{color:"black"}}>Part Structures:</span><br/><font color="red">{item.name}</font></div>
+                                                                    </div>
+                                                                    
+                                                                </Button>
+                                                            </>
+                                                            ))
+                                                        }
+
+                                                        {   
+                                                           showPartContents[part.showIdx] && part.contents[0].subparts.length > 0 &&
+                                                            part.contents[0].subparts.filter((item) => {return item.name != "null"}).map((item,m) => (
+                                                            <>
+                                                                <Button key={m.toString()} style={{width:"20em",fontSize:"1em",marginLeft:"3em",backgroundColor:"#e8daef"}} className="d-inline-flex justify-content-start inline">
+                                                                    <div style={{position:"relative",width:"100%"}}>
+                                                                        <i style={{float:"left",marginLeft:"-0.5em",marginTop:"-0.25em",transform:"scale(0.75)"}} className="bi bi-arrow-return-right"></i>
+                                                                        <div style={{width:"100%",float:"left",marginTop:"-3em"}}><span style={{color:"black"}}>Part Sub-Part:</span><br/><font color="red">{item.name}</font></div>
+                                                                    </div>
+                                                                    
+                                                                </Button>
+                                                            </>
+                                                            ))
+                                                        }
                                                     </>
                                                     ))
                                                 
