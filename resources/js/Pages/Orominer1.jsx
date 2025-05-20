@@ -76,8 +76,7 @@ export default function Orominer(props){
 
 
     const togglePartItems = (idx) => {
-        //alert(index);
-        
+            console.log("Selected Index:", idx);
             const newItems4 = [...showPartContents];
             newItems4[idx] = !newItems4[idx];
             setShowPartContents(newItems4);
@@ -192,6 +191,12 @@ export default function Orominer(props){
                                 nameArr = name.split('<');
                                 cont = nameArr.splice(0,1);
                                 remainder = nameArr.join('<');
+
+                                let idx = partContentIndexes.length;
+                                //console.log("show part content length",idx);
+                                partContentIndexes[idx] = false;
+                                setShowPartContents(partContentIndexes);
+
                                 let contentObj = {
                                     "histo_Sublayers":[]
                                 };
@@ -205,15 +210,19 @@ export default function Orominer(props){
                                     //console.log("sublayer contents", $(sublayer).contents());
                                     let nameArr = name.split('<');
                                     let cont = nameArr.splice(0,1);
-                                    histo_Layer_Obj.histo_Sublayers.push({"name":cont[0]})
+                                    
+                                   
+                
+                                    histo_Layer_Obj.histo_Sublayers.push({"name":cont[0],"content":sublayer})
                                 });
                                 // console.log("histo_Sublayer Obj: ", histo_Layer_Obj);
 
-                                desc = { "type":$(content)[0].nodeName, "name":cont[0], "content":histo_Layer_Obj };
+                                desc = { "type":$(content)[0].nodeName, "name":cont[0], "content":histo_Layer_Obj, "showIdx":idx};
                                 //console.log("histo_layer html/contents: ",$(content).contents());
                                 histo_layers.push(desc);
                                 break;
                         };
+                       
                         partContents[i][j][k].push({"subparts":subparts, "histo_layers":histo_layers, "other_structures":other_structures});
                         //console.log("Part Contents: ",partContents[i][j][k]);    
                         //console.log("Show Part Sub Parts: ",showPartSubParts);
@@ -301,40 +310,78 @@ export default function Orominer(props){
                                                             <div style={{position:"relative",width:"100%"}}>
                                                                 <i style={{float:"left",marginLeft:"-0.5em",marginTop:"-0.25em",transform:"scale(0.75)"}} className="bi bi-arrow-return-right"></i>
                                                                 <div style={{width:"100%",float:"left",marginTop:"-3em"}}><span>Organ Part:</span><br/><font color="red">{part.name}</font></div>
-                                                                <span style={{width:"100%",float:"left"}}>{ part.contents[0].histo_layers.filter((item) => {return item.name != "null"}).length > 0 ? <span><font color="charcoal"><b>Click to See</b></font>&nbsp;&nbsp;<font color="red">{part.contents[0].histo_layers.filter((item) => {return item.name != "null"}).length}</font> Part Histo-Layers</span> : 
+                                                                <span style={{width:"100%",float:"left"}}>{ part.contents[0].histo_layers.filter((histo_layer) => {return histo_layer.name != "null"}).length > 0 ? <span><font color="charcoal"><b>Click to See</b></font>&nbsp;&nbsp;<font color="red">{part.contents[0].histo_layers.filter((histo_layer) => {return histo_layer.name != "null"}).length}</font> Part Histo-Layers</span> : 
                                                                 <span><font color="red">0</font> Part Histo-Layers</span> }</span>
-                                                                <span style={{width:"100%",float:"left"}}>{ part.contents[0].other_structures.filter((item) => {return item.name != "null"}).length > 0 ? <span><font color="charcoal"><b>Click to See</b></font>&nbsp;&nbsp;<font color="red">{part.contents[0].other_structures.filter((item) => {return item.name != "null"}).length}</font> Part Structures</span> : 
+                                                                <span style={{width:"100%",float:"left"}}>{ part.contents[0].other_structures.filter((other_structure) => {return other_structure.name != "null"}).length > 0 ? <span><font color="charcoal"><b>Click to See</b></font>&nbsp;&nbsp;<font color="red">{part.contents[0].other_structures.filter((other_structure) => {return other_structure.name != "null"}).length}</font> Part Structures</span> : 
                                                                 <span><font color="red">0</font> Part Structures</span> }</span>
-                                                                <span style={{width:"100%",float:"left"}}>{ part.contents[0].subparts.filter((item) => {return item.name != "null"}).length > 0 ? <span><font color="charcoal"><b>Click to See</b></font>&nbsp;&nbsp;<font color="red">{part.contents[0].subparts.filter((item) => {return item.name != "null"}).length}</font> Part Sub-Parts</span> : 
+                                                                <span style={{width:"100%",float:"left"}}>{ part.contents[0].subparts.filter((subpart) => {return subpart.name != "null"}).length > 0 ? <span><font color="charcoal"><b>Click to See</b></font>&nbsp;&nbsp;<font color="red">{part.contents[0].subparts.filter((subpart) => {return subpart.name != "null"}).length}</font> Part Sub-Parts</span> : 
                                                                 <span><font color="red">0</font> Part Sub-Parts</span> }</span>
                                                             </div>
                                                             
                                                         </Button>
-                                                        {console.log("Show Part SubParts: ", showPartContents[part.showIdx])}
+                                                        {/*console.log("Show Part SubParts: ", showPartContents[part.showIdx])*/}
                                                        
                                                         {   
                                                            showPartContents[part.showIdx] && part.contents[0].histo_layers.length > 0 &&
-                                                            part.contents[0].histo_layers.filter((layer) => {return layer.name != "null"}).map((layer,m) => (
+                                                            part.contents[0].histo_layers.filter((histo_layer) => {return histo_layer.name != "null"}).map((histo_layer,m) => (
                                                             <>
-                                                                <Button key={m.toString()} style={{width:"20em",fontSize:"1em",marginLeft:"3em",backgroundColor:"#58d68d"}} className="d-inline-flex justify-content-start inline">
+                                                                <Button key={m.toString()} onClick={() => togglePartItems(histo_layer.showIdx)} style={{width:"20em",fontSize:"1em",marginLeft:"3em",backgroundColor:"#e5ffe5"}} className="d-inline-flex justify-content-start inline">
                                                                     <div style={{position:"relative",width:"100%"}}>
                                                                         <i style={{float:"left",marginLeft:"-0.5em",marginTop:"-0.25em",transform:"scale(0.75)"}} className="bi bi-arrow-return-right"></i>
-                                                                        <div style={{width:"100%",float:"left",marginTop:"-3em"}}><span style={{color:"black"}}>Part Histo_Layer:</span><br/><font color="red">{layer.name}</font></div>
+                                                                        <div style={{width:"100%",float:"left",marginTop:"-3em"}}><span style={{color:"black"}}>Part Histo_Layer:</span><br/><font color="red">{histo_layer.name}</font></div>
                                                                     </div>
                                                                     
                                                                 </Button>
+                                                                {console.log("Histo Layer: ",histo_layer)}
+
+                                                                {   
+                                                                    showPartContents[histo_layer.showIdx] && histo_layer.content.histo_Sublayers != "undefined" && histo_layer.content.histo_Sublayers.length > 0 &&
+                                                                    histo_layer.content.histo_Sublayers.filter((histo_Sublayer) => {return histo_Sublayer.name != "null"}).map((histo_Sublayer,m) => (
+                                                                    <>
+                                                                        <Button key={m.toString()} style={{width:"20em",fontSize:"1em",marginLeft:"4em",backgroundColor:"#f9e6ff"}} className="d-inline-flex justify-content-start inline">
+                                                                            <div style={{position:"relative",width:"100%"}}>
+                                                                                <i style={{float:"left",marginLeft:"-0.5em",marginTop:"-0.25em",transform:"scale(0.75)"}} className="bi bi-arrow-return-right"></i>
+                                                                                <div style={{width:"100%",float:"left",marginTop:"-3em"}}><span style={{color:"black"}}>Histo_SubLayers:</span><br/><font color="red">{histo_Sublayer.name}</font></div>
+                                                                            </div>
+                                                                            
+                                                                        </Button>
+                                                                    </>
+                                                                    ))
+                                                                }
+
+
+
+
+                                                                {
+
+                                                                showPartContents[part.showIdx] && part.contents[0].subparts.length > 0 &&
+                                                                part.contents[0].subparts.filter((subpart) => {return subpart.name != "null"}).map((subpart,m) => (
+                                                                <>
+                                                                    <Button key={m.toString()} style={{width:"20em",fontSize:"1em",marginLeft:"3em",backgroundColor:"#e8daef"}} className="d-inline-flex justify-content-start inline">
+                                                                        <div style={{position:"relative",width:"100%"}}>
+                                                                            <i style={{float:"left",marginLeft:"-0.5em",marginTop:"-0.25em",transform:"scale(0.75)"}} className="bi bi-arrow-return-right"></i>
+                                                                            <div style={{width:"100%",float:"left",marginTop:"-3em"}}><span style={{color:"black"}}>Part Sub-Part:</span><br/><font color="red">{subpart.name}</font></div>
+                                                                        </div>
+                                                                        
+                                                                    </Button>
+                                                                    {  }
+                                                                </>
+                                                                ))
+
+
+                                                                }
                                                             </>
                                                             ))
                                                         }
                                                          
                                                         {   
                                                            showPartContents[part.showIdx] && part.contents[0].other_structures.length > 0 &&
-                                                            part.contents[0].other_structures.filter((item) => {return item.name != "null"}).map((item,m) => (
+                                                            part.contents[0].other_structures.filter((other_structure) => {return other_structure.name != "null"}).map((other_structure,m) => (
                                                             <>
                                                                 <Button key={m.toString()} style={{width:"20em",fontSize:"1em",marginLeft:"3em",backgroundColor:"#eb984e"}} className="d-inline-flex justify-content-start inline">
                                                                     <div style={{position:"relative",width:"100%"}}>
                                                                         <i style={{float:"left",marginLeft:"-0.5em",marginTop:"-0.25em",transform:"scale(0.75)"}} className="bi bi-arrow-return-right"></i>
-                                                                        <div style={{width:"100%",float:"left",marginTop:"-3em"}}><span style={{color:"black"}}>Part Structures:</span><br/><font color="red">{item.name}</font></div>
+                                                                        <div style={{width:"100%",float:"left",marginTop:"-3em"}}><span style={{color:"black"}}>Part Structures:</span><br/><font color="red">{other_structure.name}</font></div>
                                                                     </div>
                                                                     
                                                                 </Button>
@@ -342,20 +389,7 @@ export default function Orominer(props){
                                                             ))
                                                         }
 
-                                                        {   
-                                                           showPartContents[part.showIdx] && part.contents[0].subparts.length > 0 &&
-                                                            part.contents[0].subparts.filter((item) => {return item.name != "null"}).map((item,m) => (
-                                                            <>
-                                                                <Button key={m.toString()} style={{width:"20em",fontSize:"1em",marginLeft:"3em",backgroundColor:"#e8daef"}} className="d-inline-flex justify-content-start inline">
-                                                                    <div style={{position:"relative",width:"100%"}}>
-                                                                        <i style={{float:"left",marginLeft:"-0.5em",marginTop:"-0.25em",transform:"scale(0.75)"}} className="bi bi-arrow-return-right"></i>
-                                                                        <div style={{width:"100%",float:"left",marginTop:"-3em"}}><span style={{color:"black"}}>Part Sub-Part:</span><br/><font color="red">{item.name}</font></div>
-                                                                    </div>
-                                                                    
-                                                                </Button>
-                                                            </>
-                                                            ))
-                                                        }
+                                                     
                                                     </>
                                                     ))
                                                 
