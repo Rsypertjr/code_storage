@@ -99,25 +99,31 @@ export default function Orominer(props){
 
             {
                 !(props.items === undefined) && Array.from(props.items).filter((item) => item.name != "null").length > 0 ?
-                <Button onClick={() => togglePartItems(props.idx)}  style={{width:"100%",float:"left",height:"2.5em",fontSize:"1em"}} variant="outline-info">
+                <Button onClick={() => togglePartItems(props.idx)}  style={{width:"100%",float:"left",height:"2.5em",fontSize:"1em",backgroundColor:"white"}} variant="outline-info">
                 {
                     
-                    <span>
-                        <span>
-                            <font color="charcoal"><b>Click to See</b></font>&nbsp;&nbsp;
+                    <div style={{position:"relative",width:"100%"}}>
+                        <span style={{float:"left",width:"80%",fontSize:"0.9em"}}>
+                            {!showPartContents[props.idx] && <font color="#800080"><b>Click to See&nbsp;&nbsp;</b></font>}
+                            {showPartContents[props.idx] && <font color="#800080"><b>Click to Close&nbsp;&nbsp;</b></font>}
                             <font color="red">
                                 { props.items.filter((item) => item.name != "null" ).length}
                                 <span style={{color:"black",marginLeft:"0.5em"}}>{props.name}</span>
                             </font> 
                             
                         </span> 
-                        
-                    </span>                                                                   
+                        <span style={{float:"right",width:"20%",transform:"scale(0.75)",marginTop:"-32px",marginLeft:"5px",color:"#800080"}}>
+                            {!showPartContents[props.idx] && <i className="bi bi-box-arrow-in-down"></i>}
+                            {showPartContents[props.idx] && <i className="bi bi-x"></i>}
+                        </span>                      
+                    </div>                                                                   
 
                     }
             
                 </Button>
-                :  <span style={{color:"black"}}><font color="red">0&nbsp;&nbsp;</font>{props.name}</span> 
+                :   <div style={{color:"black",padding:"0.5em",margin:"0.25em 0",border:"1px solid white",borderRadius:"5px",backgroundColor:"white"}}>
+                        <span ><font color="red">0&nbsp;&nbsp;</font>{props.name}</span>
+                    </div> 
 
 
             }
@@ -252,7 +258,7 @@ export default function Orominer(props){
                                 };
                                 let histo_Sublayers = $(content).find("histo_Sublayer");   
                                 // console.log("histo_Sublayers: ",histo_Sublayers);
-                                let histo_Layer_Obj = {
+                                let histo_Layers_Obj = {
                                     "histo_Sublayers":[]
                                 };
                                 Array.from(histo_Sublayers).map((sublayer) => {
@@ -266,11 +272,11 @@ export default function Orominer(props){
                                     setShowPartContents(partContentIndexes);
                                    
                 
-                                    histo_Layer_Obj.histo_Sublayers.push({"name":cont[0],"content":sublayer,"histo_sublayer_idx":getIdx()})
+                                    histo_Layers_Obj.histo_Sublayers.push({"name":cont[0],"content":sublayer,"histo_sublayer_idx":getIdx()})
                                 });
                                 // console.log("histo_Sublayer Obj: ", histo_Layer_Obj);
 
-                                desc = { "type":$(content)[0].nodeName, "name":cont[0], "content":histo_Layer_Obj, "histo_layer_idx":getIdx()};
+                                desc = { "type":$(content)[0].nodeName, "name":cont[0], "content":histo_Layers_Obj, "histo_layer_idx":getIdx()};
                                 //console.log("histo_layer html/contents: ",$(content).contents());
                                 histo_layers.push(desc);
                                 break;
@@ -375,19 +381,18 @@ export default function Orominer(props){
                                                            showPartContents[part.part_histo_layers_idx] && part.contents[0].histo_layers.length > 0 &&
                                                             part.contents[0].histo_layers.filter((histo_layer) => {return histo_layer.name != "null"}).map((histo_layer,m) => (
                                                             <>
-                                                                <Button key={m.toString()} onClick={() => togglePartItems(histo_layer.showIdx)} style={{width:"20em",fontSize:"1em",marginLeft:"3em",backgroundColor:"#e5ffe5",color:"black"}} className="d-inline-flex justify-content-start inline">
+                                                                <Button key={m.toString()} style={{width:"20em",fontSize:"1em",marginLeft:"3em",backgroundColor:"#e5ffe5",color:"black"}} className="d-inline-flex justify-content-start inline">
                                                                     <div style={{position:"relative",width:"100%"}}>
                                                                         <i style={{float:"left",marginLeft:"-0.5em",marginTop:"-0.25em",transform:"scale(0.75)"}} className="bi bi-arrow-return-right"></i>
                                                                         <div style={{width:"100%",float:"left",marginTop:"-3em"}}><span style={{color:"black"}}>Part Histo_Layer:</span><br/><font color="red">{histo_layer.name}</font></div>
                                                                        
-                                                                        <span style={{width:"100%",float:"left"}}><ContentButton items={histo_layer.content.histo_Sublayers} name="Histo_SubLayers"/></span>
+                                                                        <span style={{width:"100%",float:"left"}}><ContentButton idx={histo_layer.histo_layer_idx} items={histo_layer.content.histo_Sublayers} name="Histo_SubLayers"/></span>
                                                                        
                                                                     
                                                                     
                                                                     </div>
                                                                   
                                                                 </Button>
-                                                                {console.log("Histo Layer: ",histo_layer)}
 
                                                                 {   
                                                                     showPartContents[histo_layer.histo_layer_idx] && histo_layer.content.histo_Sublayers != "undefined" && histo_layer.content.histo_Sublayers.length > 0 
