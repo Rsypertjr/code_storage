@@ -62,27 +62,63 @@ export default function Orominer(props){
     }
 
     const toggleOrganItems = (i,j) => {
-        //alert(index);
-        
-            const newItems2 = [...showOrganParts];
-            newItems2[i,j] = !newItems2[i,j];
-            setShowOrganParts(newItems2);
+        //alert(index);    
+        const newItems2 = [...showOrganParts];
+        newItems2[i,j] = !newItems2[i,j];
+        setShowOrganParts(newItems2);
 
 
-            const newItems3 = [...showOrganLayers];
-            newItems3[i,j] = !newItems3[i,j];
-            setShowOrganLayers(newItems3);
+        const newItems3 = [...showOrganLayers];
+        newItems3[i,j] = !newItems3[i,j];
+        setShowOrganLayers(newItems3);
     }
 
 
     const togglePartItems = (idx) => {
-            console.log("Selected Index:", idx);
-            const newItems4 = [...showPartContents];
-            newItems4[idx] = !newItems4[idx];
-            setShowPartContents(newItems4);
-
-
+        console.log("Selected Index:", idx);
+        const newItems4 = [...showPartContents];
+        newItems4[idx] = !newItems4[idx];
+        setShowPartContents(newItems4);        
     }
+
+    const ContentButton = (props) => {
+        return (
+            <>
+
+            {
+                props.items != "undefined" && Array.from(props.items).filter((item) => item.name != "null").length ?
+                <Button style={{width:"100%",float:"left",height:"2.5em",fontSize:"1em"}} variant="outline-info">
+                {
+                    props.items != "undefined" && props.items.length > 0 &&  
+                    <span>
+                        <span>
+                            <font color="charcoal"><b>Click to See</b></font>&nbsp;&nbsp;
+                            <font color="red">
+                                { props.items.filter((item) => item.name != "null" ).length}
+                                <span style={{color:"black",marginLeft:"0.5em"}}>{props.name}</span>
+                            </font> 
+                            
+                        </span> 
+                        
+                    </span>                                                                   
+
+                    }
+            
+                </Button>
+                :  <span style={{color:"black"}}><font color="red">0&nbsp;&nbsp;</font>{props.name}</span> 
+
+
+            }
+         
+
+            </>
+           
+               
+        );
+
+    };
+
+    
    
 
      useEffect(() => {
@@ -288,14 +324,15 @@ export default function Orominer(props){
                                         system.organs.map((organ, k) => (
                                             <>
                                                 
-                                                <Button key={k.toString()} style={{marginLeft:"1em"}}  onClick={() => toggleOrganItems(j,k)} variant="info">
+                                                <Button key={k.toString()} style={{marginLeft:"1em",backgroundColor:"#ffff66"}}  onClick={() => toggleOrganItems(j,k)} >
                                                     <div style={{position:"relative",width:"100%"}}>
-                                                        <i style={{float:"left",marginLeft:"-0.5em",marginTop:"-0.25em",transform:"scale(0.75)"}} className="bi bi-arrow-return-right"></i>
-                                                        <span style={{float:"left",marginLeft:"1.5em",textWrap:"wrap",height:"auto"}}>Organ: <font color="red">{organ.organ_name}</font></span>     
-                                                        <span style={{width:"100%",float:"left"}}>{ organ.parts.length > 0 ? <span><font color="charcoal"><b>Click to See</b></font>&nbsp;&nbsp;<font color="red">{organ.parts.length}</font> Organ Parts</span> : 
-                                                            <span><font color="red">0</font> Organ Parts</span> }</span>
-                                                        <span style={{width:"100%",float:"left"}}>{ organ.organ_layers.length > 0 ? <span><font color="charcoal"><b>Click to See</b></font>&nbsp;&nbsp;<font color="red">{organ.organ_layers.length}</font> Organ Layers</span> : 
-                                                            <span><font color="red">0</font> Organ Layers</span> }</span>
+                                                        <i style={{float:"left",marginLeft:"-0.5em",marginTop:"-0.25em",transform:"scale(0.75)",color:"black"}} className="bi bi-arrow-return-right"></i>
+                                                        <span style={{float:"left",marginLeft:"1.5em",textWrap:"wrap",height:"auto",color:"black"}}>Organ: <font color="red">{organ.organ_name}</font></span>     
+                                                        <span style={{width:"100%",float:"left"}}><ContentButton items={organ.parts} name="Organ Parts"/></span>
+                                                        <span style={{width:"100%",float:"left"}}><ContentButton items={organ.organ_layers} name="Organ Layers"/></span>
+                                                       
+                                                        
+                                                        
                                                   
                                                     </div>
                                                     
@@ -306,16 +343,14 @@ export default function Orominer(props){
                                                     Array.from(organ.parts).map((part, l) => (
                                                     <>
                                                         
-                                                        <Button  key={l.toString()} onClick={() => togglePartItems(part.showIdx)} style={{width:"20em",fontSize:"1em",marginLeft:"2em"}} variant="light" className="d-inline-flex justify-content-start inline">
+                                                        <Button  key={l.toString()} onClick={() => togglePartItems(part.showIdx)} style={{width:"20em",height:"auto",fontSize:"1em",marginLeft:"2em"}} variant="light" className="d-inline-flex justify-content-start inline">
                                                             <div style={{position:"relative",width:"100%"}}>
                                                                 <i style={{float:"left",marginLeft:"-0.5em",marginTop:"-0.25em",transform:"scale(0.75)"}} className="bi bi-arrow-return-right"></i>
                                                                 <div style={{width:"100%",float:"left",marginTop:"-3em"}}><span>Organ Part:</span><br/><font color="red">{part.name}</font></div>
-                                                                <span style={{width:"100%",float:"left"}}>{ part.contents[0].histo_layers.filter((histo_layer) => {return histo_layer.name != "null"}).length > 0 ? <span><font color="charcoal"><b>Click to See</b></font>&nbsp;&nbsp;<font color="red">{part.contents[0].histo_layers.filter((histo_layer) => {return histo_layer.name != "null"}).length}</font> Part Histo-Layers</span> : 
-                                                                <span><font color="red">0</font> Part Histo-Layers</span> }</span>
-                                                                <span style={{width:"100%",float:"left"}}>{ part.contents[0].other_structures.filter((other_structure) => {return other_structure.name != "null"}).length > 0 ? <span><font color="charcoal"><b>Click to See</b></font>&nbsp;&nbsp;<font color="red">{part.contents[0].other_structures.filter((other_structure) => {return other_structure.name != "null"}).length}</font> Part Structures</span> : 
-                                                                <span><font color="red">0</font> Part Structures</span> }</span>
-                                                                <span style={{width:"100%",float:"left"}}>{ part.contents[0].subparts.filter((subpart) => {return subpart.name != "null"}).length > 0 ? <span><font color="charcoal"><b>Click to See</b></font>&nbsp;&nbsp;<font color="red">{part.contents[0].subparts.filter((subpart) => {return subpart.name != "null"}).length}</font> Part Sub-Parts</span> : 
-                                                                <span><font color="red">0</font> Part Sub-Parts</span> }</span>
+                                                                
+                                                                <span style={{width:"100%",float:"left"}}><ContentButton items={part.contents[0].histo_layers} name="Part Histo-Layers"/></span>
+                                                                <span style={{width:"100%",float:"left"}}><ContentButton items={part.contents[0].other_structures} name="Part Structures"/></span>
+                                                                <span style={{width:"100%",float:"left"}}><ContentButton items={part.contents[0].subparts} name="Part Sub-Parts"/></span>
                                                             </div>
                                                             
                                                         </Button>
@@ -329,8 +364,13 @@ export default function Orominer(props){
                                                                     <div style={{position:"relative",width:"100%"}}>
                                                                         <i style={{float:"left",marginLeft:"-0.5em",marginTop:"-0.25em",transform:"scale(0.75)"}} className="bi bi-arrow-return-right"></i>
                                                                         <div style={{width:"100%",float:"left",marginTop:"-3em"}}><span style={{color:"black"}}>Part Histo_Layer:</span><br/><font color="red">{histo_layer.name}</font></div>
-                                                                    </div>
+                                                                       
+                                                                        <span style={{width:"100%",float:"left"}}><ContentButton items={histo_layer.content.histo_Sublayers} name="Histo_SubLayers"/></span>
+                                                                       
                                                                     
+                                                                    
+                                                                    </div>
+                                                                  
                                                                 </Button>
                                                                 {console.log("Histo Layer: ",histo_layer)}
 
