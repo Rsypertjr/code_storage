@@ -12,6 +12,8 @@ export default function Orominer(props){
     const [showOrganParts, setShowOrganParts] = useState([]);
     const [showOrganLayers, setShowOrganLayers] = useState([]);
     const [showPartContents, setShowPartContents] = useState([]);
+    const [histoLayerNode, setHistoLayerNode] = useState(false);
+    const [otherStructuresNode, setOtherStructuresNode ] = useState(false);
     
 
     const [systems, setSystems] = useState([]);
@@ -81,15 +83,25 @@ export default function Orominer(props){
         setShowPartContents(newItems4);        
     }
 
+    const getIdx = () => {
+        let idx = partContentIndexes.length;
+        //console.log("show part content length",idx);
+        partContentIndexes[idx] = false;
+        setShowPartContents(partContentIndexes);
+        return idx;
+    }
+
     const ContentButton = (props) => {
+
+
         return (
             <>
 
             {
-                props.items != "undefined" && Array.from(props.items).filter((item) => item.name != "null").length ?
-                <Button style={{width:"100%",float:"left",height:"2.5em",fontSize:"1em"}} variant="outline-info">
+                !(props.items === undefined) && Array.from(props.items).filter((item) => item.name != "null").length > 0 ?
+                <Button onClick={() => togglePartItems(props.idx)}  style={{width:"100%",float:"left",height:"2.5em",fontSize:"1em"}} variant="outline-info">
                 {
-                    props.items != "undefined" && props.items.length > 0 &&  
+                    
                     <span>
                         <span>
                             <font color="charcoal"><b>Click to See</b></font>&nbsp;&nbsp;
@@ -186,10 +198,7 @@ export default function Orominer(props){
                     let part_contents = $(part).contents();
                     //console.log("Part Contents: ",part_contents);
                     
-                    let idx = partContentIndexes.length;
-                    //console.log("show part content length",idx);
-                    partContentIndexes[idx] = false;
-                    setShowPartContents(partContentIndexes);
+                    let idx = getIdx();
 
 
                        
@@ -198,10 +207,11 @@ export default function Orominer(props){
                     Array.from(part_contents).map((content,l) => {
                         //console.log("content: ", $(content));
                         let name = $(content)[0].textContent;
-                        let desc = { "type":$(content)[0].nodeName, "name":name, "content":content };
+                        let desc;
                         let nameArr;
                         let cont;
                         let remainder;
+                        let idx;
                         partContents[i][j][k] = [];
                         
                         //console.log("Part Content: ",$(content));
@@ -209,6 +219,10 @@ export default function Orominer(props){
                         
                         switch ($(content)[0].nodeName) {
                             case "#text":
+                              
+
+                                desc = { "type":$(content)[0].nodeName, "name":name, "content":content,"other_structure_idx":getIdx()};
+
                                 other_structures.push(desc);
                                 break;
                             case "Subpart":     
@@ -217,7 +231,12 @@ export default function Orominer(props){
                                 cont = nameArr.splice(0,1);
                                 remainder = nameArr.join('<');
 
-                                desc = { "type":$(content)[0].nodeName, "name":cont[0], "content":$(content).contents() };
+                                idx = partContentIndexes.length;
+                                //console.log("show part content length",idx);
+                                partContentIndexes[idx] = false;
+                                setShowPartContents(partContentIndexes);
+                               
+                                desc = { "type":$(content)[0].nodeName, "name":cont[0], "content":$(content).contents(), "subpart_idx":getIdx() };
                                 histo_layers.push(desc);
                             
                                 subparts.push(desc);
@@ -227,12 +246,7 @@ export default function Orominer(props){
                                 nameArr = name.split('<');
                                 cont = nameArr.splice(0,1);
                                 remainder = nameArr.join('<');
-
-                                let idx = partContentIndexes.length;
-                                //console.log("show part content length",idx);
-                                partContentIndexes[idx] = false;
-                                setShowPartContents(partContentIndexes);
-
+                                
                                 let contentObj = {
                                     "histo_Sublayers":[]
                                 };
@@ -246,14 +260,17 @@ export default function Orominer(props){
                                     //console.log("sublayer contents", $(sublayer).contents());
                                     let nameArr = name.split('<');
                                     let cont = nameArr.splice(0,1);
-                                    
+                                    idx = partContentIndexes.length;
+                                    //console.log("show part content length",idx);
+                                    partContentIndexes[idx] = false;
+                                    setShowPartContents(partContentIndexes);
                                    
                 
-                                    histo_Layer_Obj.histo_Sublayers.push({"name":cont[0],"content":sublayer})
+                                    histo_Layer_Obj.histo_Sublayers.push({"name":cont[0],"content":sublayer,"histo_sublayer_idx":getIdx()})
                                 });
                                 // console.log("histo_Sublayer Obj: ", histo_Layer_Obj);
 
-                                desc = { "type":$(content)[0].nodeName, "name":cont[0], "content":histo_Layer_Obj, "showIdx":idx};
+                                desc = { "type":$(content)[0].nodeName, "name":cont[0], "content":histo_Layer_Obj, "histo_layer_idx":getIdx()};
                                 //console.log("histo_layer html/contents: ",$(content).contents());
                                 histo_layers.push(desc);
                                 break;
@@ -265,7 +282,8 @@ export default function Orominer(props){
                       
                           
                     });    
-                    p_arts.push({"name":$(part).contents()[0].nodeValue,"contents":partContents[i][j][k],"showIdx":idx});
+                    p_arts.push({"name":$(part).contents()[0].nodeValue,"contents":partContents[i][j][k],"part_idx":idx,
+                         "part_histo_layers_idx":getIdx(),"part_subparts_idx":getIdx(),"part_other_structures_idx":getIdx()});
                    
                     
                 });
@@ -324,15 +342,12 @@ export default function Orominer(props){
                                         system.organs.map((organ, k) => (
                                             <>
                                                 
-                                                <Button key={k.toString()} style={{marginLeft:"1em",backgroundColor:"#ffff66"}}  onClick={() => toggleOrganItems(j,k)} >
+                                                <Button key={k.toString()} style={{marginLeft:"1em",backgroundColor:"#e6eeff"}}  onClick={() => toggleOrganItems(j,k)} >
                                                     <div style={{position:"relative",width:"100%"}}>
                                                         <i style={{float:"left",marginLeft:"-0.5em",marginTop:"-0.25em",transform:"scale(0.75)",color:"black"}} className="bi bi-arrow-return-right"></i>
                                                         <span style={{float:"left",marginLeft:"1.5em",textWrap:"wrap",height:"auto",color:"black"}}>Organ: <font color="red">{organ.organ_name}</font></span>     
                                                         <span style={{width:"100%",float:"left"}}><ContentButton items={organ.parts} name="Organ Parts"/></span>
-                                                        <span style={{width:"100%",float:"left"}}><ContentButton items={organ.organ_layers} name="Organ Layers"/></span>
-                                                       
-                                                        
-                                                        
+                                                        <span style={{width:"100%",float:"left"}}><ContentButton items={organ.organ_layers} name="Organ Layers"/></span>  
                                                   
                                                     </div>
                                                     
@@ -343,24 +358,24 @@ export default function Orominer(props){
                                                     Array.from(organ.parts).map((part, l) => (
                                                     <>
                                                         
-                                                        <Button  key={l.toString()} onClick={() => togglePartItems(part.showIdx)} style={{width:"20em",height:"auto",fontSize:"1em",marginLeft:"2em"}} variant="light" className="d-inline-flex justify-content-start inline">
+                                                        <Button  key={l.toString()} style={{width:"20em",height:"auto",color:"black",fontSize:"1em",marginLeft:"2em",backgroundColor:"#ffe6f2"}} className="d-inline-flex justify-content-start inline">
                                                             <div style={{position:"relative",width:"100%"}}>
                                                                 <i style={{float:"left",marginLeft:"-0.5em",marginTop:"-0.25em",transform:"scale(0.75)"}} className="bi bi-arrow-return-right"></i>
                                                                 <div style={{width:"100%",float:"left",marginTop:"-3em"}}><span>Organ Part:</span><br/><font color="red">{part.name}</font></div>
                                                                 
-                                                                <span style={{width:"100%",float:"left"}}><ContentButton items={part.contents[0].histo_layers} name="Part Histo-Layers"/></span>
-                                                                <span style={{width:"100%",float:"left"}}><ContentButton items={part.contents[0].other_structures} name="Part Structures"/></span>
-                                                                <span style={{width:"100%",float:"left"}}><ContentButton items={part.contents[0].subparts} name="Part Sub-Parts"/></span>
+                                                                <span style={{width:"100%",float:"left"}}><ContentButton idx={part.part_histo_layers_idx} items={part.contents[0].histo_layers} name="Part Histo-Layers"/></span>
+                                                                <span style={{width:"100%",float:"left"}}><ContentButton idx={part.part_other_structures_idx} items={part.contents[0].other_structures} name="Part Structures"/></span>
+                                                                <span style={{width:"100%",float:"left"}}><ContentButton idx={part.part_subparts_idx} items={part.contents[0].subparts} name="Part Sub-Parts"/></span>
                                                             </div>
                                                             
                                                         </Button>
                                                         {/*console.log("Show Part SubParts: ", showPartContents[part.showIdx])*/}
                                                        
                                                         {   
-                                                           showPartContents[part.showIdx] && part.contents[0].histo_layers.length > 0 &&
+                                                           showPartContents[part.part_histo_layers_idx] && part.contents[0].histo_layers.length > 0 &&
                                                             part.contents[0].histo_layers.filter((histo_layer) => {return histo_layer.name != "null"}).map((histo_layer,m) => (
                                                             <>
-                                                                <Button key={m.toString()} onClick={() => togglePartItems(histo_layer.showIdx)} style={{width:"20em",fontSize:"1em",marginLeft:"3em",backgroundColor:"#e5ffe5"}} className="d-inline-flex justify-content-start inline">
+                                                                <Button key={m.toString()} onClick={() => togglePartItems(histo_layer.showIdx)} style={{width:"20em",fontSize:"1em",marginLeft:"3em",backgroundColor:"#e5ffe5",color:"black"}} className="d-inline-flex justify-content-start inline">
                                                                     <div style={{position:"relative",width:"100%"}}>
                                                                         <i style={{float:"left",marginLeft:"-0.5em",marginTop:"-0.25em",transform:"scale(0.75)"}} className="bi bi-arrow-return-right"></i>
                                                                         <div style={{width:"100%",float:"left",marginTop:"-3em"}}><span style={{color:"black"}}>Part Histo_Layer:</span><br/><font color="red">{histo_layer.name}</font></div>
@@ -375,10 +390,11 @@ export default function Orominer(props){
                                                                 {console.log("Histo Layer: ",histo_layer)}
 
                                                                 {   
-                                                                    showPartContents[histo_layer.showIdx] && histo_layer.content.histo_Sublayers != "undefined" && histo_layer.content.histo_Sublayers.length > 0 &&
-                                                                    histo_layer.content.histo_Sublayers.filter((histo_Sublayer) => {return histo_Sublayer.name != "null"}).map((histo_Sublayer,m) => (
+                                                                    showPartContents[histo_layer.histo_layer_idx] && histo_layer.content.histo_Sublayers != "undefined" && histo_layer.content.histo_Sublayers.length > 0 
+                                                                    &&
+                                                                    histo_layer.content.histo_Sublayers.map((histo_Sublayer,m) => (
                                                                     <>
-                                                                        <Button key={m.toString()} style={{width:"20em",fontSize:"1em",marginLeft:"4em",backgroundColor:"#f9e6ff"}} className="d-inline-flex justify-content-start inline">
+                                                                        <Button key={m.toString()} style={{width:"20em",fontSize:"1em",marginLeft:"4em",backgroundColor:"#ccffff",color:"black"}} className="d-inline-flex justify-content-start inline">
                                                                             <div style={{position:"relative",width:"100%"}}>
                                                                                 <i style={{float:"left",marginLeft:"-0.5em",marginTop:"-0.25em",transform:"scale(0.75)"}} className="bi bi-arrow-return-right"></i>
                                                                                 <div style={{width:"100%",float:"left",marginTop:"-3em"}}><span style={{color:"black"}}>Histo_SubLayers:</span><br/><font color="red">{histo_Sublayer.name}</font></div>
@@ -392,33 +408,32 @@ export default function Orominer(props){
 
 
 
-                                                                {
-
-                                                                showPartContents[part.showIdx] && part.contents[0].subparts.length > 0 &&
-                                                                part.contents[0].subparts.filter((subpart) => {return subpart.name != "null"}).map((subpart,m) => (
-                                                                <>
-                                                                    <Button key={m.toString()} style={{width:"20em",fontSize:"1em",marginLeft:"3em",backgroundColor:"#e8daef"}} className="d-inline-flex justify-content-start inline">
-                                                                        <div style={{position:"relative",width:"100%"}}>
-                                                                            <i style={{float:"left",marginLeft:"-0.5em",marginTop:"-0.25em",transform:"scale(0.75)"}} className="bi bi-arrow-return-right"></i>
-                                                                            <div style={{width:"100%",float:"left",marginTop:"-3em"}}><span style={{color:"black"}}>Part Sub-Part:</span><br/><font color="red">{subpart.name}</font></div>
-                                                                        </div>
-                                                                        
-                                                                    </Button>
-                                                                    {  }
-                                                                </>
-                                                                ))
-
-
-                                                                }
                                                             </>
                                                             ))
                                                         }
                                                          
-                                                        {   
-                                                           showPartContents[part.showIdx] && part.contents[0].other_structures.length > 0 &&
-                                                            part.contents[0].other_structures.filter((other_structure) => {return other_structure.name != "null"}).map((other_structure,m) => (
+                                                        {
+
+                                                            showPartContents[part.part_subparts_idx] && part.contents[0].subparts.length > 0  &&
+                                                            part.contents[0].subparts.filter((subpart) => {return subpart.name != "null"}).map((subpart,m) => (
                                                             <>
-                                                                <Button key={m.toString()} style={{width:"20em",fontSize:"1em",marginLeft:"3em",backgroundColor:"#eb984e"}} className="d-inline-flex justify-content-start inline">
+                                                                <Button key={m.toString()} style={{width:"20em",fontSize:"1em",marginLeft:"3em",backgroundColor:"#e8daef",color:"black"}} className="d-inline-flex justify-content-start inline">
+                                                                    <div style={{position:"relative",width:"100%"}}>
+                                                                        <i style={{float:"left",marginLeft:"-0.5em",marginTop:"-0.25em",transform:"scale(0.75)"}} className="bi bi-arrow-return-right"></i>
+                                                                        <div style={{width:"100%",float:"left",marginTop:"-3em"}}><span style={{color:"black"}}>Part Sub-Part:</span><br/><font color="red">{subpart.name}</font></div>
+                                                                    </div>
+                                                                    
+                                                                </Button>
+                                                            </>
+                                                            ))
+
+
+                                                        }
+                                                        {   
+                                                           showPartContents[part.part_other_structures_idx] && part.contents[0].other_structures.length > 0  &&
+                                                            part.contents[0].other_structures.filter((other_structure) => {return other_structure.name != "null"}).map((other_structure,n) => (
+                                                            <>
+                                                                <Button key={n.toString()} style={{width:"20em",fontSize:"1em",marginLeft:"3em",backgroundColor:" #f9ffe6",color:"black"}} className="d-inline-flex justify-content-start inline">
                                                                     <div style={{position:"relative",width:"100%"}}>
                                                                         <i style={{float:"left",marginLeft:"-0.5em",marginTop:"-0.25em",transform:"scale(0.75)"}} className="bi bi-arrow-return-right"></i>
                                                                         <div style={{width:"100%",float:"left",marginTop:"-3em"}}><span style={{color:"black"}}>Part Structures:</span><br/><font color="red">{other_structure.name}</font></div>
@@ -442,7 +457,7 @@ export default function Orominer(props){
                                                     Array.from(organ.organ_layers).map((organ_layer, l) => (
                                                     <>
                                                         
-                                                        <Button  key={l.toString()} style={{width:"20em",fontSize:"1em",marginLeft:"2em",backgroundColor:"lightGray"}}  className="d-inline-flex justify-content-start inline">
+                                                        <Button  key={l.toString()} style={{width:"20em",fontSize:"1em",marginLeft:"2em",backgroundColor:"lightGray",color:"black"}}  className="d-inline-flex justify-content-start inline">
                                                             <div style={{position:"relative",width:"100%"}}>
                                                                 <i style={{float:"left",marginLeft:"-0.5em",marginTop:"-0.25em",transform:"scale(0.75)"}} className="bi bi-arrow-return-right"></i>
                                                                 <div style={{width:"100%",float:"left",marginTop:"-3em"}}><span style={{color:"black"}}>Organ Layer:</span><br/><font color="red">{organ_layer.name}</font></div>
