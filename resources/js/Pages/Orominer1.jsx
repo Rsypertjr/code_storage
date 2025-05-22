@@ -4,11 +4,13 @@ import Card from 'react-bootstrap/Card';
 import $ from 'jquery';
 const parser = new DOMParser();
 const partContentIndexes = [];
+const organLayerIndexes = [];
+
 
 export default function Orominer(props){
     const [xmlDoc, setXmlDoc] = useState(null);
     const [systemsArr, setSystemsArr] = useState([]);
-    const [showItem, setShowItem] = useState([]);
+    const [showOrgans, setShowOrgans] = useState([]);
     const [showOrganParts, setShowOrganParts] = useState([]);
     const [showOrganLayers, setShowOrganLayers] = useState([]);
     const [showPartContents, setShowPartContents] = useState([]);
@@ -58,9 +60,9 @@ export default function Orominer(props){
     const toggleOrgans = (index) => {
         //alert(index);
         
-            const newItems2 = [...showItem];
+            const newItems2 = [...showOrgans];
             newItems2[index] = !newItems2[index];
-            setShowItem(newItems2);
+            setShowOrgans(newItems2);
     }
 
     const toggleOrganItems = (i,j) => {
@@ -83,11 +85,19 @@ export default function Orominer(props){
         setShowPartContents(newItems4);        
     }
 
-    const getIdx = () => {
+    const getPartContentIdx = () => {
         let idx = partContentIndexes.length;
         //console.log("show part content length",idx);
         partContentIndexes[idx] = false;
         setShowPartContents(partContentIndexes);
+        return idx;
+    }
+
+    const getOrganLayerIdx = () => {
+        let idx = organLayerIndexes.length;
+        //console.log("show part content length",idx);
+        organLayerIndexes[idx] = false;
+        setShowOrganLayers(partContentIndexes);
         return idx;
     }
 
@@ -152,9 +162,9 @@ export default function Orominer(props){
 
        
         systemsArr.filter((system) => {return $(system).contents()[0].nodeValue != "null"}).forEach((system,i) => {
-            const newItems = [...showItem];
+            const newItems = [...showOrgans];
             newItems[i] = false;
-            setShowItem(newItems);
+            setShowOrgans(newItems);
             partContents[i] = [];
 
 
@@ -176,13 +186,6 @@ export default function Orominer(props){
            
             Array.from(filtered_organs).forEach((organ,j) => {
                
-                 //const newItems2 = [];
-                let showParts = [];
-                let showOrganLayers = []; 
-                showParts[i] = [];
-                showOrganLayers[i] = [];
-                showParts[i][j] = false;
-                showOrganLayers[i][j] = false;
                 partContents[i][j] = [];
                 
                 let organ_contents = $(organ).contents();
@@ -190,7 +193,7 @@ export default function Orominer(props){
                 let organLayers = [];
                 Array.from($(organ).find('Organ_Layer')).map((layer) => {
                     if($(layer).text() != "null")
-                        organLayers.push({"name":$(layer).contents()[0].nodeValue});
+                        organLayers.push({"name":$(layer).contents()[0].nodeValue,"organ_layer_idx":getOrganLayerIdx()});
                 });
 
                
@@ -204,7 +207,7 @@ export default function Orominer(props){
                     let part_contents = $(part).contents();
                     //console.log("Part Contents: ",part_contents);
                     
-                    let idx = getIdx();
+                    let idx = getPartContentIdx();
 
 
                        
@@ -227,7 +230,7 @@ export default function Orominer(props){
                             case "#text":
                               
 
-                                desc = { "type":$(content)[0].nodeName, "name":name, "content":content,"other_structure_idx":getIdx()};
+                                desc = { "type":$(content)[0].nodeName, "name":name, "content":content,"other_structure_idx":getPartContentIdx()};
 
                                 other_structures.push(desc);
                                 break;
@@ -242,7 +245,7 @@ export default function Orominer(props){
                                 partContentIndexes[idx] = false;
                                 setShowPartContents(partContentIndexes);
                                
-                                desc = { "type":$(content)[0].nodeName, "name":cont[0], "content":$(content).contents(), "subpart_idx":getIdx() };
+                                desc = { "type":$(content)[0].nodeName, "name":cont[0], "content":$(content).contents(), "subpart_idx":getPartContentIdx() };
                                 histo_layers.push(desc);
                             
                                 subparts.push(desc);
@@ -272,24 +275,23 @@ export default function Orominer(props){
                                     setShowPartContents(partContentIndexes);
                                    
                 
-                                    histo_Layers_Obj.histo_Sublayers.push({"name":cont[0],"content":sublayer,"histo_sublayer_idx":getIdx()})
+                                    histo_Layers_Obj.histo_Sublayers.push({"name":cont[0],"content":sublayer,"histo_sublayer_idx":getPartContentIdx()})
                                 });
                                 // console.log("histo_Sublayer Obj: ", histo_Layer_Obj);
 
-                                desc = { "type":$(content)[0].nodeName, "name":cont[0], "content":histo_Layers_Obj, "histo_layer_idx":getIdx()};
+                                desc = { "type":$(content)[0].nodeName, "name":cont[0], "content":histo_Layers_Obj, "histo_layer_idx":getPartContentIdx()};
                                 //console.log("histo_layer html/contents: ",$(content).contents());
                                 histo_layers.push(desc);
                                 break;
                         };
                        
                         partContents[i][j][k].push({"subparts":subparts, "histo_layers":histo_layers, "other_structures":other_structures});
-                        //console.log("Part Contents: ",partContents[i][j][k]);    
-                        //console.log("Show Part Sub Parts: ",showPartSubParts);
+                        //console.log("Part Contents: ",partContents[i][j][k]);   
                       
                           
                     });    
                     p_arts.push({"name":$(part).contents()[0].nodeValue,"contents":partContents[i][j][k],"part_idx":idx,
-                         "part_histo_layers_idx":getIdx(),"part_subparts_idx":getIdx(),"part_other_structures_idx":getIdx()});
+                         "part_histo_layers_idx":getPartContentIdx(),"part_subparts_idx":getPartContentIdx(),"part_other_structures_idx":getPartContentIdx()});
                    
                     
                 });
@@ -298,9 +300,7 @@ export default function Orominer(props){
                 //setShowPartContents(showPartSubParts);
 
                
-                organArr.push({"organ_name":organ_name,"organ_layers":organLayers,"parts":p_arts}); 
-                setShowOrganLayers(showOrganLayers);
-                setShowOrganParts(showParts);
+                organArr.push({"organ_name":organ_name,"organ_layers":organLayers,"parts":p_arts,"organ_organ_layers_idx":getOrganLayerIdx(),"organ_organ_parts_idx":getOrganLayerIdx()}); 
                 
                 
             });
@@ -339,28 +339,29 @@ export default function Orominer(props){
                             systemSet.map((system, j) => (                                
                                 <>
                                 
-                                <Button key={j.toString()} variant="primary" onClick={() => toggleOrgans(j)} size="lg">{system.systemName}</Button>
+                                <Button key={j.toString()} variant="primary" onClick={() => toggleOrgans(j)} size="lg">{system.systemName}
+                                </Button>
                               
                         
                                     {
 
-                                        showItem[j] && system.organs.length > 0 &&                                                 
+                                        showOrgans[j] && system.organs.length > 0 &&                                                 
                                         system.organs.map((organ, k) => (
                                             <>
                                                 
-                                                <Button key={k.toString()} style={{marginLeft:"1em",backgroundColor:"#e6eeff"}}  onClick={() => toggleOrganItems(j,k)} >
+                                                <Button key={k.toString()} style={{marginLeft:"1em",backgroundColor:"#e6eeff",marginTop:"1.5em"}} >
                                                     <div style={{position:"relative",width:"100%"}}>
                                                         <i style={{float:"left",marginLeft:"-0.5em",marginTop:"-0.25em",transform:"scale(0.75)",color:"black"}} className="bi bi-arrow-return-right"></i>
                                                         <span style={{float:"left",marginLeft:"1.5em",textWrap:"wrap",height:"auto",color:"black"}}>Organ: <font color="red">{organ.organ_name}</font></span>     
-                                                        <span style={{width:"100%",float:"left"}}><ContentButton items={organ.parts} name="Organ Parts"/></span>
-                                                        <span style={{width:"100%",float:"left"}}><ContentButton items={organ.organ_layers} name="Organ Layers"/></span>  
+                                                        <span style={{width:"100%",float:"left"}}><ContentButton idx={organ.organ_organ_parts_idx} items={organ.parts} name="Organ Parts"/></span>
+                                                        <span style={{width:"100%",float:"left"}}><ContentButton idx={organ.organ_organ_layers_idx} items={organ.organ_layers} name="Organ Layers"/></span>  
                                                   
                                                     </div>
                                                     
                                                 </Button>
 
                                                 {
-                                                showOrganParts[j,k] && organ.parts.length > 0 &&
+                                                showPartContents[organ.organ_organ_parts_idx] && organ.parts.length > 0 &&
                                                     Array.from(organ.parts).map((part, l) => (
                                                     <>
                                                         
@@ -458,7 +459,7 @@ export default function Orominer(props){
                                                
 
                                                 {
-                                                showOrganLayers[j,k] && organ.organ_layers.length > 0 &&
+                                                showPartContents[organ.organ_organ_layers_idx] && organ.organ_layers.length > 0 &&
                                                     Array.from(organ.organ_layers).map((organ_layer, l) => (
                                                     <>
                                                         
