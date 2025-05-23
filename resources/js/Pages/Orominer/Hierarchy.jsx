@@ -346,7 +346,8 @@ export default function Hierarchy(props){
                                                 cont = nameArr.splice(0,1);
                                                 remainder = nameArr.join('<');
                                                 let histo_char_name = cont[0];
-                                                let histo_char = histo_sublayer_content;                                                
+                                                let histo_char = histo_sublayer_content;               
+                                                console.log("Histo_Char:", $(histo_char).contents());                                 
                                               
                                                 let cells_Obj = [];
                                                 let cells = $(histo_char).find("Cell");  
@@ -355,10 +356,18 @@ export default function Hierarchy(props){
                                                     cells_Obj.push({"name":$(cell)[0].textContent,"type":$(cell)[0].nodeName,"cell_idx":getPartContentIdx()});
                                                    
                                                 });
+
+                                                let ecell_Matrices_Obj = []
+                                                let Ecell_Matrices = $(histo_char).find("Ecell_Matrix");  
+                                                Array.from(Ecell_Matrices).map((ecell_matrix) => {
+                                                    
+                                                    ecell_Matrices_Obj.push({"name":$(ecell_matrix)[0].textContent,"type":$(ecell_matrix)[0].nodeName,"ecell_matirix_idx":getPartContentIdx()});
+                                                   
+                                                });
                                                
                                                
 
-                                                console.log("Cells Obj",cells_Obj);
+                                                //console.log("Cells Obj",cells_Obj);
 
                                                 //console.log("Number of Cells: ",cells_Obj.length);
 
@@ -366,9 +375,11 @@ export default function Hierarchy(props){
                                                     "type":$(histo_char)[0].nodeName,
                                                     "content":histo_char,
                                                     "cells":cells_Obj,
+                                                    "ecell_matrices":ecell_Matrices_Obj,
                                                     "name":histo_char_name,
                                                     "histo_char_idx":getPartContentIdx(),
-                                                    "histo_char_cells_idx":getPartContentIdx()
+                                                    "histo_char_cells_idx":getPartContentIdx(),
+                                                    "histo_char_ecells_matrices_idx":getPartContentIdx()
                                                 };
                                                 histo_chars_Obj.push(histo_char_Obj);
                                                 histo_sublayer_Obj.histo_chars.push(histo_char_Obj);
@@ -540,6 +551,7 @@ return (
                                                                     </Col>                                                
                                                                 </Row>   
                                                                 <Row><ContentButton idx={histo_char.histo_char_cells_idx} items={histo_char.cells} name="Cells"/></Row>
+                                                                <Row><ContentButton idx={histo_char.histo_char_ecell_matrices_idx} items={histo_char.ecell_matrices} name="Ecell_Matrix"/></Row> 
                                                             
                                                             </Container>
 
@@ -564,7 +576,25 @@ return (
                                                                 ))
                                                             }
 
-
+{   
+                                                                showPartContents[histo_char.histo_char_ecell_matrices_idx] && histo_char.ecell_matrices != "undefined" && histo_char.ecell_matrices.length > 0 
+                                                                &&
+                                                                histo_char.ecell_matrices.map((ecell_matrix,o) => (
+                                                                <>
+                                                                    <Container key={m.toString()} style={{width:"75%",fontSize:"1em",marginLeft:"7em",
+                                                                        padding:"1em",border:"2px solid black", borderRadius:"10px",backgroundColor:"f2d9d9",color:"black"}}>
+                                                                        <Row style={{marginBottom:"0.5em"}}>
+                                                                            <Col lg="2">
+                                                                                <i style={{marginLeft:"-0.25em",transform:"scale(0.75)"}} className="bi bi-arrow-return-right"></i>
+                                                                            </Col>
+                                                                            <Col lg="8" className="d-flex justify-content-start" style={{color:"black",marginLeft:"1em"}}>
+                                                                                <span>Ecell Matrix Type:</span>&nbsp;&nbsp;<span style={{color:"red"}}>{ecell_matrix.name}</span>
+                                                                            </Col>                                                
+                                                                        </Row>  
+                                                                    </Container>
+                                                                </>
+                                                                ))
+                                                            }
 
 
                                                         </>
