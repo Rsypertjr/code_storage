@@ -318,14 +318,16 @@ export default function Hierarchy(props){
                                     let histo_sublayer_name = cont[0];
                                     
                                      
-                                    let histo_sublayers_Obj = {
+                                    let histo_sublayer_Obj = {
                                         "name":histo_sublayer_name,
                                         "type":$(histo_sublayer)[0].nodeName,
                                         "histo_chars":[],
                                         "other_structures":[],
-                                        "histo_sublayer_idx":getPartContentIdx()
+                                        "content":histo_sublayer,
+                                        "histo_sublayer_idx":getPartContentIdx(),
+                                        "histo_sublayer_histo_chars_idx":getPartContentIdx()
                                     };
-                                    let histo_char_other_structures = [];
+                                    let histo_chars_Obj = [];
                                     //console.log("SubLayer Contents:",$(histo_sublayer).contents());
                                     Array.from($(histo_sublayer).contents()).map((histo_sublayer_content,n) => {
                                         
@@ -335,7 +337,7 @@ export default function Hierarchy(props){
                                                 name = $(histo_sublayer_content)[0].textContent;
                                                 desc = { "type":$(histo_sublayer_content)[0].nodeName, "name":histo_sublayer_name, "content":histo_sublayer_content,"other_structure_idx":getPartContentIdx()};
                 
-                                                histo_sublayers_Obj.other_structures.push(desc);
+                                                histo_sublayer_Obj.other_structures.push(desc);
                                                 break;                                           
                                             case "histo_Char":
                                                 name = $(histo_sublayer_content)[0].innerHTML;
@@ -345,41 +347,49 @@ export default function Hierarchy(props){
                                                 let histo_char_name = cont[0];
                                                 let histo_char = histo_sublayer_content;
                                                 
-                                               
-                                                let cells = $(histo_sublayer_content).find("Cell");   
-                                                console.log("Number of Cells: ",cells.length);
-                                                let cells_Obj = {
-                                                    "cells":[]
-                                                };
+                                                let cell_Obj = {
+                                                    "name":"",
+                                                    "type":"",
+                                                    "cell_idx":""
 
-                                                histo_sublayers_Obj
-                                               
-                                                histo_sublayers_Obj.histo_chars.push({"type":$(histo_char)[0].nodeName,"name":histo_char_name,"content":histo_char,"histo_char_idx":getPartContentIdx()});
-                                                   
-                                                
-                                                
+                                                };
+                                                let cells_Obj = [];
+                                                let cells = $(histo_sublayer_content).find("Cell");  
                                                 Array.from(cells).map((cell) => {
                                                     let name = cell.innerHTML;
                                                     //console.log("sublayer contents", $(sublayer).contents());
                                                     let nameArr = name.split('<');
                                                     let cont = nameArr.splice(0,1);
                                                     let cell_name = cont[0];
-                                                    idx = partContentIndexes.length;
-                                                    //console.log("show part content length",idx);
-                                                    partContentIndexes[idx] = false;
-                                                    setShowPartContents(partContentIndexes); 
-
-                                                    
+                                                    cell_Obj.name = cell_name;
+                                                    cell_Obj.type = $(cell)[0].nodeName;
+                                                    cell_Obj.cell_idx = getPartContentIdx();
+                                                    cells_Obj.push(cell_Obj);
                                                     //console.log("histo_Char Contents:",$(histo_char).contents());
-                                                  
                                                 });
+
+                                                //console.log("Number of Cells: ",cells_Obj.length);
+
+                                                let histo_char_Obj= {
+                                                    "type":$(histo_char)[0].nodeName,
+                                                    "content":histo_char,
+                                                    "cells":cells_Obj,
+                                                    "name":histo_char_name,
+                                                    "histo_char_idx":getPartContentIdx(),
+                                                    "histo_char_cells_idx":getPartContentIdx(),
+                                                    "cells":cells_Obj
+                                                };
+                                                histo_chars_Obj.push(histo_char_Obj);
+                                                histo_sublayer_Obj.histo_chars.push(histo_char_Obj);
+                                                
+                                              
                                                 break;
                                         };
 
                                     });
 
                                     histo_layer_Obj.name = histo_layer_name;
-                                    histo_layer_Obj.histo_sublayers.push(histo_sublayers_Obj);
+                                    histo_layer_Obj.histo_sublayers.push(histo_sublayer_Obj);
                                     histo_layer_Obj.histo_layer_idx = getPartContentIdx();
 
             
@@ -509,7 +519,7 @@ return (
                                                 &&
                                                 histo_layer.content.histo_sublayers.map((histo_sublayer,m) => (
                                                 <>
-                                                    <Container key={m.toString()} style={{width:"75%",fontSize:"1em",marginLeft:"4em",
+                                                    <Container key={m.toString()} style={{width:"75%",fontSize:"1em",marginLeft:"5em",
                                                         padding:"1em",border:"2px solid black", borderRadius:"10px",
                                                         backgroundColor:"#ccffff",color:"black"}}>
                                                         <Row style={{marginBottom:"0.5em"}}>
@@ -520,7 +530,55 @@ return (
                                                                 <span>Histo_SubLayers:</span>&nbsp;&nbsp;<span style={{color:"red"}}>{histo_sublayer.name}</span>
                                                             </Col>                                                
                                                         </Row>   
+                                                        <Row><ContentButton idx={histo_sublayer.histo_sublayer_histo_chars_idx} items={histo_sublayer.histo_chars} name="Histo_Chars"/></Row>
                                                     </Container>
+
+                                                    {   
+                                                        showPartContents[histo_sublayer.histo_sublayer_histo_chars_idx] && histo_sublayer.histo_chars != "undefined" && histo_sublayer.histo_chars.length > 0 
+                                                        &&
+                                                        histo_sublayer.histo_chars.map((histo_char,n) => (
+                                                        <>
+                                                            <Container key={m.toString()} style={{width:"75%",fontSize:"1em",marginLeft:"6em",
+                                                                padding:"1em",border:"2px solid black", borderRadius:"10px",backgroundColor:"#fff2cc",color:"black"}}>
+                                                                <Row style={{marginBottom:"0.5em"}}>
+                                                                    <Col lg="2">
+                                                                        <i style={{marginLeft:"-0.25em",transform:"scale(0.75)"}} className="bi bi-arrow-return-right"></i>
+                                                                    </Col>
+                                                                    <Col lg="8" className="d-flex justify-content-start" style={{color:"black",marginLeft:"1em"}}>
+                                                                        <span>Histo_Chars:</span>&nbsp;&nbsp;<span style={{color:"red"}}>{histo_char.name}</span>
+                                                                    </Col>                                                
+                                                                </Row>   
+                                                                <Row><ContentButton idx={histo_char.histo_char_cells_idx} items={histo_char.cells} name="Cells"/></Row>
+                                                            
+                                                            </Container>
+
+
+                                                            {   
+                                                                showPartContents[histo_char.histo_char_cells_idx] && histo_char.cells != "undefined" && histo_char.cells.length > 0 
+                                                                &&
+                                                                histo_char.cells.map((cell,o) => (
+                                                                <>
+                                                                    <Container key={m.toString()} style={{width:"75%",fontSize:"1em",marginLeft:"7em",
+                                                                        padding:"1em",border:"2px solid black", borderRadius:"10px",backgroundColor:"#ccd9ff",color:"black"}}>
+                                                                        <Row style={{marginBottom:"0.5em"}}>
+                                                                            <Col lg="2">
+                                                                                <i style={{marginLeft:"-0.25em",transform:"scale(0.75)"}} className="bi bi-arrow-return-right"></i>
+                                                                            </Col>
+                                                                            <Col lg="8" className="d-flex justify-content-start" style={{color:"black",marginLeft:"1em"}}>
+                                                                                <span>Cell:</span>&nbsp;&nbsp;<span style={{color:"red"}}>{cell.name}</span>
+                                                                            </Col>                                                
+                                                                        </Row>  
+                                                                    </Container>
+                                                                </>
+                                                                ))
+                                                            }
+
+
+
+
+                                                        </>
+                                                        ))
+                                                    }
                                                 </>
                                                 ))
                                             }
