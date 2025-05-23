@@ -310,6 +310,7 @@ export default function Hierarchy(props){
                                 let histo_sublayers = $(histo_layer).find("histo_Sublayer");   
                                 //console.log("histo_Sublayers: ",histo_sublayers);
                                
+                               
                                 Array.from(histo_sublayers).map((histo_sublayer) => {
                                     let name = histo_sublayer.innerHTML;
                                     //console.log("sublayer contents", $(sublayer).contents());
@@ -345,28 +346,19 @@ export default function Hierarchy(props){
                                                 cont = nameArr.splice(0,1);
                                                 remainder = nameArr.join('<');
                                                 let histo_char_name = cont[0];
-                                                let histo_char = histo_sublayer_content;
-                                                
-                                                let cell_Obj = {
-                                                    "name":"",
-                                                    "type":"",
-                                                    "cell_idx":""
-
-                                                };
+                                                let histo_char = histo_sublayer_content;                                                
+                                              
                                                 let cells_Obj = [];
-                                                let cells = $(histo_sublayer_content).find("Cell");  
+                                                let cells = $(histo_char).find("Cell");  
                                                 Array.from(cells).map((cell) => {
-                                                    let name = cell.innerHTML;
-                                                    //console.log("sublayer contents", $(sublayer).contents());
-                                                    let nameArr = name.split('<');
-                                                    let cont = nameArr.splice(0,1);
-                                                    let cell_name = cont[0];
-                                                    cell_Obj.name = cell_name;
-                                                    cell_Obj.type = $(cell)[0].nodeName;
-                                                    cell_Obj.cell_idx = getPartContentIdx();
-                                                    cells_Obj.push(cell_Obj);
-                                                    //console.log("histo_Char Contents:",$(histo_char).contents());
+                                                    
+                                                    cells_Obj.push({"name":$(cell)[0].textContent,"type":$(cell)[0].nodeName,"cell_idx":getPartContentIdx()});
+                                                   
                                                 });
+                                               
+                                               
+
+                                                console.log("Cells Obj",cells_Obj);
 
                                                 //console.log("Number of Cells: ",cells_Obj.length);
 
@@ -376,8 +368,7 @@ export default function Hierarchy(props){
                                                     "cells":cells_Obj,
                                                     "name":histo_char_name,
                                                     "histo_char_idx":getPartContentIdx(),
-                                                    "histo_char_cells_idx":getPartContentIdx(),
-                                                    "cells":cells_Obj
+                                                    "histo_char_cells_idx":getPartContentIdx()
                                                 };
                                                 histo_chars_Obj.push(histo_char_Obj);
                                                 histo_sublayer_Obj.histo_chars.push(histo_char_Obj);
@@ -565,7 +556,7 @@ return (
                                                                                 <i style={{marginLeft:"-0.25em",transform:"scale(0.75)"}} className="bi bi-arrow-return-right"></i>
                                                                             </Col>
                                                                             <Col lg="8" className="d-flex justify-content-start" style={{color:"black",marginLeft:"1em"}}>
-                                                                                <span>Cell:</span>&nbsp;&nbsp;<span style={{color:"red"}}>{cell.name}</span>
+                                                                                <span>Cell Type:</span>&nbsp;&nbsp;<span style={{color:"red"}}>{cell.name}</span>
                                                                             </Col>                                                
                                                                         </Row>  
                                                                     </Container>
