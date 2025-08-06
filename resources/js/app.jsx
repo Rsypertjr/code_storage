@@ -1,5 +1,6 @@
 import './bootstrap';
 import '../css/app.css';
+import '../css/style8.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import '../css/portfolio.css';
 import '../css/orominer1.css';

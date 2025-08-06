@@ -3,20 +3,22 @@ import { Container, Row, Col, Nav, Navbar, CardText, Tooltip, OverlayTrigger, Bu
 import Card from 'react-bootstrap/Card';
 import $ from 'jquery';
 const parser = new DOMParser();
-const partContentIndexes = [];
+const itemIndexes = [];
 const organLayerIndexes = [];
 
 
 export default function Hierarchy(props){
     const [xmlDoc, setXmlDoc] = useState(null);
     const [systemsArr, setSystemsArr] = useState([]);
-    const [showOrgans, setShowOrgans] = useState([]);
+    const [showSystemOrgans, setShowSystemOrgans] = useState([]);  // to Toggle Display of System Organs
     const [showOrganParts, setShowOrganParts] = useState([]);
     const [showOrganLayers, setShowOrganLayers] = useState([]);
-    const [showPartContents, setShowPartContents] = useState([]);
+    const [showItemContents, setShowItemContents] = useState([]);
     const [histoLayerNode, setHistoLayerNode] = useState(false);
     const [otherStructuresNode, setOtherStructuresNode ] = useState(false);
-    
+    const [systemReference, setSystemReference] = useState({});
+    const [systemReferenceArr, setSystemReferenceArr] = useState([]);
+
 
     const [systems, setSystems] = useState([]);
     const [allSystems,setAllSystems] = useState([]);
@@ -33,16 +35,10 @@ export default function Hierarchy(props){
 
         axios.get('/getxmlfile')
         .then(function (response) {
-            let xmlData = response.data;
-         
-            //console.log("xmlData: ",xmlData);
-          
+            let xmlData = response.data;         
             let xml_doc = parser.parseFromString(xmlData,'text/xml');
             let systems = $(xml_doc).find('System');
             setSystems(systems);
-            //console.log("Systems: ",systems);
-            //console.log("xmlDoc: ",xml_doc);
-            //console.log("Systems: ",Array.from(systems));
             setXmlDoc(xml_doc);
             setSystemsArr(Array.from(systems));
         });
@@ -53,143 +49,129 @@ export default function Hierarchy(props){
        
      }
 
-    const toggleOrgans = (index) => {
+    const openSystemOrgans = (index) => {
         //alert(index);
         
-            const newItems2 = [...showOrgans];
+            const newItems2 = [...showSystemOrgans];
             newItems2[index] = !newItems2[index];
-            setShowOrgans(newItems2);
+            setShowSystemOrgans(newItems2);
     }
 
-    const toggleOrganItems = (i,j) => {
-        //alert(index);    
-        const newItems2 = [...showOrganParts];
-        newItems2[i,j] = !newItems2[i,j];
-        setShowOrganParts(newItems2);
-
-
-        const newItems3 = [...showOrganLayers];
-        newItems3[i,j] = !newItems3[i,j];
-        setShowOrganLayers(newItems3);
-    }
-
-
-    const togglePartItems = (idx) => {
-        console.log("Selected Index:", idx);
-        const newItems4 = [...showPartContents];
+    const showItems = (idx) => {
+        const newItems4 = [...showItemContents];
         newItems4[idx] = !newItems4[idx];
-        setShowPartContents(newItems4);        
+        setShowItemContents(newItems4);    // Set boolean variable used for toggling show of Part Items    
     }
 
-    const getPartContentIdx = () => {
-        let idx = partContentIndexes.length;
-        //console.log("show part content length",idx);
-        partContentIndexes[idx] = false;
-        setShowPartContents(partContentIndexes);
+    const getItemIdx = () => {
+        let idx = itemIndexes.length;
+        itemIndexes[idx] = false;
+        setShowItemContents(itemIndexes);  // Set boolean  variable used for toggling show of Part Content
         return idx;
     }
 
     const getOrganLayerIdx = () => {
         let idx = organLayerIndexes.length;
-        //console.log("show part content length",idx);
         organLayerIndexes[idx] = false;
-        setShowOrganLayers(partContentIndexes);
+        setShowOrganLayers(organLayerIndexes);
         return idx;
     }
 
+    const useReferenceObject = (s_i,o_i=null,p_i=null,hl_i=null,hsl_i=null,hc_i=null) => {
+        let system_ref = {};
+        system_ref.system_index = s_i;
+        system_ref.organ_index = o_i;
+        system_ref.part_index = p_i;
+        system_ref.histo_layer_index = hl_i;
+        system_ref.histo_sublayer_index = hsl_i;
+        system_ref.histo_char_index = hc_i;
+        setSystemReference(system_ref);
+            
+        console.log("System Reference Object:",system_ref);
+    }
+
+
     const ContentButton = (props) => {
 
-
+        //console.log("Content Button Props:", props);
         return (
             <>
-
             {
-                !(props.items === undefined) && Array.from(props.items).filter((item) => item.name != "null").length > 0 ?
-                <Button onClick={() => togglePartItems(props.idx)}  style={{width:"100%",float:"left",height:"2.5em",fontSize:"1em"}} variant="light">
-                {
-                    
+                !(props.items === undefined) && Array.from(props.items).filter((item) => item.name != "null").length > 0 
+                ?        
+                /* If items exist: show open/close button, number of items, open/close icon  */       
+                <Button style={{width:"100%",float:"left",height:"2.5em",fontSize:"1em"}} variant="light">
+                {                   
                     <div style={{position:"relative",width:"100%"}}>
                         <span style={{float:"left",width:"80%",fontSize:"0.9em",color:"#800080"}}>
-                            {!showPartContents[props.idx] && <span style={{color:"green"}}><b>Click to See&nbsp;&nbsp;</b></span>}
-                            {showPartContents[props.idx] && <span><b>Click to Close&nbsp;&nbsp;</b></span>}
+                            {/* Open or Close */}
+                            {!showItemContents[props.idx] && <span style={{color:"green"}}><b>Click to See&nbsp;&nbsp;</b></span>}
+                            {showItemContents[props.idx] && <span><b>Click to Close&nbsp;&nbsp;</b></span>}
+
+                            {/* How many to Open or Close */}
                             <font color="red">
                                 { props.items.filter((item) => item.name != "null" ).length}
                                 <span style={{color:"black",marginLeft:"0.5em"}}>{props.name}</span>
                             </font> 
                             
                         </span> 
+                        {/* Open or Close Icon */}
                         <span style={{float:"right",width:"20%",transform:"scale(0.75)",marginTop:"-38px",marginLeft:"5px",color:"#800080"}}>
-                            {!showPartContents[props.idx] && <span style={{color:"green"}}><i className="bi bi-box-arrow-in-down"></i></span>}
-                            {showPartContents[props.idx] && <i className="bi bi-x"></i>}
+                            {!showItemContents[props.idx] && <span style={{color:"green"}}><i className="bi bi-box-arrow-in-down"></i></span>}
+                            {showItemContents[props.idx] && <i className="bi bi-x"></i>}
                         </span>                      
                     </div>                                                                   
 
                     }
             
                 </Button>
-                :   <Container className="d-flex justify-content-center" style={{color:"black",padding:"0.5em",margin:"0.25em 0",border:"1px solid white",borderRadius:"5px",backgroundColor:"white"}}>
-                        <span ><font color="red">0&nbsp;&nbsp;</font>{props.name}</span>
-                    </Container> 
-
-
-            }
-         
-
+                :   
+                /* If not items, show 0 items */
+                <Container className="d-flex justify-content-center" style={{color:"black",padding:"0.5em",margin:"0.25em 0",border:"1px solid white",borderRadius:"5px",backgroundColor:"white"}}>
+                    <span ><font color="red">0&nbsp;&nbsp;</font>{props.name}</span>
+                </Container> 
+            }  
             </>
-           
-               
         );
-
     };
 
 
     const SystemContentButton = (props) => {
-
-
+       // console.log("System Content Button props:", props);
         return (
             <>
-
             {
-                !(props.items === undefined) && Array.from(props.items).filter((item) => item.name != "null").length > 0 ?
-                <Button onClick={() => toggleOrgans(props.idx)}  style={{width:"100%",float:"left",height:"2.5em",fontSize:"1em"}} variant="light">
+                !(props.items === undefined) && Array.from(props.items).filter((item) => item.name != "null").length > 0 
+                ?
+                /* If system organs exit:  show open/close, number of them, open/close icon  */
+                <Button style={{width:"100%",float:"left",height:"2.5em",fontSize:"1em"}} variant="light">
                 {
-                    
                     <div style={{position:"relative",width:"100%"}}>
+                        {/* Open or Close */}
                         <span style={{float:"left",width:"80%",fontSize:"0.9em"}}>
-                            {!showOrgans[props.idx] && <span style={{color:"green"}}><b>Click to See&nbsp;&nbsp;</b></span>}
-                            {showOrgans[props.idx] && <span style={{color:"#800080"}}><b>Click to Close&nbsp;&nbsp;</b></span>}
+                            {!showSystemOrgans[props.idx] && <span style={{color:"green"}}><b>Click to See&nbsp;&nbsp;</b></span>}
+                            {showSystemOrgans[props.idx] && <span style={{color:"#800080"}}><b>Click to Close&nbsp;&nbsp;</b></span>}
                             <font color="red">
                                 { props.items.filter((item) => item.name != "null" ).length}
                                 <span style={{color:"black",marginLeft:"0.5em"}}>{props.name}</span>
-                            </font> 
-                            
+                            </font>                             
                         </span> 
+                        {/* Open or Close Icon */}
                         <span style={{float:"right",width:"20%",transform:"scale(0.75)",marginTop:"-38px",marginLeft:"5px",color:"#800080"}}>
-                            {!showOrgans[props.idx] && <span style={{color:"green"}}><i className="bi bi-box-arrow-in-down"></i></span>}
-                            {showOrgans[props.idx] && <i className="bi bi-x"></i>}
+                            {!showSystemOrgans[props.idx] && <span style={{color:"green"}}><i className="bi bi-box-arrow-in-down"></i></span>}
+                            {showSystemOrgans[props.idx] && <i className="bi bi-x"></i>}
                         </span>                      
-                    </div>                                                                   
-
-                    }
-            
+                    </div>   
+                }            
                 </Button>
-                :   <Container className="d-flex justify-content-center" style={{color:"black",padding:"0.5em",margin:"0.25em 0",border:"1px solid white",borderRadius:"5px",backgroundColor:"white"}}>
-                        <span ><font color="red">0&nbsp;&nbsp;</font>{props.name}</span>
-                    </Container> 
-
-
-            }
-         
-
+                :   
+                <Container className="d-flex justify-content-center" style={{color:"black",padding:"0.5em",margin:"0.25em 0",border:"1px solid white",borderRadius:"5px",backgroundColor:"white"}}>
+                    <span ><font color="red">0&nbsp;&nbsp;</font>{props.name}</span>
+                </Container> 
+            }  
             </>
-           
-               
         );
-
     };
-
-
-    
    
 
      useEffect(() => {
@@ -199,74 +181,93 @@ export default function Hierarchy(props){
 
      useEffect(() => {
 
-        let setArr = [];
-      
-        let partContents = [];
-        
+        let setArr = [];      
+        let partContents = [];        
+        let systemsRefArr = [];
        
-        systemsArr.filter((system) => {return $(system).contents()[0].nodeValue != "null"}).forEach((system,i) => {
-            const newItems = [...showOrgans];
+        systemsArr.filter((system) => {return $(system).contents()[0].nodeValue != "null"})
+        .forEach((system,i) => {
+
+            // Initialize Systems not the show Organs
+            const newItems = [...showSystemOrgans];
             newItems[i] = false;
-            setShowOrgans(newItems);
+            setShowSystemOrgans(newItems);
             partContents[i] = [];
+            systemsRefArr[i] = {};         
 
-
-            let item = {"systemName":"","organs":[]};
-            //item.systemName = Array.from(system.childNodes).map((node) => { return node.nodeName == "#text" ?  node.nodeValue :  null  })
-            let sys = $(system);
-            //console.log("Check: ",sys[0].childNodes);
-            item.systemName = sys[0].childNodes[0].nodeValue;
-            // let sys = [...systems];
+            let item = {"systemName":"","organs":[]};  // Item Object for system and its organs
+            let sys = $(system);  // Get system and its children
+            item.systemName = sys[0].childNodes[0].nodeValue;  // Get system name
+            systemsRefArr[i].system_name = item.systemName;
+            // Get organs for the system
             let organs = Array.from(sys[0].childNodes).map((node) =>  { return node.nodeName == "Organ" ? node : null});
-            //console.log(item.systemName +" Organs:",organs);
+
             let organArr = [];
-            let partArr = [];
-           
+            let partArr = [];        
+            
+            // Filter out organs with a null value
             let filtered_organs = Array.from(organs).filter((organ) => {
                 return $(organ).val() != null;
             });
-            //console.log("Filtered Organs: ", filtered_organs);
            
+            systemsRefArr[i].organs = [];
             Array.from(filtered_organs).forEach((organ,j) => {
                
                 partContents[i][j] = [];
-                
-                let organ_contents = $(organ).contents();
-                let organ_name  = $(organ).contents()[0].nodeValue;
-                let organLayers = [];
+                systemsRefArr[i].organs[j] = {};
+                let organ_contents = $(organ).contents(); // Get contents for each organ
+                let organ_name  = $(organ).contents()[0].nodeValue;  // Get name for the organ              
+                systemsRefArr[i].organs[j].organ_name = organ_name;
+                // Find Organ Layers and build array for them
+                // use getOrganLayerIdx() for a unique organ_layer_idx
+
+                let organLayers = []; 
+                systemsRefArr[i].organs[j].organ_layers = [];
                 Array.from($(organ).find('Organ_Layer')).map((layer) => {
-                    if($(layer).text() != "null")
-                        organLayers.push({"name":$(layer).contents()[0].nodeValue,"organ_layer_idx":getOrganLayerIdx()});
+                    if($(layer).text() != "null"){
+                        organLayers.push({"name":$(layer).contents()[0].nodeValue,"organ_layer_idx":getItemIdx()}); 
+                        systemsRefArr[i].organs[j].organ_layers.push({});
+                        let length = systemsRefArr[i].organs[j].organ_layers.length;
+                        systemsRefArr[i].organs[j].organ_layers[length-1].organ_layer_name = $(layer).contents()[0].nodeValue;
+                    }
                 });
 
-               
+                
+
+                // Find Parts from Organ
                 let p_arts = []; 
+                systemsRefArr[i].organs[j].parts = [];
                 let find_parts = $(organ).find("Part");
-                Array.from(find_parts).map((part,k) => {                    
-                 
-                    let subparts = [];
-                    let histo_layers = [];
-                    let part_contents = $(part).contents();
-                    //console.log("Part Contents: ",part_contents);
-                    
-                    let idx = getPartContentIdx();
+                // Find Part Contents from Part
+                Array.from(find_parts).map((part,k) => {                       
+                    let subparts = []; // Will hold Subparts
+                    let histo_layers = [];  // Will hold Histo Layers
+                    let part_other_structures = [];  // Will hold Other Structures
+
+                    // Building Reference Object
+                    systemsRefArr[i].organs[j].parts[k] = {};
+                    systemsRefArr[i].organs[j].parts[k].part_name = $(part).contents()[0].nodeValue;
+
+                    systemsRefArr[i].organs[j].parts[k].subparts = [];
+                    systemsRefArr[i].organs[j].parts[k].histo_layers = [];
+                    systemsRefArr[i].organs[j].parts[k].part_other_structures = [];
 
 
-                       
+                    let part_contents = $(part).contents();  // Content of each Part
+                    let idx = getItemIdx();  // Provides unique number for part_idx later on                       
                         
-                    let part_other_structures = [];
+                    // Get other structures, histo layers, and subparts from Part Contents
+                   
                     Array.from(part_contents).map((part_content,l) => {
-                        //console.log("content: ", $(part_content));
                         let name;
                         let desc;
                         let nameArr;
                         let cont;
-                        let remainder;
+                        //let remainder;
                         let idx;
                         partContents[i][j][k] = [];
                         
-                        //console.log("Part Content: ",$(content));
-                      
+                        // Define Histo Layer Obj to hold Histo Sublayer contents
                         let histo_layer_Obj = {
                             "name":"",
                             "histo_sublayers":[],
@@ -277,9 +278,15 @@ export default function Hierarchy(props){
                                
                                 let other_structure_name = $(part_content)[0].textContent;
                                 let other_structure = part_content;
-                                desc = { "type":$(part_content)[0].nodeName, "name":other_structure_name, "content":other_structure,"other_structure_idx":getPartContentIdx()};
+                                // getPartContentIdx provides unique number for other_structure_idx
+                                desc = { "type":$(part_content)[0].nodeName, "name":other_structure_name, "content":other_structure,"other_structure_idx":getItemIdx()};
 
                                 part_other_structures.push(desc);
+
+                                // Build Reference Object
+                                if(other_structure_name !== 'null')
+                                    systemsRefArr[i].organs[j].parts[k].part_other_structures.push({"other_structure_name":other_structure_name}); 
+
                                 break;
                             case "Subpart":     
                                 name = $(part_content)[0].innerHTML;
@@ -287,133 +294,190 @@ export default function Hierarchy(props){
                                 cont = nameArr.splice(0,1);
                                 let subpart = part_content;
                                 let subpart_name = cont[0];
-                                remainder = nameArr.join('<');
+                                //remainder = nameArr.join('<');
 
-                                idx = partContentIndexes.length;
-                                //console.log("show part content length",idx);
-                                partContentIndexes[idx] = false;
-                                setShowPartContents(partContentIndexes);
-                               
-                                desc = { "type":$(subpart)[0].nodeName, "name":subpart_name, "content":$(subpart).contents(), "subpart_idx":getPartContentIdx() };
-                                histo_layers.push(desc);
-                            
+                                idx = getItemIdx();
+                                
+                                // Subpart description and contents
+                                desc = { 
+                                    "type":$(subpart)[0].nodeName, 
+                                    "name":subpart_name, 
+                                    "content":$(subpart).contents(), 
+                                    "subpart_idx":getItemIdx() 
+                                };
                                 subparts.push(desc);
+
+                                // Build Reference Object
+                                if(subpart_name !== 'null')
+                                    systemsRefArr[i].organs[j].parts[k].subparts.push({"subpart_name":subpart_name}); 
+
                                 break;
                             case "histo_Layer":
                                 name = $(part_content)[0].innerHTML;
                                 nameArr = name.split('<');
                                 cont = nameArr.splice(0,1);
-                                remainder = nameArr.join('<');
+                                //remainder = nameArr.join('<');
+
                                 let histo_layer = part_content;
-                                let histo_layer_name = cont[0];
-                                
+                                let histo_layer_name = cont[0];   
+                                let length;
+                                // Build Reference Object
+                                if(histo_layer_name !== 'null'){
+                                    systemsRefArr[i].organs[j].parts[k].histo_layers.push({"histo_layer_name":histo_layer_name}); 
+                                    length = systemsRefArr[i].organs[j].parts[k].histo_layers.length;
+                                    systemsRefArr[i].organs[j].parts[k].histo_layers[length - 1] = {"histo_sublayers":[]};
+
+                                }
+
                                 let histo_sublayers = $(histo_layer).find("histo_Sublayer");   
-                                //console.log("histo_Sublayers: ",histo_sublayers);
-                               
-                               
+                                
+
+                                // Get histo sublayers from histo layer
                                 Array.from(histo_sublayers).map((histo_sublayer) => {
                                     let name = histo_sublayer.innerHTML;
-                                    //console.log("sublayer contents", $(sublayer).contents());
                                     let nameArr = name.split('<');
                                     let cont = nameArr.splice(0,1);
-                                    let histo_sublayer_name = cont[0];
+                                    let histo_sublayer_name = cont[0];                                    
                                     
-                                     
+                                    systemsRefArr[i].organs[j].parts[k].histo_layers[length - 1].histo_sublayers.push({"histo_sublayer_name":name});
+                                    let length2 = systemsRefArr[i].organs[j].parts[k].histo_layers[length - 1].histo_sublayers.length;
+                                    systemsRefArr[i].organs[j].parts[k].histo_layers[length - 1].histo_sublayers[length2 - 1] = {"histo_chars":[],
+                                        "other_structures":[]
+                                    };
+
+
+                                    // Define Object for Histo Sublayer to hold name, histo_chars, other_structures, and its own content
+                                    // getPartContentIdx() is used for unique id's
                                     let histo_sublayer_Obj = {
                                         "name":histo_sublayer_name,
                                         "type":$(histo_sublayer)[0].nodeName,
                                         "histo_chars":[],
                                         "other_structures":[],
                                         "content":histo_sublayer,
-                                        "histo_sublayer_idx":getPartContentIdx(),
-                                        "histo_sublayer_histo_chars_idx":getPartContentIdx()
+                                        "histo_sublayer_idx":getItemIdx(),
+                                        "histo_sublayer_histo_chars_idx":getItemIdx()
                                     };
-                                    let histo_chars_Obj = [];
-                                    //console.log("SubLayer Contents:",$(histo_sublayer).contents());
+
+                                  
+                                    let histo_chars_Arr = [];  // Will hold Histo Chars
+                                    
+                                    // Get histo chars from histo sublayer
                                     Array.from($(histo_sublayer).contents()).map((histo_sublayer_content,n) => {
                                         
                                         switch ($(histo_sublayer_content)[0].nodeName) {
-                                            case "#text":
-                                              
+                                            case "#text":                                              
                                                 name = $(histo_sublayer_content)[0].textContent;
-                                                desc = { "type":$(histo_sublayer_content)[0].nodeName, "name":histo_sublayer_name, "content":histo_sublayer_content,"other_structure_idx":getPartContentIdx()};
+                                                desc = { "type":$(histo_sublayer_content)[0].nodeName, "name":histo_sublayer_name, "content":histo_sublayer_content,"other_structure_idx":getItemIdx()};
                 
                                                 histo_sublayer_Obj.other_structures.push(desc);
+
+                                                // Build Reference Object
+                                                systemsRefArr[i].organs[j].parts[k].histo_layers[length - 1].histo_sublayers[length2 - 1].other_structures
+                                                    .push({"other_structures_name": name});
+
                                                 break;                                           
                                             case "histo_Char":
                                                 name = $(histo_sublayer_content)[0].innerHTML;
                                                 nameArr = name.split('<');
                                                 cont = nameArr.splice(0,1);
-                                                remainder = nameArr.join('<');
+                                                //remainder = nameArr.join('<');
                                                 let histo_char_name = cont[0];
-                                                let histo_char = histo_sublayer_content;               
-                                                console.log("Histo_Char:", $(histo_char).contents());                                 
-                                              
+                                                let histo_char = histo_sublayer_content;                                   
+                                               
+                                                // Build Reference Object
+                                                systemsRefArr[i].organs[j].parts[k].histo_layers[length - 1].histo_sublayers[length2 - 1].histo_chars
+                                                    .push({}); 
+
+                                                let length3 = systemsRefArr[i].organs[j].parts[k].histo_layers[length - 1].histo_sublayers[length2 - 1]
+                                                  .histo_chars.length;
+
+                                                systemsRefArr[i].organs[j].parts[k].histo_layers[length - 1].histo_sublayers[length2 - 1]
+                                                  .histo_chars[length3 - 1] = {
+                                                    "cells": [],
+                                                    "ecell_matrices":[],
+                                                    "histo_char_name": histo_char_name
+                                                  };
+                                                
+
+
+                                                // Find cells from Histo Char and build Cells array
+                                                // getPartContentIdx() provides unique id for the cell
                                                 let cells_Obj = [];
                                                 let cells = $(histo_char).find("Cell");  
-                                                Array.from(cells).map((cell) => {
-                                                    
-                                                    cells_Obj.push({"name":$(cell)[0].textContent,"type":$(cell)[0].nodeName,"cell_idx":getPartContentIdx()});
+                                                Array.from(cells).map((cell) => {   
+                                                    let name = $(cell)[0].textContent; 
+
+                                                    if(name !== null || name !== 'null'){
+                                                         cells_Obj.push({"name":name,"type":$(cell)[0].nodeName,"cell_idx":getItemIdx()});
+
+                                                         // Build Reference Object
+                                                         systemsRefArr[i].organs[j].parts[k].histo_layers[length - 1].histo_sublayers[length2 - 1]
+                                                            .histo_chars[length3 - 1].cells.push({"cell_name":name});
+                                                     }                                            
                                                    
                                                 });
 
+                                                // Find Ecell-Matrix from Histo Char and build Cells array
+                                                // getPartContentIdx() provides unique id for the Ecell-Matrix
                                                 let ecell_Matrices_Obj = []
                                                 let Ecell_Matrices = $(histo_char).find("Ecell_Matrix");  
-                                                Array.from(Ecell_Matrices).map((ecell_matrix) => {
-                                                    
-                                                    ecell_Matrices_Obj.push({"name":$(ecell_matrix)[0].textContent,"type":$(ecell_matrix)[0].nodeName,"ecell_matirix_idx":getPartContentIdx()});
+                                                Array.from(Ecell_Matrices).map((ecell_matrix) => {   
+                                                    let name = $(ecell_matrix)[0].textContent;   
+                                                    if(name !== null || name !== 'null'){
+                                                        ecell_Matrices_Obj.push({"name":name,"type":$(ecell_matrix)[0].nodeName,"ecell_matirix_idx":getItemIdx()});                                                   
+                                                       
+                                                        // Build Reference Object
+                                                        systemsRefArr[i].organs[j].parts[k].histo_layers[length - 1].histo_sublayers[length2 - 1]
+                                                            .histo_chars[length3 - 1].ecell_matrices.push({"ecell_matrix_name":name});
+                                                    }                                          
                                                    
                                                 });
                                                
-                                               
-
-                                                //console.log("Cells Obj",cells_Obj);
-
-                                                //console.log("Number of Cells: ",cells_Obj.length);
-
+                                                // Build Histo Char Object with its contents of: cells, ecell_matrices
+                                                // getPartContentIdx() provides unique id for the Ecell-Matrix
+                                                // Push object(s) into Histo Chars Obj, and Histo Sublayer Obj
                                                 let histo_char_Obj= {
                                                     "type":$(histo_char)[0].nodeName,
                                                     "content":histo_char,
                                                     "cells":cells_Obj,
                                                     "ecell_matrices":ecell_Matrices_Obj,
                                                     "name":histo_char_name,
-                                                    "histo_char_idx":getPartContentIdx(),
-                                                    "histo_char_cells_idx":getPartContentIdx(),
-                                                    "histo_char_ecells_matrices_idx":getPartContentIdx()
+                                                    "histo_char_idx":getItemIdx(),
+                                                    "histo_char_cells_idx":getItemIdx(),
+                                                    "histo_char_ecells_matrices_idx":getItemIdx()
                                                 };
-                                                histo_chars_Obj.push(histo_char_Obj);
-                                                histo_sublayer_Obj.histo_chars.push(histo_char_Obj);
-                                                
-                                              
+                                                histo_chars_Arr.push(histo_char_Obj);
+                                                histo_sublayer_Obj.histo_chars.push(histo_char_Obj); 
+
                                                 break;
                                         };
 
                                     });
-
+                                    // Push into Larger Histo Layer Object
                                     histo_layer_Obj.name = histo_layer_name;
                                     histo_layer_Obj.histo_sublayers.push(histo_sublayer_Obj);
-                                    histo_layer_Obj.histo_layer_idx = getPartContentIdx();
+                                    histo_layer_Obj.histo_layer_idx = getItemIdx();
 
             
 
                                 });
-                                 //console.log("histo_sublayers_Obj: ", histo_layers_Obj);
-
-
-
-                                desc = { "type":$(histo_layer)[0].nodeName, "name":histo_layer_name, "content":histo_layer_Obj, "histo_layer_idx":getPartContentIdx()};
-                                //console.log("histo_layer html/contents: ",$(content).contents());
+                        
+                                desc = { 
+                                    "type":$(histo_layer)[0].nodeName, 
+                                    "name":histo_layer_name, 
+                                    "content":histo_layer_Obj, 
+                                    "histo_layer_idx":getItemIdx()
+                                };
                                 histo_layers.push(desc);
                                 break;
                         };
                        
                         partContents[i][j][k].push({"subparts":subparts, "histo_layers":histo_layers, "other_structures":part_other_structures});
-                        //console.log("Part Contents: ",partContents[i][j][k]);   
                       
                           
                     });    
                     p_arts.push({"name":$(part).contents()[0].nodeValue,"contents":partContents[i][j][k],"part_idx":idx,
-                         "part_histo_layers_idx":getPartContentIdx(),"part_subparts_idx":getPartContentIdx(),"part_other_structures_idx":getPartContentIdx()});
+                         "part_histo_layers_idx":getItemIdx(),"part_subparts_idx":getItemIdx(),"part_other_structures_idx":getItemIdx()});
                    
                     
                 });
@@ -421,8 +485,7 @@ export default function Hierarchy(props){
                         
                 //setShowPartContents(showPartSubParts);
 
-               
-                organArr.push({"organ_name":organ_name,"organ_layers":organLayers,"parts":p_arts,"organ_organ_layers_idx":getOrganLayerIdx(),"organ_organ_parts_idx":getOrganLayerIdx()}); 
+                organArr.push({"organ_name":organ_name,"organ_layers":organLayers,"parts":p_arts,"organ_organ_layers_idx":getItemIdx(),"organ_organ_parts_idx":getItemIdx()}); 
                 
                 
             });
@@ -431,34 +494,33 @@ export default function Hierarchy(props){
             setArr.push(item);
     
 
-
         });
-        console.log("SystemSet: ", setArr);
-        console.log("Show ORgan Parts: ",showOrganParts);
         setSystemSet(setArr);
-
+        console.log("System Set:", setArr);
+        console.log("System Object:", systemsRefArr);
+        setSystemReferenceArr(systemsRefArr);
      },[systemsArr,systems]);
 
 return (
-    <>
     <Container className="d-grid gap-1">
         {              
         systemsArr != null && systemsArr.length > 0 &&                                
-        systemSet.map((system, j) => (                                
+        systemSet.map((system, s_i) => (                                
         <>
             
-            <Container key={j.toString()} style={{width:"75%",marginLeft:"1em",padding:"1.5em",backgroundColor:"#ffff99",
+            <Container key={s_i.toString()} style={{width:"75%",marginLeft:"1em",padding:"1.5em",backgroundColor:"#ffff99",
                                 border:"2px solid black", borderRadius:"10px",marginTop:"1.5em"}} >
-                <Row><p>System:&nbsp;&nbsp;<span style={{color:"red"}}>{system.systemName}</span></p></Row>                     
-                <Row><SystemContentButton idx={j} items={system.organs} name="System Organs"/></Row>  
+                                    
+                <Row><p className="d-flex justify-content-center">System:&nbsp;&nbsp;<span style={{color:"red"}}>{system.systemName}</span></p></Row>                     
+                <Row onClick={() => openSystemOrgans(s_i)}><SystemContentButton idx={s_i} items={system.organs} name="System Organs"/></Row>  
 
             </Container>      
                 {
-                    showOrgans[j] && system.organs.length > 0 &&                                                 
-                    system.organs.map((organ, k) => (
+                    showSystemOrgans[s_i] && system.organs.length > 0 &&                                                 
+                    system.organs.map((organ, o_i) => (
                         <>
                             
-                            <Container key={k.toString()} style={{width:"75%",marginLeft:"2em",padding:"1.5em",backgroundColor:"#e6eeff",
+                            <Container key={o_i.toString()} style={{width:"75%",marginLeft:"2em",padding:"1.5em",backgroundColor:"#e6eeff",
                                 border:"2px solid black", borderRadius:"10px",marginTop:"1em",marginBottom:"1em"}} >
                                 <Row>
                                     <Col lg="2">
@@ -469,16 +531,16 @@ return (
                                     </Col>
                                     
                                 </Row>                                 
-                                <Row><ContentButton idx={organ.organ_organ_parts_idx} items={organ.parts} name="Organ Parts"/></Row>
-                                <Row><ContentButton idx={organ.organ_organ_layers_idx} items={organ.organ_layers} name="Organ Layers"/></Row>  
+                                <Row onMouseDown={() => showItems(organ.organ_organ_parts_idx)} onMouseUp={() => useReferenceObject(s_i,o_i)}><ContentButton system_idx={s_i} organ_idx={o_i} idx={organ.organ_organ_parts_idx} items={organ.parts} name="Organ Parts"/></Row>
+                                <Row onMouseDown={() => showItems(organ.organ_organ_layers_idx)} onMouseUp={() => useReferenceObject(s_i,o_i)}><ContentButton system_idx={s_i} organ_idx={o_i} idx={organ.organ_organ_layers_idx} items={organ.organ_layers} name="Organ Layers"/></Row>  
                             </Container>
 
                             {
-                            showPartContents[organ.organ_organ_parts_idx] && organ.parts.length > 0 &&
-                                Array.from(organ.parts).map((part, l) => (
+                            showItemContents[organ.organ_organ_parts_idx] && organ.parts.length > 0 &&
+                                Array.from(organ.parts).map((part, p_i) => (
                                 <>
                                     
-                                    <Container  key={l.toString()} style={{width:"75%",height:"auto",color:"black",fontSize:"1em",marginBottom:"1em",
+                                    <Container  key={p_i.toString()} style={{width:"75%",height:"auto",color:"black",fontSize:"1em",marginBottom:"1em",
                                         border:"2px solid black", borderRadius:"10px",padding:"1.5em",marginLeft:"3em",marginTop:"1em",backgroundColor:"#ffe6f2"}} >
                                             <Row>
                                                 <Col lg="2">
@@ -489,20 +551,16 @@ return (
                                                 </Col>
                                               
                                             </Row> 
-                                            {console.log("Part Contents:", part.contents)}
-                                            <Row><ContentButton idx={part.part_histo_layers_idx} items={part.contents[0].histo_layers} name="Part Histo-Layers"/></Row>
-                                            <Row><ContentButton idx={part.part_other_structures_idx} items={part.contents[0].other_structures} name="Part Structures"/></Row>
-                                            <Row><ContentButton idx={part.part_subparts_idx} items={part.contents[0].subparts} name="Part Sub-Parts"/></Row>
-                                       
-                                        
-                                    </Container>
-                                    {/*console.log("Show Part SubParts: ", showPartContents[part.showIdx])*/}
+                                            <Row onMouseDown={() => showItems(part.part_histo_layers_idx)} onMouseUp={() => useReferenceObject(s_i,o_i,p_i)}><ContentButton system_idx={s_i} organ_idx={o_i} organ_parts_idx={p_i} idx={part.part_histo_layers_idx} items={part.contents[0].histo_layers} name="Part Histo-Layers"/></Row>
+                                            <Row onMouseDown={() => showItems(part.part_other_structures_idx)} onMouseUp={() => useReferenceObject(s_i,o_i,p_i)}><ContentButton system_idx={s_i} organ_idx={o_i} organ_parts_idx={p_i} idx={part.part_other_structures_idx} items={part.contents[0].other_structures} name="Part Structures"/></Row>
+                                            <Row onMouseDown={() => showItems(part.part_subparts_idx)} onMouseUp={() => useReferenceObject(s_i,o_i,p_i)}><ContentButton system_idx={s_i} organ_idx={o_i} organ_parts_idx={p_i} idx={part.part_subparts_idx} items={part.contents[0].subparts} name="Part Sub-Parts"/></Row>
+                                    </Container>                                    
                                 
                                     {   
-                                    showPartContents[part.part_histo_layers_idx] && part.contents[0].histo_layers.length > 0 &&
-                                        part.contents[0].histo_layers.filter((histo_layer) => {return histo_layer.name != "null"}).map((histo_layer,m) => (
+                                    showItemContents[part.part_histo_layers_idx] && part.contents[0].histo_layers.length > 0 &&
+                                        part.contents[0].histo_layers.filter((histo_layer) => {return histo_layer.name != "null"}).map((histo_layer,hl_i) => (
                                         <>
-                                            <Container key={m.toString()} style={{width:"75%",fontSize:"1.0em",padding:"1.5em",marginLeft:"4em",border:"2px solid black", borderRadius:"10px",
+                                            <Container key={hl_i.toString()} style={{width:"75%",fontSize:"1.0em",padding:"1.5em",marginLeft:"4em",border:"2px solid black", borderRadius:"10px",
                                                 marginTop:"1em",backgroundColor:"#e5ffe5",
                                                 color:"black"}}>
                                                 <Row style={{marginBottom:"0.5em"}}>
@@ -513,15 +571,16 @@ return (
                                                         <span>Part Histo_Layer:</span>&nbsp;&nbsp;<span style={{color:"red"}}>{histo_layer.name}</span>
                                                     </Col>                                                
                                                 </Row>            
-                                                <Row><ContentButton idx={histo_layer.histo_layer_idx} items={histo_layer.content.histo_sublayers} name="Histo_SubLayers"/></Row>
+                                                <Row onMouseDown={() => showItems(histo_layer.histo_layer_idx)} onMouseUp={() => useReferenceObject(s_i,o_i,p_i,hl_i)}><ContentButton system_idx={s_i} organ_idx={o_i} organ_parts_idx={p_i} histo_layer_idx={hl_i}
+                                                    idx={histo_layer.histo_layer_idx} items={histo_layer.content.histo_sublayers} name="Histo_Sublayers"/></Row>
                                              </Container>
 
                                             {   
-                                                showPartContents[histo_layer.histo_layer_idx] && histo_layer.content.histo_sublayers != "undefined" && histo_layer.content.histo_sublayers.length > 0 
+                                                showItemContents[histo_layer.histo_layer_idx] && histo_layer.content.histo_sublayers != "undefined" && histo_layer.content.histo_sublayers.length > 0 
                                                 &&
-                                                histo_layer.content.histo_sublayers.map((histo_sublayer,m) => (
+                                                histo_layer.content.histo_sublayers.map((histo_sublayer,hsl_i) => (
                                                 <>
-                                                    <Container key={m.toString()} style={{width:"75%",fontSize:"1em",marginLeft:"5em",
+                                                    <Container key={hsl_i.toString()} style={{width:"75%",fontSize:"1em",marginLeft:"5em",
                                                         padding:"1em",border:"2px solid black", borderRadius:"10px",
                                                         backgroundColor:"#ccffff",color:"black"}}>
                                                         <Row style={{marginBottom:"0.5em"}}>
@@ -532,15 +591,17 @@ return (
                                                                 <span>Histo_SubLayers:</span>&nbsp;&nbsp;<span style={{color:"red"}}>{histo_sublayer.name}</span>
                                                             </Col>                                                
                                                         </Row>   
-                                                        <Row><ContentButton idx={histo_sublayer.histo_sublayer_histo_chars_idx} items={histo_sublayer.histo_chars} name="Histo_Chars"/></Row>
+                                                        <Row onMouseDown={() => showItems(histo_sublayer.histo_sublayer_histo_chars_idx)} onMouseUp={() => useReferenceObject(s_i,o_i,p_i,hl_i,hsl_i)}><ContentButton system_idx={s_i} organ_idx={o_i} organ_parts_idx={p_i} histo_layer_idx={hl_i} 
+                                                               histo_sublayer_idx={hsl_i}
+                                                               idx={histo_sublayer.histo_sublayer_histo_chars_idx} items={histo_sublayer.histo_chars} name="Histo_Chars"/></Row>
                                                     </Container>
 
                                                     {   
-                                                        showPartContents[histo_sublayer.histo_sublayer_histo_chars_idx] && histo_sublayer.histo_chars != "undefined" && histo_sublayer.histo_chars.length > 0 
+                                                        showItemContents[histo_sublayer.histo_sublayer_histo_chars_idx] && histo_sublayer.histo_chars != "undefined" && histo_sublayer.histo_chars.length > 0 
                                                         &&
-                                                        histo_sublayer.histo_chars.map((histo_char,n) => (
+                                                        histo_sublayer.histo_chars.map((histo_char,hc_i) => (
                                                         <>
-                                                            <Container key={m.toString()} style={{width:"75%",fontSize:"1em",marginLeft:"6em",
+                                                            <Container key={hc_i.toString()} style={{width:"75%",fontSize:"1em",marginLeft:"6em",
                                                                 padding:"1em",border:"2px solid black", borderRadius:"10px",backgroundColor:"#fff2cc",color:"black"}}>
                                                                 <Row style={{marginBottom:"0.5em"}}>
                                                                     <Col lg="2">
@@ -550,18 +611,22 @@ return (
                                                                         <span>Histo_Chars:</span>&nbsp;&nbsp;<span style={{color:"red"}}>{histo_char.name}</span>
                                                                     </Col>                                                
                                                                 </Row>   
-                                                                <Row><ContentButton idx={histo_char.histo_char_cells_idx} items={histo_char.cells} name="Cells"/></Row>
-                                                                <Row><ContentButton idx={histo_char.histo_char_ecell_matrices_idx} items={histo_char.ecell_matrices} name="Ecell_Matrix"/></Row> 
+                                                                <Row onMouseDown={() => showItems(histo_char.histo_char_cells_idx)} onMouseUp={() => useReferenceObject(s_i,o_i,p_i,hl_i,hsl_i,hc_i)}><ContentButton system_idx={s_i} organ_idx={o_i} organ_parts_idx={p_i} histo_layer_idx={hl_i} 
+                                                                    histo_sublayer_idx={hsl_i} histo_chars_idx={hc_i}
+                                                                    idx={histo_char.histo_char_cells_idx} items={histo_char.cells} name="Cells"/></Row>
+                                                                <Row onClick={() => showItems(histo_char.histo_char_ecells_matrices_idx)} onMouseUp={() => useReferenceObject(s_i,o_i,p_i,hl_i,hsl_i,hc_i)} ><ContentButton system_idx={s_i} organ_idx={o_i} organ_parts_idx={p_i} histo_layer_idx={hl_i} 
+                                                                    histo_sublayer_idx={hsl_i} histo_chars_idx={hc_i}
+                                                                    idx={histo_char.histo_char_ecells_matrices_idx} items={histo_char.ecell_matrices} name="Ecell_Matrix"/></Row> 
                                                             
                                                             </Container>
 
 
                                                             {   
-                                                                showPartContents[histo_char.histo_char_cells_idx] && histo_char.cells != "undefined" && histo_char.cells.length > 0 
+                                                                showItemContents[histo_char.histo_char_cells_idx] && histo_char.cells != "undefined" && histo_char.cells.length > 0 
                                                                 &&
-                                                                histo_char.cells.map((cell,o) => (
+                                                                histo_char.cells.map((cell,hcc_i) => (
                                                                 <>
-                                                                    <Container key={m.toString()} style={{width:"75%",fontSize:"1em",marginLeft:"7em",
+                                                                    <Container key={hcc_i.toString()} style={{width:"75%",fontSize:"1em",marginLeft:"7em",
                                                                         padding:"1em",border:"2px solid black", borderRadius:"10px",backgroundColor:"#ccd9ff",color:"black"}}>
                                                                         <Row style={{marginBottom:"0.5em"}}>
                                                                             <Col lg="2">
@@ -576,12 +641,12 @@ return (
                                                                 ))
                                                             }
 
-{   
-                                                                showPartContents[histo_char.histo_char_ecell_matrices_idx] && histo_char.ecell_matrices != "undefined" && histo_char.ecell_matrices.length > 0 
+                                                                {   
+                                                                showItemContents[histo_char.histo_char_ecells_matrices_idx] && histo_char.ecell_matrices != "undefined" && histo_char.ecell_matrices.length > 0 
                                                                 &&
-                                                                histo_char.ecell_matrices.map((ecell_matrix,o) => (
+                                                                histo_char.ecell_matrices.map((ecell_matrix,hce_i) => (
                                                                 <>
-                                                                    <Container key={m.toString()} style={{width:"75%",fontSize:"1em",marginLeft:"7em",
+                                                                    <Container key={hce_i.toString()} style={{width:"75%",fontSize:"1em",marginLeft:"7em",
                                                                         padding:"1em",border:"2px solid black", borderRadius:"10px",backgroundColor:"f2d9d9",color:"black"}}>
                                                                         <Row style={{marginBottom:"0.5em"}}>
                                                                             <Col lg="2">
@@ -613,7 +678,7 @@ return (
                                     
                                     {
 
-                                        showPartContents[part.part_subparts_idx] && part.contents[0].subparts.length > 0  &&
+                                        showItemContents[part.part_subparts_idx] && part.contents[0].subparts.length > 0  &&
                                         part.contents[0].subparts.filter((subpart) => {return subpart.name != "null"}).map((subpart,m) => (
                                         <>
                                             <Container key={m.toString()} style={{width:"20em",fontSize:"1em",marginLeft:"4em",padding:"1em",border:"2px solid black", borderRadius:"10px",
@@ -634,11 +699,11 @@ return (
 
                                     }
                                     {   
-                                    showPartContents[part.part_other_structures_idx] && part.contents[0].other_structures.length > 0  &&
+                                    showItemContents[part.part_other_structures_idx] && part.contents[0].other_structures.length > 0  &&
                                         part.contents[0].other_structures.filter((other_structure) => {return other_structure.name != "null"}).map((other_structure,n) => (
                                         <>
                                             <Container key={n.toString()} style={{width:"20em",fontSize:"1em",marginLeft:"4em",marginTop:"1em",marginBottom:"1em",
-                                            padding:"1em",border:"2px solid black", borderRadius:"10px",
+                                                padding:"1em",border:"2px solid black", borderRadius:"10px",
                                                 backgroundColor:" #f9ffe6",color:"black"}}>
 
                                                 <Row style={{marginBottom:"0.5em"}}>
@@ -652,22 +717,18 @@ return (
                                             </Container>
                                         </>
                                         ))
-                                    }
-
-                                
+                                    }                                
                                 </>
                                 ))
-                            
-
                             }
                         
 
                             {
-                            showPartContents[organ.organ_organ_layers_idx] && organ.organ_layers.length > 0 &&
+                            showItemContents[organ.organ_organ_layers_idx] && organ.organ_layers.length > 0 &&
                                 Array.from(organ.organ_layers).map((organ_layer, l) => (
                                 <>
                                     
-                                    <Button  key={l.toString()} style={{width:"20em",fontSize:"1em",marginLeft:"3em",padding:"1em",border:"2px solid black", borderRadius:"10px",
+                                    <Button key={l.toString()} style={{width:"20em",fontSize:"1em",marginLeft:"3em",padding:"1em",border:"2px solid black", borderRadius:"10px",
                                         backgroundColor:"lightGray",color:"black"}}  className="d-inline-flex justify-content-start inline">
                                         <div style={{position:"relative",width:"100%"}}>
                                             <i style={{float:"left",marginLeft:"-0.5em",marginTop:"-0.25em",transform:"scale(0.75)"}} className="bi bi-arrow-return-right"></i>
@@ -702,7 +763,6 @@ return (
         ))                        
     } 
     </Container>
-    </>
     );
 
 

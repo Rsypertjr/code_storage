@@ -26,12 +26,8 @@ export default function Orominer(props){
             </Row>
             <Row style={{height:"90%",width:"100%"}}>
                 <Col id ="harchframe" className="w-100 p-0">
-                    <span id=""  className="w-100 d-flex justify-content-center">Hierarchy Display</span>
-                   
-                    <div style={ headerStyle}>                     
-                       <Hierarchy/>
-                     
-                    </div>
+                    <span id="" style={headerStyle} className="w-100 d-flex justify-content-center">Hierarchy Display</span>
+                    <Hierarchy/>   
                 </Col>
                 <Col id="grphframe1" className="w-100 p-0">
                     <Row className="h-10">
