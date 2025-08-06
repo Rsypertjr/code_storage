@@ -77,17 +77,10 @@ export default function Hierarchy(props){
         return idx;
     }
 
-    const useReferenceObject = (s_i,o_i=null,p_i=null,hl_i=null,hsl_i=null,hc_i=null) => {
-        let system_ref = {};
-        system_ref.system_index = s_i;
-        system_ref.organ_index = o_i;
-        system_ref.part_index = p_i;
-        system_ref.histo_layer_index = hl_i;
-        system_ref.histo_sublayer_index = hsl_i;
-        system_ref.histo_char_index = hc_i;
-        setSystemReference(system_ref);
+    const useReferenceObject = (obj) => {
+       
             
-        console.log("System Reference Object:",system_ref);
+        console.log("System Reference Object:",obj);
     }
 
 
@@ -500,10 +493,12 @@ export default function Hierarchy(props){
         console.log("System Object:", systemsRefArr);
         setSystemReferenceArr(systemsRefArr);
      },[systemsArr,systems]);
+     let args;
 
 return (
     <Container className="d-grid gap-1">
-        {              
+        {          
+            
         systemsArr != null && systemsArr.length > 0 &&                                
         systemSet.map((system, s_i) => (                                
         <>
@@ -530,9 +525,27 @@ return (
                                         <span>Organ: </span>&nbsp;&nbsp;<span style={{color:"red"}}>{organ.organ_name}</span>
                                     </Col>
                                     
-                                </Row>                                 
-                                <Row onMouseDown={() => showItems(organ.organ_organ_parts_idx)} onMouseUp={() => useReferenceObject(s_i,o_i)}><ContentButton system_idx={s_i} organ_idx={o_i} idx={organ.organ_organ_parts_idx} items={organ.parts} name="Organ Parts"/></Row>
-                                <Row onMouseDown={() => showItems(organ.organ_organ_layers_idx)} onMouseUp={() => useReferenceObject(s_i,o_i)}><ContentButton system_idx={s_i} organ_idx={o_i} idx={organ.organ_organ_layers_idx} items={organ.organ_layers} name="Organ Layers"/></Row>  
+                                </Row>    
+                                
+                                                           
+                                <Row onMouseDown={() => showItems(organ.organ_organ_parts_idx)} onMouseUp={() => useReferenceObject({
+                                    "system_index":s_i,
+                                    "organ_index":o_i,
+                                    "parts":organ.parts.filter((part) => part.name !== 'null').map((part) => { return { "part_name": part.name}}),
+                                    "idx":organ.organ_organ_parts_idx,
+                                    "open":[...showItemContents][organ.organ_organ_parts_idx]
+                                    })}>
+                                    <ContentButton system_idx={s_i} organ_idx={o_i} idx={organ.organ_organ_parts_idx} items={organ.parts} name="Organ Parts"/>
+                                </Row>
+                                <Row onMouseDown={() => showItems(organ.organ_organ_layers_idx)} onMouseUp={() => useReferenceObject({
+                                    "system_index":s_i,
+                                    "organ_index":o_i,
+                                    "organ_layers":organ.organ_layers.filter((organ_layer) => organ_layer !== 'null').map((organ_layer) => { return {"organ_layer_name": organ_layer.name}}),
+                                    "idx":organ.organ_organ_layers_idx,
+                                    "open":[...showItemContents][organ.organ_organ_layers_idx]
+                                    })}>
+                                    <ContentButton system_idx={s_i} organ_idx={o_i} idx={organ.organ_organ_layers_idx} items={organ.organ_layers} name="Organ Layers"/>
+                                </Row>  
                             </Container>
 
                             {
@@ -551,9 +564,37 @@ return (
                                                 </Col>
                                               
                                             </Row> 
-                                            <Row onMouseDown={() => showItems(part.part_histo_layers_idx)} onMouseUp={() => useReferenceObject(s_i,o_i,p_i)}><ContentButton system_idx={s_i} organ_idx={o_i} organ_parts_idx={p_i} idx={part.part_histo_layers_idx} items={part.contents[0].histo_layers} name="Part Histo-Layers"/></Row>
-                                            <Row onMouseDown={() => showItems(part.part_other_structures_idx)} onMouseUp={() => useReferenceObject(s_i,o_i,p_i)}><ContentButton system_idx={s_i} organ_idx={o_i} organ_parts_idx={p_i} idx={part.part_other_structures_idx} items={part.contents[0].other_structures} name="Part Structures"/></Row>
-                                            <Row onMouseDown={() => showItems(part.part_subparts_idx)} onMouseUp={() => useReferenceObject(s_i,o_i,p_i)}><ContentButton system_idx={s_i} organ_idx={o_i} organ_parts_idx={p_i} idx={part.part_subparts_idx} items={part.contents[0].subparts} name="Part Sub-Parts"/></Row>
+                                            <Row onMouseDown={() => showItems(part.part_histo_layers_idx)} onMouseUp={() => useReferenceObject({
+                                                "system_index":s_i,
+                                                "organ_index":o_i,
+                                                "part_index":p_i,
+                                                "histo_layers":part.contents[0].histo_layers.filter((histo_layer) => histo_layer.name !== 'null')
+                                                    .map((histo_layer) => { return {"histo_layer_name": histo_layer.name }}),
+                                                "idx":part.part_histo_layers_idx,
+                                                "open":[...showItemContents][part.part_histo_layers_idx]
+                                            })}>
+                                                <ContentButton system_idx={s_i} organ_idx={o_i} organ_parts_idx={p_i} idx={part.part_histo_layers_idx} items={part.contents[0].histo_layers} name="Part Histo-Layers"/>
+                                            </Row>
+                                            <Row onMouseDown={() => showItems(part.part_other_structures_idx)} onMouseUp={() => useReferenceObject({
+                                                 "system_index":s_i,
+                                                 "organ_index":o_i,
+                                                 "part_index":p_i,
+                                                 "other_structures":part.contents[0].other_structures.filter((structure) => structure.name !== 'null')
+                                                    .map((structure) => { return { "other_structure_name":structure.name}}),
+                                                 "idx":part.part_other_structures_idx,
+                                                 "open":[...showItemContents][part.part_other_structures_idx]
+                                            })}>
+                                                <ContentButton system_idx={s_i} organ_idx={o_i} organ_parts_idx={p_i} idx={part.part_other_structures_idx} items={part.contents[0].other_structures} name="Part Structures"/>
+                                            </Row>
+                                            <Row onMouseDown={() => showItems(part.part_subparts_idx)} onMouseUp={() => useReferenceObject({
+                                                 "system_index":s_i,
+                                                 "organ_index":o_i,
+                                                 "part_index":p_i,
+                                                 "subparts":part.contents[0].subparts.filter((subpart) =>  subpart.name !== 'null').map((subpart) => {return {"subpart_name": subpart.name}}),
+                                                 "idx":part.part_subparts_idx,
+                                                 "open":[...showItemContents][part.part_subparts_idx]
+
+                                            })}><ContentButton system_idx={s_i} organ_idx={o_i} organ_parts_idx={p_i} idx={part.part_subparts_idx} items={part.contents[0].subparts} name="Part Sub-Parts"/></Row>
                                     </Container>                                    
                                 
                                     {   
@@ -571,8 +612,19 @@ return (
                                                         <span>Part Histo_Layer:</span>&nbsp;&nbsp;<span style={{color:"red"}}>{histo_layer.name}</span>
                                                     </Col>                                                
                                                 </Row>            
-                                                <Row onMouseDown={() => showItems(histo_layer.histo_layer_idx)} onMouseUp={() => useReferenceObject(s_i,o_i,p_i,hl_i)}><ContentButton system_idx={s_i} organ_idx={o_i} organ_parts_idx={p_i} histo_layer_idx={hl_i}
-                                                    idx={histo_layer.histo_layer_idx} items={histo_layer.content.histo_sublayers} name="Histo_Sublayers"/></Row>
+                                                <Row onMouseDown={() => showItems(histo_layer.histo_layer_idx)} onMouseUp={() => useReferenceObject({
+                                                    "system_index":s_i,
+                                                    "organ_index":o_i,
+                                                    "part_index":p_i,
+                                                    "histo_layer_index":hl_i,
+                                                    "idx":histo_layer.histo_layer_idx,
+                                                    "open":[...showItemContents][histo_layer.histo_layer_idx],
+                                                    "histo_sublayers":histo_layer.content.histo_sublayers.filter((histo_sublayer) => histo_sublayer.name !== 'null')
+                                                        .map((histo_sublayer) => { return {"histo_sublayer_name": histo_sublayer.name}})
+                                                })}>
+                                                    <ContentButton system_idx={s_i} organ_idx={o_i} organ_parts_idx={p_i} histo_layer_idx={hl_i}
+                                                    idx={histo_layer.histo_layer_idx} items={histo_layer.content.histo_sublayers} name="Histo_Sublayers"/>
+                                                </Row>
                                              </Container>
 
                                             {   
@@ -591,9 +643,21 @@ return (
                                                                 <span>Histo_SubLayers:</span>&nbsp;&nbsp;<span style={{color:"red"}}>{histo_sublayer.name}</span>
                                                             </Col>                                                
                                                         </Row>   
-                                                        <Row onMouseDown={() => showItems(histo_sublayer.histo_sublayer_histo_chars_idx)} onMouseUp={() => useReferenceObject(s_i,o_i,p_i,hl_i,hsl_i)}><ContentButton system_idx={s_i} organ_idx={o_i} organ_parts_idx={p_i} histo_layer_idx={hl_i} 
+                                                        <Row onMouseDown={() => showItems(histo_sublayer.histo_sublayer_histo_chars_idx)} onMouseUp={() => useReferenceObject({
+                                                            "system_index":s_i,
+                                                            "organ_index":o_i,
+                                                            "part_index":p_i,
+                                                            "histo_layer_index":hl_i,
+                                                            "histo_sublayer_index":hsl_i,  
+                                                            "idx":histo_sublayer.histo_sublayer_histo_chars_idx,                                                          
+                                                            "open":[...showItemContents][histo_sublayer.histo_sublayer_histo_chars_idx],
+                                                            "histo_chars": histo_sublayer.histo_chars.filter((histo_char) => histo_char.name !== 'null')
+                                                                .map((histo_char) => { return {"histo_char_name": histo_char.name} })
+                                                        })}>
+                                                            <ContentButton system_idx={s_i} organ_idx={o_i} organ_parts_idx={p_i} histo_layer_idx={hl_i} 
                                                                histo_sublayer_idx={hsl_i}
-                                                               idx={histo_sublayer.histo_sublayer_histo_chars_idx} items={histo_sublayer.histo_chars} name="Histo_Chars"/></Row>
+                                                               idx={histo_sublayer.histo_sublayer_histo_chars_idx} items={histo_sublayer.histo_chars} name="Histo_Chars"/>
+                                                        </Row>
                                                     </Container>
 
                                                     {   
@@ -611,10 +675,36 @@ return (
                                                                         <span>Histo_Chars:</span>&nbsp;&nbsp;<span style={{color:"red"}}>{histo_char.name}</span>
                                                                     </Col>                                                
                                                                 </Row>   
-                                                                <Row onMouseDown={() => showItems(histo_char.histo_char_cells_idx)} onMouseUp={() => useReferenceObject(s_i,o_i,p_i,hl_i,hsl_i,hc_i)}><ContentButton system_idx={s_i} organ_idx={o_i} organ_parts_idx={p_i} histo_layer_idx={hl_i} 
+                                                                <Row onMouseDown={() => showItems(histo_char.histo_char_cells_idx)} onMouseUp={() => useReferenceObject({
+                                                                        "system_index":s_i,
+                                                                        "organ_index":o_i,
+                                                                        "part_index":p_i,
+                                                                        "histo_layer_index":hl_i,
+                                                                        "histo_sublayer_index":hsl_i,
+                                                                        "histo_chars_index":hc_i,
+                                                                        "idx":histo_char.histo_char_cells_idx,
+                                                                        "open":[...showItemContents][histo_char.histo_char_cells_idx],
+                                                                        "cells": histo_char.cells.filter((cell) => cell.name !== 'null').map((cell) => { return { "cell_name":cell.name                                                                             
+                                                                        }})
+
+                                                                })}>
+                                                                    <ContentButton system_idx={s_i} organ_idx={o_i} organ_parts_idx={p_i} histo_layer_idx={hl_i} 
                                                                     histo_sublayer_idx={hsl_i} histo_chars_idx={hc_i}
-                                                                    idx={histo_char.histo_char_cells_idx} items={histo_char.cells} name="Cells"/></Row>
-                                                                <Row onClick={() => showItems(histo_char.histo_char_ecells_matrices_idx)} onMouseUp={() => useReferenceObject(s_i,o_i,p_i,hl_i,hsl_i,hc_i)} ><ContentButton system_idx={s_i} organ_idx={o_i} organ_parts_idx={p_i} histo_layer_idx={hl_i} 
+                                                                    idx={histo_char.histo_char_cells_idx} items={histo_char.cells} name="Cells"/>
+                                                                </Row>
+                                                                <Row onClick={() => showItems(histo_char.histo_char_ecells_matrices_idx)} onMouseUp={() => useReferenceObject({
+                                                                        "system_index":s_i,
+                                                                        "organ_index":o_i,
+                                                                        "part_index":p_i,
+                                                                        "histo_layer_index":hl_i,
+                                                                        "histo_sublayer_index":hsl_i,
+                                                                        "histo_chars_index":hc_i,
+                                                                        "idx":histo_char.histo_char_ecells_matrices_idx,
+                                                                        "open":[...showItemContents][histo_char.histo_char_ecells_matrices_idx],
+                                                                        "ecell_matrices": histo_char.ecell_matrices.filter((ecell_matrix) => ecell_matrix.name !== 'null').map((ecell_matrix) =>
+                                                                             { return { "ecell_matrix_name":ecell_matrix.name                                                                             
+                                                                        }})
+                                                                })} ><ContentButton system_idx={s_i} organ_idx={o_i} organ_parts_idx={p_i} histo_layer_idx={hl_i} 
                                                                     histo_sublayer_idx={hsl_i} histo_chars_idx={hc_i}
                                                                     idx={histo_char.histo_char_ecells_matrices_idx} items={histo_char.ecell_matrices} name="Ecell_Matrix"/></Row> 
                                                             
