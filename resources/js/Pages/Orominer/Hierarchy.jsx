@@ -5,11 +5,15 @@ import $ from 'jquery';
 const parser = new DOMParser();
 const itemIndexes = [];
 const organLayerIndexes = [];
+let local_systems;
+let systemsArr = [];
+let systemReferenceArr = [];
+let systems = [];
 
 
 export default function Hierarchy(props){
     const [xmlDoc, setXmlDoc] = useState(null);
-    const [systemsArr, setSystemsArr] = useState([]);
+    //const [systemsArr, setSystemsArr] = useState([]);
     const [showSystemOrgans, setShowSystemOrgans] = useState([]);  // to Toggle Display of System Organs
     const [showOrganParts, setShowOrganParts] = useState([]);
     const [showOrganLayers, setShowOrganLayers] = useState([]);
@@ -17,10 +21,8 @@ export default function Hierarchy(props){
     const [histoLayerNode, setHistoLayerNode] = useState(false);
     const [otherStructuresNode, setOtherStructuresNode ] = useState(false);
     const [systemReference, setSystemReference] = useState({});
-    const [systemReferenceArr, setSystemReferenceArr] = useState([]);
-
-
-    const [systems, setSystems] = useState([]);
+   // const [systemReferenceArr, setSystemReferenceArr] = useState([]);
+    //const [systems, setSystems] = useState([]);
     const [allSystems,setAllSystems] = useState([]);
     const [systemSet, setSystemSet ] = useState([
         {
@@ -29,18 +31,17 @@ export default function Hierarchy(props){
         }
     ]);
     
-
-    
+     
      const getXML = () => {
 
         axios.get('/getxmlfile')
         .then(function (response) {
             let xmlData = response.data;         
             let xml_doc = parser.parseFromString(xmlData,'text/xml');
-            let systems = $(xml_doc).find('System');
-            setSystems(systems);
+            let s_ystems = $(xml_doc).find('System');
+            systems = s_ystems;
             setXmlDoc(xml_doc);
-            setSystemsArr(Array.from(systems));
+            systemsArr = Array.from(systems);
         });
      };
 
@@ -78,10 +79,13 @@ export default function Hierarchy(props){
     }
 
     const useReferenceObject = (obj) => {
-       
-            
-        console.log("System Reference Object:",obj);
-    }
+        console.log("use:",obj);
+
+        let local_obj = Object.assign({},obj);
+
+        props.useReferenceObject(local_obj,showItemContents);
+
+    };
 
 
     const ContentButton = (props) => {
@@ -177,6 +181,7 @@ export default function Hierarchy(props){
         let setArr = [];      
         let partContents = [];        
         let systemsRefArr = [];
+        let organ_name = '';
        
         systemsArr.filter((system) => {return $(system).contents()[0].nodeValue != "null"})
         .forEach((system,i) => {
@@ -202,15 +207,16 @@ export default function Hierarchy(props){
             let filtered_organs = Array.from(organs).filter((organ) => {
                 return $(organ).val() != null;
             });
-           
+         
             systemsRefArr[i].organs = [];
             Array.from(filtered_organs).forEach((organ,j) => {
                
                 partContents[i][j] = [];
                 systemsRefArr[i].organs[j] = {};
                 let organ_contents = $(organ).contents(); // Get contents for each organ
-                let organ_name  = $(organ).contents()[0].nodeValue;  // Get name for the organ              
+                organ_name = organ_contents[0].textContent;  // Get name for the organ              
                 systemsRefArr[i].organs[j].organ_name = organ_name;
+                systemsRefArr[i].organs[j].organ_idx = getItemIdx();
                 // Find Organ Layers and build array for them
                 // use getOrganLayerIdx() for a unique organ_layer_idx
 
@@ -222,6 +228,7 @@ export default function Hierarchy(props){
                         systemsRefArr[i].organs[j].organ_layers.push({});
                         let length = systemsRefArr[i].organs[j].organ_layers.length;
                         systemsRefArr[i].organs[j].organ_layers[length-1].organ_layer_name = $(layer).contents()[0].nodeValue;
+                        systemsRefArr[i].organs[j].organ_layers[length-1].organ_layer_idx = getItemIdx();
                     }
                 });
 
@@ -240,7 +247,7 @@ export default function Hierarchy(props){
                     // Building Reference Object
                     systemsRefArr[i].organs[j].parts[k] = {};
                     systemsRefArr[i].organs[j].parts[k].part_name = $(part).contents()[0].nodeValue;
-
+                    systemsRefArr[i].organs[j].parts[k].parts_idx = getItemIdx();
                     systemsRefArr[i].organs[j].parts[k].subparts = [];
                     systemsRefArr[i].organs[j].parts[k].histo_layers = [];
                     systemsRefArr[i].organs[j].parts[k].part_other_structures = [];
@@ -482,21 +489,23 @@ export default function Hierarchy(props){
                
                         
                 //setShowPartContents(showPartSubParts);
-
-                organArr.push({"organ_name":organ_name,"organ_layers":organLayers,"parts":p_arts,"organ_organ_layers_idx":getItemIdx(),"organ_organ_parts_idx":getItemIdx()}); 
+                organArr.push({"organ_name":organ_name,"organ_layers":organLayers,"parts":p_arts, "organ_idx":getItemIdx(),"organ_organ_layers_idx":getItemIdx(),"organ_organ_parts_idx":getItemIdx()}); 
                 
                 
             });
            
             item.organs = organArr;
+            console.log("Check Item", item);
             setArr.push(item);
     
 
         });
         setSystemSet(setArr);
-        console.log("System Set:", setArr);
-        console.log("System Object:", systemsRefArr);
-        setSystemReferenceArr(systemsRefArr);
+        local_systems = Object.assign([], setArr);   
+        console.log("System Set Array:", setArr);
+        console.log("Systems Reference Array:", systemsRefArr);
+        systemReferenceArr = systemsRefArr;
+
      },[systemsArr,systems]);
      let args;
 
@@ -504,8 +513,8 @@ return (
     <Container className="d-grid gap-1">
         {          
             
-        systemsArr != null && systemsArr.length > 0 &&                                
-        systemSet.map((system, s_i) => (                                
+        systemsArr != null && systemsArr.length > 0 &&                                     
+        local_systems.map((system, s_i) => (                                
         <>
             
             <Container key={s_i.toString()} style={{width:"75%",marginLeft:"1em",padding:"1.5em",backgroundColor:"#ffff99",
@@ -515,9 +524,10 @@ return (
                 <Row onMouseDown={() => openSystemOrgans(s_i)}  onMouseUp={() => useReferenceObject({
                     "system_index":s_i,
                     "system_name":systemReferenceArr[s_i].system_name,
-                    "organs":system.organs.filter((organ) => organ.name !== 'null').map((organ) => { return { "organ_name": organ.organ_name}}),
+                    "organs":systemReferenceArr[s_i].organs,
                     "idx":s_i,
-                    "open":[...showSystemOrgans][s_i]
+                    "open":[...showSystemOrgans][s_i],
+                    "type":"System Organs"
                     })} >
                     <SystemContentButton idx={s_i} items={system.organs} name="System Organs"/>
                 </Row>  
@@ -547,8 +557,10 @@ return (
                                     "organ_index":o_i,
                                     "organ_name":systemReferenceArr[s_i].organs[o_i].organ_name,
                                     "parts":organ.parts.filter((part) => part.name !== 'null').map((part) => { return { "part_name": part.name}}),
-                                    "idx":organ.organ_organ_parts_idx,
-                                    "open":[...showItemContents][organ.organ_organ_parts_idx]
+                                    "organ_organ_parts_idx":organ.organ_organ_parts_idx,
+                                    "organ_idx": systemReferenceArr[s_i].organs[o_i].organ_idx,
+                                    "open":[...showItemContents][organ.organ_organ_parts_idx],
+                                    "type":"Organ Parts"
                                     })}>
                                     <ContentButton system_idx={s_i} organ_idx={o_i} idx={organ.organ_organ_parts_idx} items={organ.parts} name="Organ Parts"/>
                                 </Row>
@@ -559,7 +571,8 @@ return (
                                     "organ_name":systemReferenceArr[s_i].organs[o_i].organ_name,
                                     "organ_layers":organ.organ_layers.filter((organ_layer) => organ_layer !== 'null').map((organ_layer) => { return {"organ_layer_name": organ_layer.name}}),
                                     "idx":organ.organ_organ_layers_idx,
-                                    "open":[...showItemContents][organ.organ_organ_layers_idx]
+                                    "open":[...showItemContents][organ.organ_organ_layers_idx],
+                                    "type":"Organ Layers"
                                     })}>
                                     <ContentButton system_idx={s_i} organ_idx={o_i} idx={organ.organ_organ_layers_idx} items={organ.organ_layers} name="Organ Layers"/>
                                 </Row>  
@@ -591,7 +604,8 @@ return (
                                                 "histo_layers":part.contents[0].histo_layers.filter((histo_layer) => histo_layer.name !== 'null')
                                                     .map((histo_layer) => { return {"histo_layer_name": histo_layer.name }}),
                                                 "idx":part.part_histo_layers_idx,
-                                                "open":[...showItemContents][part.part_histo_layers_idx]
+                                                "open":[...showItemContents][part.part_histo_layers_idx],
+                                                "type":"Part Histo_Layers"
                                             })}>
                                                 <ContentButton system_idx={s_i} organ_idx={o_i} organ_parts_idx={p_i} idx={part.part_histo_layers_idx} items={part.contents[0].histo_layers} name="Part Histo-Layers"/>
                                             </Row>
@@ -605,7 +619,8 @@ return (
                                                  "other_structures":part.contents[0].other_structures.filter((structure) => structure.name !== 'null')
                                                     .map((structure) => { return { "other_structure_name":structure.name}}),
                                                  "idx":part.part_other_structures_idx,
-                                                 "open":[...showItemContents][part.part_other_structures_idx]
+                                                 "open":[...showItemContents][part.part_other_structures_idx],
+                                                 "type":"Part Structures"
                                             })}>
                                                 <ContentButton system_idx={s_i} organ_idx={o_i} organ_parts_idx={p_i} idx={part.part_other_structures_idx} items={part.contents[0].other_structures} name="Part Structures"/>
                                             </Row>
@@ -618,7 +633,8 @@ return (
                                                  "part_name":systemReferenceArr[s_i].organs[o_i].parts[p_i].part_name,
                                                  "subparts":part.contents[0].subparts.filter((subpart) =>  subpart.name !== 'null').map((subpart) => {return {"subpart_name": subpart.name}}),
                                                  "idx":part.part_subparts_idx,
-                                                 "open":[...showItemContents][part.part_subparts_idx]
+                                                 "open":[...showItemContents][part.part_subparts_idx],
+                                                 "type":"Part Sub-Parts"
 
                                             })}><ContentButton system_idx={s_i} organ_idx={o_i} organ_parts_idx={p_i} idx={part.part_subparts_idx} items={part.contents[0].subparts} name="Part Sub-Parts"/></Row>
                                     </Container>                                    
@@ -650,7 +666,8 @@ return (
                                                     "idx":histo_layer.histo_layer_idx,
                                                     "open":[...showItemContents][histo_layer.histo_layer_idx],
                                                     "histo_sublayers":histo_layer.content.histo_sublayers.filter((histo_sublayer) => histo_sublayer.name !== 'null')
-                                                        .map((histo_sublayer) => { return {"histo_sublayer_name": histo_sublayer.name}})
+                                                        .map((histo_sublayer) => { return {"histo_sublayer_name": histo_sublayer.name}}),
+                                                    "type":"Histo_Sublayers"
                                                 })}>
                                                     <ContentButton system_idx={s_i} organ_idx={o_i} organ_parts_idx={p_i} histo_layer_idx={hl_i}
                                                     idx={histo_layer.histo_layer_idx} items={histo_layer.content.histo_sublayers} name="Histo_Sublayers"/>
@@ -687,7 +704,8 @@ return (
                                                             "idx":histo_sublayer.histo_sublayer_histo_chars_idx,                                                          
                                                             "open":[...showItemContents][histo_sublayer.histo_sublayer_histo_chars_idx],
                                                             "histo_chars": histo_sublayer.histo_chars.filter((histo_char) => histo_char.name !== 'null')
-                                                                .map((histo_char) => { return {"histo_char_name": histo_char.name} })
+                                                                .map((histo_char) => { return {"histo_char_name": histo_char.name} }),
+                                                            "type":"Histo_Chars"
                                                         })}>
                                                             <ContentButton system_idx={s_i} organ_idx={o_i} organ_parts_idx={p_i} histo_layer_idx={hl_i} 
                                                                histo_sublayer_idx={hsl_i}
@@ -726,14 +744,15 @@ return (
                                                                         "idx":histo_char.histo_char_cells_idx,
                                                                         "open":[...showItemContents][histo_char.histo_char_cells_idx],
                                                                         "cells": histo_char.cells.filter((cell) => cell.name !== 'null').map((cell) => { return { "cell_name":cell.name                                                                             
-                                                                        }})
+                                                                        }}),
+                                                                        "type":"Cells"
 
                                                                 })}>
                                                                     <ContentButton system_idx={s_i} organ_idx={o_i} organ_parts_idx={p_i} histo_layer_idx={hl_i} 
                                                                     histo_sublayer_idx={hsl_i} histo_chars_idx={hc_i}
                                                                     idx={histo_char.histo_char_cells_idx} items={histo_char.cells} name="Cells"/>
                                                                 </Row>
-                                                                <Row onClick={() => showItems(histo_char.histo_char_ecells_matrices_idx)} onMouseUp={() => useReferenceObject({
+                                                                <Row onMouseDown={() => showItems(histo_char.histo_char_ecells_matrices_idx)} onMouseUp={() => useReferenceObject({
                                                                         "system_index":s_i,                                                             
                                                                         "system_name":systemReferenceArr[s_i].system_name,
                                                                         "organ_index":o_i,                                                                                                                                                                                                                  
@@ -750,7 +769,8 @@ return (
                                                                         "open":[...showItemContents][histo_char.histo_char_ecells_matrices_idx],
                                                                         "ecell_matrices": histo_char.ecell_matrices.filter((ecell_matrix) => ecell_matrix.name !== 'null').map((ecell_matrix) =>
                                                                              { return { "ecell_matrix_name":ecell_matrix.name                                                                             
-                                                                        }})
+                                                                        }}),
+                                                                        "type":"Ecell_Matrix"
                                                                 })} ><ContentButton system_idx={s_i} organ_idx={o_i} organ_parts_idx={p_i} histo_layer_idx={hl_i} 
                                                                     histo_sublayer_idx={hsl_i} histo_chars_idx={hc_i}
                                                                     idx={histo_char.histo_char_ecells_matrices_idx} items={histo_char.ecell_matrices} name="Ecell_Matrix"/></Row> 
