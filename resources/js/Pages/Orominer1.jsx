@@ -1,53 +1,77 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Container, Row, Col, Nav, Navbar, CardText, Tooltip, OverlayTrigger, ButtonGroup, Button } from 'react-bootstrap';
-import Card from 'react-bootstrap/Card';
 import $ from 'jquery';
+import Card from 'react-bootstrap/Card';
+
 import Hierarchy from "./Orominer/Hierarchy.jsx"
+import Draggable from 'react-draggable';
 const parser = new DOMParser();
 const partContentIndexes = [];
 const organLayerIndexes = [];
 
 
 export default function Orominer(props){
-   
     const [displayRequest, setDisplayRequest] = useState(false);
     const [displayReferenceArr, setDisplayReferenceArr] = useState([]);
     const [currentSystemIndex, setCurrentSystemIndex] = useState(0);
     const [showItemContents, setShowItemContents] = useState([]);
     const [showSystemOrgans, setShowSystemOrgans] = useState([]);
+    const [showItemsFunc, setShowItemsFunc ] = useState(null);
     const [sysCx, setSysCx] = useState(500);
     const [sysCy, setSysCy] = useState(500);
     const [sys_radius, setSysRadius] = useState(55);
     const [org_radius, setOrgRadius] = useState(35);
     const [part_radius, setPartRadius] = useState(25);
+    const [histo_layer_radius, setHistoLayerRadius] = useState(20);
+  
+
+    let isDragging = false;
+    let initialX, initialY;
+    let currentTranslateX = 0;
+    let currentTranslateY = 0;
+    const gElement = document.getElementById('myGElement'); // Assuming your <g> has an ID
+
+
     const headerStyle = {
         fontSize:"1.25em", 
         border:"2px black solid",
         backgroundColor:"white"
      };
 
-    
+    useEffect(() => {
+       // $(myRef.current);
+    },[])
 
-    const useReferenceObject = (obj,showItemContents,showSystemOrgans) => {      
+    const openSystemOrgans = (index) => {
+             console.log(index);
+            const newItems2 = [...showSystemOrgans];
+            newItems2[index] = !newItems2[index];
+            setShowSystemOrgans(newItems2);
+    }
+
+    const showItems = (idx) => {
+        console.log(idx);
+        const newItems4 = [...showItemContents];
+        newItems4[idx] = !newItems4[idx];
+        setShowItemContents(newItems4);    // Set boolean variable used for toggling show of Part Items    
+    }
+
+    const useReferenceObject = (obj) => {      
         console.log("Passed System Reference Object:",obj);
       //  const newItems5 = [...displayReferenceArr];
      // //  let idx = displayReferenceArr.length;
      //   setDisplayReferenceArr(newItems5); 
 
-        setShowItemContents(showItemContents);
-        setShowSystemOrgans(showSystemOrgans);
         handleDisplayRequest(obj);
 
     };
-
-
 
 
      const handleDisplayRequest = (obj) => {
         console.log("Top level Display Request:", obj );
         setDisplayRequest(true);
         let req =  obj;
-        let len = 300;
+        let len = 400;
         let rads = 2*(Math.PI);
         let cx = sysCx;
         let cy = sysCy;
@@ -101,7 +125,7 @@ export default function Orominer(props){
             numItems = req.parts.length;
             let adj = 2*(Math.PI)/30;
             conv = rads/numItems;
-            len = 80; 
+            len = 180; 
             setCurrentSystemIndex(req.system_index);
             currentArr[req.system_index].organs[req.organ_index].parts = req.parts;  
             currentArr[req.system_index].organs[req.organ_index].organ_organ_parts_idx = req.organ_organ_parts_idx;
@@ -128,6 +152,36 @@ export default function Orominer(props){
             });
              
         }
+         else if(req.type.match(/Part Histo_Layers/g) ){
+
+            numItems = req.histo_layers.length;
+            let adj = 2*(Math.PI)/-30;
+            conv = rads/numItems;
+            len = 80; 
+            setCurrentSystemIndex(req.system_index);
+            currentArr[req.system_index].organs[req.organ_index].parts[req.part_index].histo_layers = req.histo_layers;  
+            currentArr[req.system_index].organs[req.organ_index].parts[req.part_index].part_histo_layers_idx = req.part_histo_layers_idx;
+
+            let stemArr = [];
+            for (let k = 1;k <= numItems; k++){
+                stemArr.push(k);
+            }
+            stemArr.map((m) => {
+                if(currentArr[req.system_index] !== undefined && currentArr[req.system_index].organs[req.organ_index].parts[req.part_index].histo_layers[m-1].lx1 === undefined){
+                    
+                    cx = currentArr[req.system_index].organs[req.organ_index].parts[req.part_index].cx;
+                    cy = currentArr[req.system_index].organs[req.organ_index].parts[req.part_index].cy;
+
+                    currentArr[req.system_index].organs[req.organ_index].parts[req.part_index].histo_layers[m-1].lx1 = cx + Math.cos(m*conv + adj)*(part_radius);
+                    currentArr[req.system_index].organs[req.organ_index].parts[req.part_index].histo_layers[m-1].ly1 = cy + Math.sin(m*conv + adj)*(part_radius);   
+                    currentArr[req.system_index].organs[req.organ_index].parts[req.part_index].histo_layers[m-1].lx2 = cx + Math.cos(m*conv + adj)*(part_radius-histo_layer_radius) + Math.cos(m*conv + adj)*(len);
+                    currentArr[req.system_index].organs[req.organ_index].parts[req.part_index].histo_layers[m-1].ly2 = cy + Math.sin(m*conv + adj)*(part_radius-histo_layer_radius) + Math.sin(m*conv + adj)*(len);   
+                    currentArr[req.system_index].organs[req.organ_index].parts[req.part_index].histo_layers[m-1].cx = cx + Math.cos(m*conv + adj)*(part_radius) + Math.cos(m*conv + adj)*(len);
+                    currentArr[req.system_index].organs[req.organ_index].parts[req.part_index].histo_layers[m-1].cy = cy + Math.sin(m*conv + adj)*(part_radius) + Math.sin(m*conv + adj)*(len); 
+                }                
+            });
+             
+        }
          console.log("Added Display Reference:", currentArr);
          
          setDisplayReferenceArr(currentArr);
@@ -150,7 +204,7 @@ export default function Orominer(props){
              <svg version="1.1"
              width="1100" height="2200"
              xmlns="http://www.w3.org/2000/svg">
-            <g>
+            <g id="myGElement">
                 
                 {   showSystemOrgans[currentSystemIndex] &&
                     <>
@@ -165,12 +219,22 @@ export default function Orominer(props){
                              <text x={organ.cx-20} y={organ.cy+7} stroke="black" font-size="4">O-{i+1}</text>
                              {
                             
-                                 showItemContents[organ.organ_organ_parts_idx] && organ.parts.map((part,j) => (
-                                
-                                    <g key={j.toString()} >
+                                showItemContents[organ.organ_organ_parts_idx] && organ.parts.map((part,j) => (                                
+                                    <g onClick={() => showItems(organ.organ_organ_parts_idx)} key={j.toString()} >
                                         <line x1={part.lx1} y1={part.ly1} x2={part.lx2} y2={part.ly2} stroke="black" style={{strokeWidth:"7"}}/>
                                         <circle cx={part.cx} cy={part.cy} r={part_radius} stroke="red" fill="transparent" style={{strokeWidth:"4"}}/>
                                         <text x={part.cx-20} y={part.cy+7} stroke="black" font-size="2">P-{j+1}</text>
+                                        {console.log("Histo Layer Open:",showItemContents[part.part_histo_layer_idx])}
+                                         {
+                                            showItemContents[part.part_histo_layers_idx] && part.histo_layers.map((histo_layer,k) => (                                
+                                                <g key={k.toString()} >
+                                                    <line x1={histo_layer.lx1} y1={histo_layer.ly1} x2={histo_layer.lx2} y2={histo_layer.ly2} stroke="grey" style={{strokeWidth:"7"}}/>
+                                                    <circle cx={histo_layer.cx} cy={histo_layer.cy} r={histo_layer_radius} stroke="blue" fill="transparent" style={{strokeWidth:"4"}}/>
+                                                    <text x={histo_layer.cx-18} y={histo_layer.cy+7} stroke="black" style={{fontSize:"1.2em"}}>hl-{j+1}</text>
+                                                </g>
+                                                    
+                                            ))
+                                        }
                                     </g>
                                     
                                 ))
@@ -189,6 +253,7 @@ export default function Orominer(props){
 
     return (
     <>
+        
         <Container id="" style={{position:"relative",width:"100%",height:"100%"}} fluid>
             <Row style={{width:"100%"}}>
                 <div id="" style={{border:"20px ridge silver", width:"70%", marginLeft:"15%", fontSize:"1.5em"}} className="mb-4 p-2 d-flex justify-content-center">
@@ -198,9 +263,11 @@ export default function Orominer(props){
             <Row style={{position:"relative",height:"90%",width:"100%"}}>
                 <Col id ="harchframe" xs={3} className="w-40 p-0">
                     <span id="" style={headerStyle} className="w-100 d-flex justify-content-center">Hierarchy Display</span>
-                    <Hierarchy handleDisplayRequest={handleDisplayRequest} useReferenceObject={useReferenceObject}  />   
+                    <Hierarchy handleDisplayRequest={handleDisplayRequest} useReferenceObject={useReferenceObject} showItemContents={showItemContents} setShowItemContents={setShowItemContents}
+                        showItems={showItems} showSystemOrgans={showSystemOrgans} setShowSystemOrgans={setShowSystemOrgans} openSystemOrgans={openSystemOrgans}/>   
                 </Col>
                 <Col id="grphframe1" xs={8} className="w-60 p-0">
+                    
                     <Row className="h-10">
                         <span id="" style={headerStyle} className="d-flex justify-content-center">Graph Display</span> 
                     </Row>                       
@@ -216,9 +283,14 @@ export default function Orominer(props){
 
                             {
                                 displayRequest && 
-                                    <div id="req_display">
-                                        <RequestedDisplay  />
+                                    <Draggable>
+                                     <div >
+
+                                            <RequestedDisplay  /> 
+                                                     
                                     </div>
+                                    </Draggable>
+                                   
                             }
                             </div>
                         </div>
@@ -232,8 +304,10 @@ export default function Orominer(props){
                 </Col>
                 */}
             </Row>
-            
+             
         </Container>
+
+      
     </>
             
     );
