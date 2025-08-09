@@ -41,27 +41,32 @@ export default function Orominer(props){
         let req =  obj;
         let len = 115;
         let r_adius = 40;
-        let r_adius2 = 20
+        let r_adius2 = 20;
+        let r_adius3 = 15;
         let rads = 2*(Math.PI);
+        let cx = 200;
+        let cy = 200;
        
         
         let ridx;
-        let currentReq = [];
+        let numItems;
+        let conv;
+        let currentArr = [...displayReferenceArr];
         console.log("request type:", req.type);
-        if(req.type.includes("System") ){
+        if(req.type.match(/System Organs/g) ){
             ridx = req.system_index;
-            let numItems = req.organs.length;
-            let conv = rads/numItems;
+            numItems = req.organs.length;
+            conv = rads/numItems;
             setCurrentSystemIndex(ridx);
             
-            currentReq[ridx] = req;
-            currentReq[ridx].system_name = req.system_name;
-            currentReq[ridx].displayed = true;
+            currentArr[ridx] = req;
+            currentArr[ridx].system_name = req.system_name;
+            currentArr[ridx].displayed = true;
 
-            currentReq[ridx].organs = req.organs;
+            currentArr[ridx].organs = req.organs;
 
-            currentReq[ridx].cx = 200;
-            currentReq[ridx].cy = 200;
+            currentArr[ridx].cx = 200;
+            currentArr[ridx].cy = 200;
 
             let stemArr = [];
             for (let i = 1;i <= numItems; i++){
@@ -69,39 +74,76 @@ export default function Orominer(props){
             }
           
                 stemArr.map((l) => {
-                    --l;
-                    if(currentReq[ridx].organs[l].lx1 == undefined){
-                        currentReq[ridx].organs = req.organs;
+                    l;
+                    if(currentArr[ridx].organs[l-1].lx1 == undefined){
+                        currentArr[ridx].organs = req.organs;
                         //currentReq[ridx].organs[l] = {};
                         //currentReq[ridx].organs[l].organ_name = req.organs[l].organ_name;
-                        currentReq[ridx].organs[l].lx1 = 200 + Math.cos(l*conv)*(r_adius);
-                        currentReq[ridx].organs[l].ly1 = 200 + Math.sin(l*conv)*(r_adius);   
-                        currentReq[ridx].organs[l].lx2 = 200 + Math.cos(l*conv)*(r_adius-r_adius2) + Math.cos(l*conv)*(len);
-                        currentReq[ridx].organs[l].ly2 = (200) + Math.sin(l*conv)*(r_adius-r_adius2) + Math.sin(l*conv)*(len);   
-                        currentReq[ridx].organs[l].cx = (200) + Math.cos(l*conv)*(r_adius) + Math.cos(l*conv)*(len);
-                        currentReq[ridx].organs[l].cy = (200) + Math.sin(l*conv)*(r_adius) + Math.sin(l*conv)*(len); 
+                        currentArr[ridx].organs[l-1].lx1 = cx + Math.cos(l*conv)*(r_adius);
+                        currentArr[ridx].organs[l-1].ly1 = cy + Math.sin(l*conv)*(r_adius);   
+                        currentArr[ridx].organs[l-1].lx2 = cx + Math.cos(l*conv)*(r_adius-r_adius2) + Math.cos(l*conv)*(len);
+                        currentArr[ridx].organs[l-1].ly2 = cy + Math.sin(l*conv)*(r_adius-r_adius2) + Math.sin(l*conv)*(len);   
+                        currentArr[ridx].organs[l-1].cx = cx + Math.cos(l*conv)*(r_adius) + Math.cos(l*conv)*(len);
+                        currentArr[ridx].organs[l-1].cy = cy + Math.sin(l*conv)*(r_adius) + Math.sin(l*conv)*(len); 
                     }
                    
                 });
              
            
             
-            console.log("Display Reference:", currentReq);
+            console.log("Display Reference:", currentArr);
         }
-        else if(req.type.includes("Organ") ){
-           let ridx = req.organ_index;
-           console.log("Organ Index", ridx);
+        else if(req.type.match(/Organ Parts/g) ){
+            numItems = req.parts.length;
+            conv = rads/numItems + 2*(Math.PI)/30;
+            len = 80;
+            console.log("conv:", conv);
+            setCurrentSystemIndex(ridx); 
+
+
+
+            currentArr[req.system_index].organs[req.organ_index].parts = req.parts;  
+            console.log("Parts:", currentArr[req.system_index].organs[req.organ_index].parts);
+            //currentArr[req.system_index] = req;
+
+          
+            let stemArr = [];
+            for (let j = 1;j <= numItems; j++){
+                stemArr.push(j);
+            }
+                console.log("draw array:", stemArr);
+               console.log("Parts:", currentArr[req.system_index].organs[req.organ_index].parts);
+                stemArr.map((l) => {
+                    if(currentArr[req.system_index] !== undefined && currentArr[req.system_index].organs[req.organ_index].parts[l-1].lx1 === undefined){
+                       
+                        //currentArr[ridx].organs = req.organs;
+                        //currentReq[ridx].organs[l] = {};
+                        //currentReq[ridx].organs[l].organ_name = req.organs[l].organ_name;
+                        let cx = currentArr[req.system_index].organs[req.organ_index].cx;
+                        let cy = currentArr[req.system_index].organs[req.organ_index].cy;
+                        console.log("first calc:",200 + Math.cos(l*conv)*(r_adius) );
+                        currentArr[req.system_index].organs[req.organ_index].parts[l-1].lx1 = cx + Math.cos(l*conv)*(r_adius2);
+                        currentArr[req.system_index].organs[req.organ_index].parts[l-1].ly1 = cy + Math.sin(l*conv)*(r_adius2);   
+                        currentArr[req.system_index].organs[req.organ_index].parts[l-1].lx2 = cx + Math.cos(l*conv)*(r_adius2-r_adius3) + Math.cos(l*conv)*(len);
+                        currentArr[req.system_index].organs[req.organ_index].parts[l-1].ly2 = cy + Math.sin(l*conv)*(r_adius2-r_adius3) + Math.sin(l*conv)*(len);   
+                        currentArr[req.system_index].organs[req.organ_index].parts[l-1].cx = cx + Math.cos(l*conv)*(r_adius2) + Math.cos(l*conv)*(len);
+                        currentArr[req.system_index].organs[req.organ_index].parts[l-1].cy = cy + Math.sin(l*conv)*(r_adius2) + Math.sin(l*conv)*(len); 
+                    }
+                   
+                });
+             
         }
-         console.log("Display Reference:", currentReq);
+         console.log("Added Display Reference:", currentArr);
          
-         setDisplayReferenceArr(currentReq);
-         console.log("Display Reference Array:", currentReq);
+         setDisplayReferenceArr(currentArr);
+         console.log("Display Reference Array After Add:", currentArr);
      };
 
      const RequestedDisplay = (props) => {
         let len = 115;
         let r_adius = 40;
-        let r_adius2 = 20
+        let r_adius2 = 20;
+        let r_adius3 = 15;
         let rads = 2*(Math.PI);
         let numItems = 8
         let conv = rads/numItems
@@ -109,7 +151,7 @@ export default function Orominer(props){
         for (let i = 1;i <= numItems; i++){
             stemArr.push(i);
         }
-        console.log("Display Reference Arr:", displayReferenceArr);
+        
         return (
              <svg version="1.1"
              width="500" height="500"
@@ -118,30 +160,32 @@ export default function Orominer(props){
                 
                 <circle cx="200" cy="200" r={r_adius} stroke="red" fill="transparent" style={{strokeWidth:"5"}} />
                 <text x="200" y="200" stroke="black" font-size="4">S-{currentSystemIndex}</text>
-                {   displayReferenceArr[currentSystemIndex] !== undefined && displayReferenceArr[currentSystemIndex].organs.map((organ,i) => (
+                {  displayReferenceArr.map((s) => s !== undefined && s.organs !== undefined && s.organs.map((organ,i) => (
                         <g key={i.toString()}>
                             <line x1={organ.lx1} y1={organ.ly1} x2={organ.lx2} y2={organ.ly2} stroke="orange" style={{strokeWidth:"5"}}/>
 
                             <circle cx={organ.cx} cy={organ.cy} r={r_adius2} stroke="red" fill="transparent" style={{strokeWidth:"5"}}/>
-                              {
-                              organ.parts.map((part,j) => (
-                                 showItemContents[part.part_idx] &&
-                                    <g key={j.toString()}>
-                                        <line x1={part.lx1} y1={part.ly1} x2={part.lx2} y2={part.ly2} stroke="orange" style={{strokeWidth:"5"}}/>
+                           
+                             <text x={organ.cx-20} y={organ.cy+7} stroke="black" font-size="4">O-{i+1}</text>
+                             {
+                            
+                                organ.parts.map((part,j) => (
+                                
+                                    <g key={j.toString()} >
+                                        <line x1={part.lx1} y1={part.ly1} x2={part.lx2} y2={part.ly2} stroke="orange" style={{strokeWidth:"P"}}/>
 
-                                        <circle cx={part.cx} cy={part.cy} r={r_adius2} stroke="red" fill="transparent" style={{strokeWidth:"5"}}/>
-                                        <text x={part.cx-20} y={part.cy+7} stroke="black" font-size="4">O-{i+1}</text>
+                                        <circle cx={part.cx} cy={part.cy} r={r_adius3} stroke="red" fill="transparent" style={{strokeWidth:"P"}}/>
+                                        <text x={part.cx-20} y={part.cy+7} stroke="black" font-size="4">P-{j+1}</text>
                                     </g>
-                                 
+                                    
                                 ))
-                              }
-                            <text x={organ.cx-20} y={organ.cy+7} stroke="black" font-size="4">O-{i+1}</text>
+                            }
                         </g>
-                    ))
+                    )))
                      
                 }
                
- 
+               
             </g>   
 
         </svg>
