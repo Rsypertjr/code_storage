@@ -83,7 +83,7 @@ export default function Hierarchy(props){
 
         let local_obj = Object.assign({},obj);
 
-        props.useReferenceObject(local_obj,showItemContents);
+        props.useReferenceObject(local_obj,showItemContents,showSystemOrgans);
 
     };
 
@@ -559,7 +559,7 @@ return (
                                     "parts":organ.parts.filter((part) => part.name !== 'null').map((part) => { return { "part_name": part.name}}),
                                     "organ_organ_parts_idx":organ.organ_organ_parts_idx,
                                     "organ_idx": systemReferenceArr[s_i].organs[o_i].organ_idx,
-                                    "open":[...showItemContents][organ.organ_organ_parts_idx],
+                                    "openParts":[...showItemContents][organ.organ_organ_parts_idx],
                                     "type":"Organ Parts"
                                     })}>
                                     <ContentButton system_idx={s_i} organ_idx={o_i} idx={organ.organ_organ_parts_idx} items={organ.parts} name="Organ Parts"/>

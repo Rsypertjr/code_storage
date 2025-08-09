@@ -12,22 +12,30 @@ export default function Orominer(props){
    
     const [displayRequest, setDisplayRequest] = useState(false);
     const [displayReferenceArr, setDisplayReferenceArr] = useState([]);
-    const [currentSystemIndex, setCurrentSystemIndex] = useState('');
+    const [currentSystemIndex, setCurrentSystemIndex] = useState(0);
     const [showItemContents, setShowItemContents] = useState([]);
+    const [showSystemOrgans, setShowSystemOrgans] = useState([]);
+    const [sysCx, setSysCx] = useState(500);
+    const [sysCy, setSysCy] = useState(500);
+    const [sys_radius, setSysRadius] = useState(55);
+    const [org_radius, setOrgRadius] = useState(35);
+    const [part_radius, setPartRadius] = useState(25);
     const headerStyle = {
         fontSize:"1.25em", 
         border:"2px black solid",
         backgroundColor:"white"
      };
 
+    
 
-    const useReferenceObject = (obj,showItemContents) => {      
+    const useReferenceObject = (obj,showItemContents,showSystemOrgans) => {      
         console.log("Passed System Reference Object:",obj);
       //  const newItems5 = [...displayReferenceArr];
      // //  let idx = displayReferenceArr.length;
      //   setDisplayReferenceArr(newItems5); 
 
         setShowItemContents(showItemContents);
+        setShowSystemOrgans(showSystemOrgans);
         handleDisplayRequest(obj);
 
     };
@@ -39,13 +47,10 @@ export default function Orominer(props){
         console.log("Top level Display Request:", obj );
         setDisplayRequest(true);
         let req =  obj;
-        let len = 115;
-        let r_adius = 40;
-        let r_adius2 = 20;
-        let r_adius3 = 15;
+        let len = 300;
         let rads = 2*(Math.PI);
-        let cx = 200;
-        let cy = 200;
+        let cx = sysCx;
+        let cy = sysCy;
        
         
         let ridx;
@@ -64,7 +69,6 @@ export default function Orominer(props){
             currentArr[ridx].displayed = true;
 
             currentArr[ridx].organs = req.organs;
-
             currentArr[ridx].cx = 200;
             currentArr[ridx].cy = 200;
 
@@ -77,14 +81,12 @@ export default function Orominer(props){
                     l;
                     if(currentArr[ridx].organs[l-1].lx1 == undefined){
                         currentArr[ridx].organs = req.organs;
-                        //currentReq[ridx].organs[l] = {};
-                        //currentReq[ridx].organs[l].organ_name = req.organs[l].organ_name;
-                        currentArr[ridx].organs[l-1].lx1 = cx + Math.cos(l*conv)*(r_adius);
-                        currentArr[ridx].organs[l-1].ly1 = cy + Math.sin(l*conv)*(r_adius);   
-                        currentArr[ridx].organs[l-1].lx2 = cx + Math.cos(l*conv)*(r_adius-r_adius2) + Math.cos(l*conv)*(len);
-                        currentArr[ridx].organs[l-1].ly2 = cy + Math.sin(l*conv)*(r_adius-r_adius2) + Math.sin(l*conv)*(len);   
-                        currentArr[ridx].organs[l-1].cx = cx + Math.cos(l*conv)*(r_adius) + Math.cos(l*conv)*(len);
-                        currentArr[ridx].organs[l-1].cy = cy + Math.sin(l*conv)*(r_adius) + Math.sin(l*conv)*(len); 
+                        currentArr[ridx].organs[l-1].lx1 = cx + Math.cos(l*conv)*(sys_radius);
+                        currentArr[ridx].organs[l-1].ly1 = cy + Math.sin(l*conv)*(sys_radius);   
+                        currentArr[ridx].organs[l-1].lx2 = cx + Math.cos(l*conv)*(sys_radius-org_radius) + Math.cos(l*conv)*(len);
+                        currentArr[ridx].organs[l-1].ly2 = cy + Math.sin(l*conv)*(sys_radius-org_radius) + Math.sin(l*conv)*(len);   
+                        currentArr[ridx].organs[l-1].cx = cx + Math.cos(l*conv)*(sys_radius) + Math.cos(l*conv)*(len);
+                        currentArr[ridx].organs[l-1].cy = cy + Math.sin(l*conv)*(sys_radius) + Math.sin(l*conv)*(len); 
                     }
                    
                 });
@@ -94,43 +96,36 @@ export default function Orominer(props){
             console.log("Display Reference:", currentArr);
         }
         else if(req.type.match(/Organ Parts/g) ){
+
+            console.log("System Open:", showSystemOrgans[currentSystemIndex]);
             numItems = req.parts.length;
-            conv = rads/numItems + 2*(Math.PI)/30;
-            len = 80;
-            console.log("conv:", conv);
-            setCurrentSystemIndex(ridx); 
-
-
-
+            let adj = 2*(Math.PI)/30;
+            conv = rads/numItems;
+            len = 80; 
+            setCurrentSystemIndex(req.system_index);
             currentArr[req.system_index].organs[req.organ_index].parts = req.parts;  
+            currentArr[req.system_index].organs[req.organ_index].organ_organ_parts_idx = req.organ_organ_parts_idx;
             console.log("Parts:", currentArr[req.system_index].organs[req.organ_index].parts);
-            //currentArr[req.system_index] = req;
 
-          
             let stemArr = [];
             for (let j = 1;j <= numItems; j++){
                 stemArr.push(j);
             }
-                console.log("draw array:", stemArr);
-               console.log("Parts:", currentArr[req.system_index].organs[req.organ_index].parts);
-                stemArr.map((l) => {
-                    if(currentArr[req.system_index] !== undefined && currentArr[req.system_index].organs[req.organ_index].parts[l-1].lx1 === undefined){
-                       
-                        //currentArr[ridx].organs = req.organs;
-                        //currentReq[ridx].organs[l] = {};
-                        //currentReq[ridx].organs[l].organ_name = req.organs[l].organ_name;
-                        let cx = currentArr[req.system_index].organs[req.organ_index].cx;
-                        let cy = currentArr[req.system_index].organs[req.organ_index].cy;
-                        console.log("first calc:",200 + Math.cos(l*conv)*(r_adius) );
-                        currentArr[req.system_index].organs[req.organ_index].parts[l-1].lx1 = cx + Math.cos(l*conv)*(r_adius2);
-                        currentArr[req.system_index].organs[req.organ_index].parts[l-1].ly1 = cy + Math.sin(l*conv)*(r_adius2);   
-                        currentArr[req.system_index].organs[req.organ_index].parts[l-1].lx2 = cx + Math.cos(l*conv)*(r_adius2-r_adius3) + Math.cos(l*conv)*(len);
-                        currentArr[req.system_index].organs[req.organ_index].parts[l-1].ly2 = cy + Math.sin(l*conv)*(r_adius2-r_adius3) + Math.sin(l*conv)*(len);   
-                        currentArr[req.system_index].organs[req.organ_index].parts[l-1].cx = cx + Math.cos(l*conv)*(r_adius2) + Math.cos(l*conv)*(len);
-                        currentArr[req.system_index].organs[req.organ_index].parts[l-1].cy = cy + Math.sin(l*conv)*(r_adius2) + Math.sin(l*conv)*(len); 
-                    }
-                   
-                });
+            stemArr.map((l) => {
+                if(currentArr[req.system_index] !== undefined && currentArr[req.system_index].organs[req.organ_index].parts[l-1].lx1 === undefined){
+                    
+                    cx = currentArr[req.system_index].organs[req.organ_index].cx;
+                    cy = currentArr[req.system_index].organs[req.organ_index].cy;
+
+                    console.log("first calc:",200 + Math.cos(l*conv)*(sys_radius) );
+                    currentArr[req.system_index].organs[req.organ_index].parts[l-1].lx1 = cx + Math.cos(l*conv + adj)*(org_radius);
+                    currentArr[req.system_index].organs[req.organ_index].parts[l-1].ly1 = cy + Math.sin(l*conv + adj)*(org_radius);   
+                    currentArr[req.system_index].organs[req.organ_index].parts[l-1].lx2 = cx + Math.cos(l*conv + adj)*(org_radius-part_radius) + Math.cos(l*conv + adj)*(len);
+                    currentArr[req.system_index].organs[req.organ_index].parts[l-1].ly2 = cy + Math.sin(l*conv + adj)*(org_radius-part_radius) + Math.sin(l*conv + adj)*(len);   
+                    currentArr[req.system_index].organs[req.organ_index].parts[l-1].cx = cx + Math.cos(l*conv + adj)*(org_radius) + Math.cos(l*conv + adj)*(len);
+                    currentArr[req.system_index].organs[req.organ_index].parts[l-1].cy = cy + Math.sin(l*conv + adj)*(org_radius) + Math.sin(l*conv + adj)*(len); 
+                }                
+            });
              
         }
          console.log("Added Display Reference:", currentArr);
@@ -141,9 +136,8 @@ export default function Orominer(props){
 
      const RequestedDisplay = (props) => {
         let len = 115;
-        let r_adius = 40;
-        let r_adius2 = 20;
-        let r_adius3 = 15;
+        let cx = 500;
+        let cy = 500;
         let rads = 2*(Math.PI);
         let numItems = 8
         let conv = rads/numItems
@@ -151,31 +145,32 @@ export default function Orominer(props){
         for (let i = 1;i <= numItems; i++){
             stemArr.push(i);
         }
-        
+       
         return (
              <svg version="1.1"
-             width="500" height="500"
+             width="1100" height="2200"
              xmlns="http://www.w3.org/2000/svg">
             <g>
                 
-                <circle cx="200" cy="200" r={r_adius} stroke="red" fill="transparent" style={{strokeWidth:"5"}} />
-                <text x="200" y="200" stroke="black" font-size="4">S-{currentSystemIndex}</text>
-                {  displayReferenceArr.map((s) => s !== undefined && s.organs !== undefined && s.organs.map((organ,i) => (
+                {   showSystemOrgans[currentSystemIndex] &&
+                    <>
+                        <circle cx={cx} cy={cy} r={sys_radius} stroke="red" fill="transparent" style={{strokeWidth:"5"}} />
+                        <text x={cx-16} y={cy+8} stroke="black" font-size="4">S-{currentSystemIndex}</text>
+                    </>
+                }
+                {  showSystemOrgans[currentSystemIndex] && displayReferenceArr.map((s,i) => s !== undefined && s.organs !== undefined && s.organs.map((organ,i) => (
                         <g key={i.toString()}>
-                            <line x1={organ.lx1} y1={organ.ly1} x2={organ.lx2} y2={organ.ly2} stroke="orange" style={{strokeWidth:"5"}}/>
-
-                            <circle cx={organ.cx} cy={organ.cy} r={r_adius2} stroke="red" fill="transparent" style={{strokeWidth:"5"}}/>
-                           
+                             <line x1={organ.lx1} y1={organ.ly1} x2={organ.lx2} y2={organ.ly2} stroke="orange" style={{strokeWidth:"5"}}/>
+                             <circle cx={organ.cx} cy={organ.cy} r={org_radius} stroke="red" fill="transparent" style={{strokeWidth:"5"}}/>                           
                              <text x={organ.cx-20} y={organ.cy+7} stroke="black" font-size="4">O-{i+1}</text>
                              {
                             
-                                organ.parts.map((part,j) => (
+                                 showItemContents[organ.organ_organ_parts_idx] && organ.parts.map((part,j) => (
                                 
                                     <g key={j.toString()} >
-                                        <line x1={part.lx1} y1={part.ly1} x2={part.lx2} y2={part.ly2} stroke="orange" style={{strokeWidth:"P"}}/>
-
-                                        <circle cx={part.cx} cy={part.cy} r={r_adius3} stroke="red" fill="transparent" style={{strokeWidth:"P"}}/>
-                                        <text x={part.cx-20} y={part.cy+7} stroke="black" font-size="4">P-{j+1}</text>
+                                        <line x1={part.lx1} y1={part.ly1} x2={part.lx2} y2={part.ly2} stroke="black" style={{strokeWidth:"7"}}/>
+                                        <circle cx={part.cx} cy={part.cy} r={part_radius} stroke="red" fill="transparent" style={{strokeWidth:"4"}}/>
+                                        <text x={part.cx-20} y={part.cy+7} stroke="black" font-size="2">P-{j+1}</text>
                                     </g>
                                     
                                 ))
@@ -200,12 +195,12 @@ export default function Orominer(props){
                     Organism Relation Ontology (ORO) Miner
                 </div>
             </Row>
-            <Row style={{height:"90%",width:"100%"}}>
-                <Col id ="harchframe" className="w-100 p-0">
+            <Row style={{position:"relative",height:"90%",width:"100%"}}>
+                <Col id ="harchframe" xs={3} className="w-40 p-0">
                     <span id="" style={headerStyle} className="w-100 d-flex justify-content-center">Hierarchy Display</span>
                     <Hierarchy handleDisplayRequest={handleDisplayRequest} useReferenceObject={useReferenceObject}  />   
                 </Col>
-                <Col id="grphframe1" className="w-100 p-0">
+                <Col id="grphframe1" xs={8} className="w-60 p-0">
                     <Row className="h-10">
                         <span id="" style={headerStyle} className="d-flex justify-content-center">Graph Display</span> 
                     </Row>                       
@@ -214,7 +209,7 @@ export default function Orominer(props){
                         <Col id="tab2" className="tab">Cell-to-Lumen</Col>
                         <Col id="gphmess">Graph Messages Here</Col>
                     </Row>
-                    <Row className="h-70">
+                    <Row >
                         <div id="gphdisp">
                             <div id="gphdisp2">
                             {/*<svg id="mySVG" style="overflow: visible" width="100%" height="100%" viewBox = "0 0 4000 4000" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"></svg>*/}
@@ -230,10 +225,12 @@ export default function Orominer(props){
                     </Row>
                     
                 </Col>
+                {/*
                 <Col id="dispframe" className="dispframe w-100 p-0">
                     <span id="" style={headerStyle} className="d-flex justify-content-center">Info Display</span> 
                     <div id="panel"></div>
                 </Col>
+                */}
             </Row>
             
         </Container>
