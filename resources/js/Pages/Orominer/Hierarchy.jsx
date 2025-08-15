@@ -76,12 +76,18 @@ export default function Hierarchy(props){
 
     };
 
+    const handleOpenClose = (res) => {
+        alert(res);
+        props.handleOpenClose(res)
+    };
 
-    const ContentButton = (props) => {
+
+    const ContentButton = (props2) => {     
+
         return (
             <>
             {
-                !(props.items === undefined) && Array.from(props.items).filter((item) => item.name != "null").length > 0 
+                !(props2.items === undefined) && Array.from(props2.items).filter((item) => item.name != "null").length > 0 
                 ?        
                 /* If items exist: show open/close button, number of items, open/close icon  */       
                 <Button style={{width:"100%",float:"left",height:"2.5em",fontSize:"0.9em"}} variant="light">
@@ -89,20 +95,20 @@ export default function Hierarchy(props){
                     <div style={{position:"relative",width:"100%"}}>
                         <span style={{float:"left",width:"80%",fontSize:"0.9em",color:"#800080"}}>
                             {/* Open or Close */}
-                            {!props.showItemContents[props.idx] && <span style={{color:"green"}}><b>Click to See&nbsp;&nbsp;</b></span>}
-                            {props.showItemContents[props.idx] && <span><b>Click to Close&nbsp;&nbsp;</b></span>}
+                            {!props2.showItemContents[props2.idx] && <span style={{color:"green"}}><b>Click to See&nbsp;&nbsp;</b></span>}
+                            {props2.showItemContents[props2.idx] && <span><b>Click to Close&nbsp;&nbsp;</b></span>}
 
                             {/* How many to Open or Close */}
                             <font color="red">
-                                { props.items.filter((item) => item.name != "null" ).length}
-                                <span style={{color:"black",fontWeight:"bold", marginLeft:"0.5em"}}>{props.name}</span>
+                                { props2.items.filter((item) => item.name != "null" ).length}
+                                <span style={{color:"black",fontWeight:"bold", marginLeft:"0.5em"}}>{props2.name}</span>
                             </font> 
                             
                         </span> 
                         {/* Open or Close Icon */}
                         <span style={{float:"right",width:"20%",transform:"scale(0.75)",marginTop:"-30px",marginLeft:"5px",color:"#800080"}}>
-                            {!props.showItemContents[props.idx] && <span style={{color:"green"}}><i className="bi bi-box-arrow-in-down"></i></span>}
-                            {props.showItemContents[props.idx] && <i className="bi bi-x"></i>}
+                            {!props2.showItemContents[props2.idx] && <span style={{color:"green"}}><i className="bi bi-box-arrow-in-down"></i></span>}
+                            {props2.showItemContents[props2.idx] && <i className="bi bi-x"></i>}
                         </span>                      
                     </div>    
                     }
@@ -537,7 +543,7 @@ return (
                                     
                                 </Row>    
                                                         
-                                <Row onMouseDown={() => props.showItems(organ.organ_organ_parts_idx)} onMouseUp={(e) => useReferenceObject({
+                                <Row onMouseDown={() => {props.showItems(organ.organ_organ_parts_idx)}} onMouseUp={(e) => useReferenceObject({
                                     "e":e,                                    
                                     "rectY":e.target.getBoundingClientRect().y,
                                     "system_index":s_i,                                    
@@ -549,7 +555,8 @@ return (
                                     "organ_idx": systemReferenceArr[s_i].organs[o_i].organ_idx,
                                     "type":"Organ Parts"
                                     })}>
-                                    <ContentButton system_idx={s_i} organ_idx={o_i} idx={organ.organ_organ_parts_idx} items={organ.parts} showItemContents={props.showItemContents} name="Organ Parts"/>
+                                    <ContentButton system_idx={s_i} organ_idx={o_i} idx={organ.organ_organ_parts_idx} items={organ.parts} showItemContents={props.showItemContents} 
+                                    handleOpenClose={handleOpenClose} name="Organ Parts"/>
                                 </Row>
                                 <Row onMouseDown={() => props.showItems(organ.organ_organ_layers_idx)} onMouseUp={(e) => useReferenceObject({
                                     "e":e,
@@ -561,7 +568,8 @@ return (
                                     "organ_organ_layers_idx":organ.organ_organ_layers_idx,
                                     "type":"Organ Layers"
                                     })}>
-                                    <ContentButton system_idx={s_i} organ_idx={o_i} idx={organ.organ_organ_layers_idx} items={organ.organ_layers} showItemContents={props.showItemContents}  name="Organ Layers"/>
+                                    <ContentButton system_idx={s_i} organ_idx={o_i} idx={organ.organ_organ_layers_idx} items={organ.organ_layers} showItemContents={props.showItemContents} 
+                                     handleOpenClose={handleOpenClose} name="Organ Layers"/>
                                 </Row>  
                             </Container>
                           
@@ -596,7 +604,8 @@ return (
                                                     "part_histo_layers_idx":part.part_histo_layers_idx,
                                                     "type":"Part Histo_Layers"
                                                 })}>
-                                                <ContentButton system_idx={s_i} organ_idx={o_i} organ_parts_idx={p_i} idx={part.part_histo_layers_idx} items={part.contents[0].histo_layers}
+                                                <ContentButton system_idx={s_i} organ_idx={o_i} organ_parts_idx={p_i} idx={part.part_histo_layers_idx} 
+                                                 handleOpenClose={handleOpenClose} items={part.contents[0].histo_layers}
                                                 showItemContents={props.showItemContents} name="Part Histo-Layers"/>
                                             </Row>
                                             <Row onMouseDown={() => props.showItems(part.part_other_structures_idx)} onMouseUp={(e) => useReferenceObject({
@@ -612,7 +621,8 @@ return (
                                                  "part_other_structures_idx":part.part_other_structures_idx,
                                                  "type":"Part Structures"
                                             })}>
-                                                <ContentButton system_idx={s_i} organ_idx={o_i} organ_parts_idx={p_i} idx={part.part_other_structures_idx} items={part.contents[0].other_structures} 
+                                                <ContentButton system_idx={s_i} organ_idx={o_i} organ_parts_idx={p_i} idx={part.part_other_structures_idx} 
+                                                 handleOpenClose={handleOpenClose} items={part.contents[0].other_structures} 
                                                 showItemContents={props.showItemContents} name="Part Structures"/>
                                             </Row>
                                             <Row onMouseDown={() => props.showItems(part.part_subparts_idx)} onMouseUp={(e) => useReferenceObject({
@@ -627,7 +637,7 @@ return (
                                                  "part_subparts_idx":part.part_subparts_idx,
                                                  "type":"Part Sub-Parts"
 
-                                            })}><ContentButton system_idx={s_i} organ_idx={o_i} organ_parts_idx={p_i} idx={part.part_subparts_idx} items={part.contents[0].subparts} 
+                                            })}><ContentButton system_idx={s_i} organ_idx={o_i} organ_parts_idx={p_i} idx={part.part_subparts_idx} items={part.contents[0].subparts}  handleOpenClose={handleOpenClose}
                                                 showItemContents={props.showItemContents}  name="Part Sub-Parts"/></Row>
                                     </Container>                                    
                                 
@@ -663,7 +673,7 @@ return (
                                                         .map((histo_sublayer) => { return {"histo_sublayer_name": histo_sublayer.name}}),
                                                     "type":"Histo_Sublayers"
                                                 })}>
-                                                    <ContentButton system_idx={s_i} organ_idx={o_i} organ_parts_idx={p_i} histo_layer_idx={hl_i}
+                                                    <ContentButton system_idx={s_i} organ_idx={o_i} organ_parts_idx={p_i} histo_layer_idx={hl_i}  handleOpenClose={handleOpenClose}
                                                     idx={histo_layer.histo_layer_histo_sublayers_idx} items={histo_layer.histo_sublayers} showItemContents={props.showItemContents} name="Histo_Sublayers"/>
                                                 </Row>
                                              </Container>
@@ -703,7 +713,7 @@ return (
                                                             "type":"Histo_Chars"
                                                         })}>
                                                             <ContentButton system_idx={s_i} organ_idx={o_i} organ_parts_idx={p_i} histo_layer_idx={hl_i} 
-                                                               histo_sublayer_idx={hsl_i} showItemContents={props.showItemContents} 
+                                                               histo_sublayer_idx={hsl_i} showItemContents={props.showItemContents}  handleOpenClose={handleOpenClose}
                                                                idx={histo_sublayer.histo_sublayer_histo_chars_idx} items={histo_sublayer.histo_chars} name="Histo_Chars"/>
                                                         </Row>
                                                     </Container>
@@ -745,7 +755,7 @@ return (
 
                                                                 })}>
                                                                     <ContentButton system_idx={s_i} organ_idx={o_i} organ_parts_idx={p_i} histo_layer_idx={hl_i} 
-                                                                    histo_sublayer_idx={hsl_i} histo_chars_idx={hc_i} showItemContents={props.showItemContents} 
+                                                                    histo_sublayer_idx={hsl_i} histo_chars_idx={hc_i} showItemContents={props.showItemContents} handleOpenClose={handleOpenClose}
                                                                     idx={histo_char.histo_char_cells_idx} items={histo_char.cells} name="Cells"/>
                                                                 </Row>
                                                                 <Row onMouseDown={() => props.showItems(histo_char.histo_char_ecells_matrices_idx)} onMouseUp={(e) => useReferenceObject({
@@ -768,7 +778,7 @@ return (
                                                                         }}),
                                                                         "type":"Ecell_Matrix"
                                                                 })} ><ContentButton system_idx={s_i} organ_idx={o_i} organ_parts_idx={p_i} histo_layer_idx={hl_i} 
-                                                                    histo_sublayer_idx={hsl_i} histo_chars_idx={hc_i} showItemContents={props.showItemContents} 
+                                                                    histo_sublayer_idx={hsl_i} histo_chars_idx={hc_i} showItemContents={props.showItemContents} handleOpenClose={handleOpenClose}
                                                                     idx={histo_char.histo_char_ecells_matrices_idx} items={histo_char.ecell_matrices} name="Ecell_Matrix"/></Row> 
                                                             
                                                             </Container>

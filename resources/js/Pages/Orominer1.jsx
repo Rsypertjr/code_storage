@@ -16,9 +16,9 @@ export default function Orominer(props){
     const [currentSystemIndex, setCurrentSystemIndex] = useState(0);
     const [currentOrganIndex, setCurrentOrganIndex] = useState(0);
     const [currentPartIndex, setCurrentPartIndex] = useState(0);
+    const [currentHistoLayerIndex, setCurrentHistoLayerIndex] = useState(0);
     const [showItemContents, setShowItemContents] = useState([]);
     const [showSystemOrgans, setShowSystemOrgans] = useState([]);
-    const [showItemsFunc, setShowItemsFunc ] = useState(null);
     const [sysCx, setSysCx] = useState(1100);
     const [sysCy, setSysCy] = useState(1100);
     const [transX, setTransX] = useState(0);
@@ -34,6 +34,8 @@ export default function Orominer(props){
     const [histo_layer_radius, setHistoLayerRadius] = useState(35);
     const [histo_sublayer_radius, setHistoSubLayerRadius] = useState(35);
     const [histo_char_radius, setHistoCharRadius] = useState(35);
+    
+    const [showAll, setShowAll] = useState(true);
     
     const [cell_radius, setCellRadius] = useState(35);
     const [other_structure_radius, setOtherStructureRadius] = useState(35);    
@@ -59,6 +61,10 @@ export default function Orominer(props){
        setOrgColor("#e6eeff");
     },[])
 
+    useEffect(() => {
+        setShowAll(showAll);
+    },[showAll,setShowAll])
+
     const openSystemOrgans = (index) => {
             console.log(index);
             const newItems2 = [...showSystemOrgans];
@@ -83,6 +89,11 @@ export default function Orominer(props){
         const maxFloored = Math.floor(max);
         return Math.floor(Math.random() * (maxFloored - minCeiled + 1) + minCeiled);
     } 
+
+    const handleOpenClose = (res) => {
+
+        setShowAll(res);
+    };
 
     const getGuiPositions = (req) => {   // Gets positions of button and relative display items
         console.log("Req:", req); 
@@ -155,22 +166,24 @@ export default function Orominer(props){
          add_to_bar(tag);
      };
 
-       let add_to_bar = (tag) => {
-          
-                $("#displayBar").css("display","block").css("width","100%").animate({
-                width:"70%",
-                height:"100%",
-                display:"block",
-                },500);  
-                
-                $("#infoBar").animate({
-                width:"30%",
-                display:"block",
-                position:"absolute",
-                zIndex:"400",
-                fontSize:"1.5em"
-                },500).append(tag).css("display","block").css("width","0%");       
-        };
+    
+
+    let add_to_bar = (tag) => {
+        
+            $("#displayBar").css("display","block").css("width","100%").animate({
+            width:"70%",
+            height:"100%",
+            display:"block",
+            },500);  
+            
+            $("#infoBar").css("width","0%").animate({
+            width:"30%",
+            display:"block",
+            position:"absolute",
+            zIndex:"400",
+            fontSize:"1.5em"
+            },500).append(tag).css("display","block").css("width","0%");       
+    };
 
      const closeInfoBar = () => {
          
@@ -180,13 +193,13 @@ export default function Orominer(props){
                 display:"block",
                 },1000);  
                 
-                $("#infoBar").append(tag).css("display","block").css("width","30%").animate({
+                $("#infoBar").css("width","30%").animate({
                 width:"0%",
                 display:"none",
                 position:"absolute",
                 zIndex:"400",
                 fontSize:"1.5em"
-                },1000);       
+                },1000).append(tag).css("display","block");       
 
      };
  
@@ -207,6 +220,7 @@ export default function Orominer(props){
         let numItems;  // Number of the items requested to be displayed
         let conv;  // angle/displacement of each item
         let currentArr = [...displayReferenceArr];   // global object (displayReferenceArr) to be updated by currentArr
+      
 
         console.log("request type:", req.type);
         if(req.type.match(/System Organs/g) ){
@@ -227,7 +241,7 @@ export default function Orominer(props){
             setEPageY(req.e.pageY);  // Absolute button position on Page
 
             if(numItems > 40)  // If too many items that would overlap, then make less visible so individual item selections are more visible
-                setSysOpacity(0.15);
+                setSysOpacity(0.35);
             else
                 setSysOpacity(1.0);
 
@@ -253,6 +267,7 @@ export default function Orominer(props){
                 l;
                 if(currentArr[ridx].organs[l-1].lx1 == undefined){
                     //currentArr[ridx].organs = req.organs;
+                    currentArr[ridx].organs[l-1].organ_index = l;
                     currentArr[ridx].organs[l-1].lx1 = cx + Math.cos(l*conv)*(sys_radius);
                     currentArr[ridx].organs[l-1].ly1 = cy + Math.sin(l*conv)*(sys_radius);   
                     currentArr[ridx].organs[l-1].lx2 = cx + Math.cos(l*conv)*(sys_radius-org_radius) + Math.cos(l*conv)*(len);
@@ -280,12 +295,13 @@ export default function Orominer(props){
                 "organ_index":req.organ_index,
                 "type": req.type
             };
-
+            
+            setShowAll(false);
             let positions = getGuiPositions(req2);
             console.log("Part positions:", positions);
            
 
-            setSysOpacity(0.15);
+            setSysOpacity(0.35);
             console.log("System Open:", showSystemOrgans[currentSystemIndex]);
             numItems = req.parts.length;
             let adj = 2*(Math.PI)/30;
@@ -317,6 +333,9 @@ export default function Orominer(props){
                     setTransY(-cy);
 
                     console.log("first calc:",200 + Math.cos(l*conv)*(sys_radius) );
+                    currentArr[req.system_index].organs[req.organ_index].parts[l-1].part_index = l;
+                    currentArr[req.system_index].organs[req.organ_index].parts[l-1].organ_index = req.organ_index;
+                    currentArr[req.system_index].organs[req.organ_index].parts[l-1].system_index = req.system_index;
                     currentArr[req.system_index].organs[req.organ_index].parts[l-1].lx1 = cx + Math.cos(l*conv + adj)*(org_radius);
                     currentArr[req.system_index].organs[req.organ_index].parts[l-1].ly1 = cy + Math.sin(l*conv + adj)*(org_radius);   
                     currentArr[req.system_index].organs[req.organ_index].parts[l-1].lx2 = cx + Math.cos(l*conv + adj)*(org_radius-part_radius) + Math.cos(l*conv + adj)*(len);
@@ -340,7 +359,9 @@ export default function Orominer(props){
             conv = rads/numItems;
             len = 350;     
 
-            setCurrentSystemIndex(req.system_index);              
+            setCurrentSystemIndex(req.system_index);  
+            setCurrentOrganIndex(req.organ_index);    
+            setCurrentPartIndex(req.part_index);   
             setEClientY(req.e.clientY);
             setEPageY(req.e.pageY);
 
@@ -360,6 +381,10 @@ export default function Orominer(props){
 
                     setTransX(-cx);
                     setTransY(-cy);
+
+                    currentArr[req.system_index].organs[req.organ_index].parts[req.part_index].histo_layers[m-1].system_index = currentSystemIndex;
+                    currentArr[req.system_index].organs[req.organ_index].parts[req.part_index].histo_layers[m-1].organ_index = currentOrganIndex;
+                    currentArr[req.system_index].organs[req.organ_index].parts[req.part_index].histo_layers[m-1].part_index = currentPartIndex;
                     currentArr[req.system_index].organs[req.organ_index].parts[req.part_index].histo_layers[m-1].lx1 = cx + Math.cos(m*conv + adj)*(part_radius);
                     currentArr[req.system_index].organs[req.organ_index].parts[req.part_index].histo_layers[m-1].ly1 = cy + Math.sin(m*conv + adj)*(part_radius);   
                     currentArr[req.system_index].organs[req.organ_index].parts[req.part_index].histo_layers[m-1].lx2 = cx + Math.cos(m*conv + adj)*(part_radius-histo_layer_radius) + Math.cos(m*conv + adj)*(len);
@@ -379,9 +404,10 @@ export default function Orominer(props){
             conv = rads/numItems;
             len = 200; 
 
-            setCurrentSystemIndex(req.system_index);    
+            setCurrentSystemIndex(req.system_index);  
             setCurrentOrganIndex(req.organ_index);    
-            setCurrentPartIndex(req.part_index);              
+            setCurrentPartIndex(req.part_index);      
+            setCurrentHistoLayerIndex(req.histo_layer_index);            
             setEClientY(req.e.clientY);
             setEPageY(req.e.pageY);
 
@@ -667,7 +693,7 @@ export default function Orominer(props){
             <g id="myGElement" style={{zoom:zoomFac}} >
                 {console.log("Before Run DisplayReferenceArr: ", displayReferenceArr)}
                 {   
-                    showSystemOrgans[currentSystemIndex] &&
+                    showSystemOrgans[currentSystemIndex] && 
                         <>
                            { <g key={currentSystemIndex.toString()+"system"} onClick={(e) => getIndices("system",[currentSystemIndex],e)} id={`S${currentSystemIndex+1}`}>
                                 <circle  cx={2*sysCx} cy={2*sysCy} r={sys_radius} stroke="black"  fill="#ffff99" style={{strokeWidth:"1"}} />
@@ -682,16 +708,15 @@ export default function Orominer(props){
                     
                     displayReferenceArr.map((s,i) => i == currentSystemIndex && s !== undefined && s.organs !== undefined && 
                     s.organs.map((organ,ii) => (
-                        <g key={ii.toString()+"organ"} id={`S${currentSystemIndex+1}O${ii+1}`} onClick={(e) => getIndices("organ",[currentSystemIndex,ii],e)}
-                             >
-                            
+                        currentOrganIndex !== ii &&
+                        <>                             
+                            <g key={ii.toString()+"organ"} id={`S${currentSystemIndex+1}O${ii+1}`} onClick={(e) => getIndices("organ",[currentSystemIndex,ii],e)}>                                
                                 <line x1={organ.lx1} y1={organ.ly1} x2={organ.lx2} y2={organ.ly2} stroke="orange" style={{strokeWidth:"5",opacity:sys_opacity}}/>
                                 <circle cx={organ.cx} cy={organ.cy} r={org_radius} stroke="black" fill="#e6eeff" style={{strokeWidth:"1",opacity:sys_opacity}}/>                           
                                 <text x={organ.cx-24} y={organ.cy+10} stroke="black" style={{opacity:sys_opacity,fontSize:"2.0em"}}>O-{ii+1}</text>
-                          
-                                           
-                              
-                        </g>
+                            </g>
+                        </>
+                       
                     )))
                 }
                
@@ -700,8 +725,9 @@ export default function Orominer(props){
                     
                     displayReferenceArr.map((s,i) => i == currentSystemIndex && s !== undefined && s.organs !== undefined && 
                     s.organs.map((organ,ii) => (
+                        currentOrganIndex === ii &&
                         <g key={ii.toString()}> 
-                            { organ.organ_index === currentOrganIndex &&
+                            { 
                                 <>
                                     <g id={`S${currentSystemIndex+1}O${ii+1}`} onClick={(e) => getIndices("organ",[currentSystemIndex,ii],e)} >
                                         <line x1={organ.lx1} y1={organ.ly1} x2={organ.lx2} y2={organ.ly2} stroke="orange" style={{strokeWidth:"5",opacity:"1"}}/>
@@ -711,20 +737,61 @@ export default function Orominer(props){
                                 </>
                              }
                                
-                          
-                             {  organ.organ_index === currentOrganIndex &&            
-                                showItemContents[organ.organ_organ_parts_idx]  && organ.parts.map((part,j) => (                                
+                            {          
+                                showItemContents[organ.organ_organ_parts_idx] && organ.parts.map((part,j) => (   
+                                    currentPartIndex !== j &&
                                     <g key={j.toString()} id={`S${currentSystemIndex+1}O${ii+1}P${j+1}`}>
-                                        <line x1={part.lx1} y1={part.ly1} x2={part.lx2} y2={part.ly2} stroke="black" style={{strokeWidth:"7"}}/>
-                                        <circle cx={part.cx} cy={part.cy} r={part_radius} stroke="black" fill="#ffe6f2" style={{strokeWidth:"1"}}/>
-                                        <text x={part.cx-20} y={part.cy+9} stroke="black" style={{fontSize:"1.9em"}}>P-{j+1}</text>
-                                        {
+                                        <line x1={part.lx1} y1={part.ly1} x2={part.lx2} y2={part.ly2} stroke="black" style={{strokeWidth:"7",opacity:sys_opacity}}/>
+                                        <circle cx={part.cx} cy={part.cy} r={part_radius} stroke="black" fill="#ffe6f2" style={{strokeWidth:"1",opacity:sys_opacity}}/>
+                                        <text x={part.cx-20} y={part.cy+9} stroke="black" style={{fontSize:"1.9em",opacity:sys_opacity}}>P-{j+1}</text>
+                                    </g>
+                                ))
+                            }  
+
+                          
+                             {           
+                                showItemContents[organ.organ_organ_parts_idx]  && organ.parts.map((part,j) => (  
+                                    <g key={j.toString()}>    
+                                        { 
+                                            currentPartIndex === j &&
+                                            <>  
+                                                <g  id={`S${currentSystemIndex+1}O${ii+1}P${j+1}`}>
+                                                    <line x1={part.lx1} y1={part.ly1} x2={part.lx2} y2={part.ly2} stroke="black" style={{strokeWidth:"7",opacity:"1"}}/>
+                                                    <circle cx={part.cx} cy={part.cy} r={part_radius} stroke="black" fill="#ffe6f2" style={{strokeWidth:"1",opacity:"1"}}/>
+                                                    <text x={part.cx-20} y={part.cy+9} stroke="black" style={{fontSize:"1.9em",opacity:"1"}}>P-{j+1}</text>
+                                                </g>
+                                            </>    
+                                        }              
+                                        { 
+                                            
                                             showItemContents[part.part_histo_layers_idx] && part.histo_layers !== undefined &&
-                                           part.histo_layers.length > 0 && part.histo_layers.map((histo_layer,k) => (                                
-                                                <g key={k.toString()} id={`S${currentSystemIndex+1}O${ii+1}P${j+1}Hl${k+1}`}>
-                                                    <line x1={histo_layer.lx1} y1={histo_layer.ly1} x2={histo_layer.lx2} y2={histo_layer.ly2} stroke="grey" style={{strokeWidth:"7"}}/>
-                                                    <circle cx={histo_layer.cx} cy={histo_layer.cy} r={histo_layer_radius} stroke="black" fill="#e5ffe5" style={{strokeWidth:"1"}}/>
-                                                    <text x={histo_layer.cx-26} y={histo_layer.cy+9} stroke="black" style={{fontSize:"1.8em"}}>hl-{k+1}</text>
+                                            part.histo_layers.length > 0 && part.histo_layers.map((histo_layer,k) => (   
+                                                k !== currentHistoLayerIndex &&
+                                                <>
+                                                   
+                                                    <g key={k.toString()+histo_layer.lx1} id={`S${currentSystemIndex+1}O${ii+1}P${j+1}Hl${k+1}`}>
+                                                        <line x1={histo_layer.lx1} y1={histo_layer.ly1} x2={histo_layer.lx2} y2={histo_layer.ly2} stroke="grey" style={{strokeWidth:"7",opacity:sys_opacity}}/>
+                                                        <circle cx={histo_layer.cx} cy={histo_layer.cy} r={histo_layer_radius} stroke="black" fill="#e5ffe5" style={{strokeWidth:"1",opacity:sys_opacity}}/>
+                                                        <text x={histo_layer.cx-26} y={histo_layer.cy+9} stroke="black" style={{fontSize:"1.8em",opacity:sys_opacity}}>hl-{k+1}</text>
+                                                    </g>
+                                                </>   
+                                            ))
+                                        }
+
+                                        {  
+                                            showItemContents[part.part_histo_layers_idx] && part.histo_layers !== undefined &&
+                                            part.histo_layers.length > 0 && part.histo_layers.map((histo_layer,k) => (                                
+                                                <g key={k.toString()+histo_layer.lx2} id={`S${currentSystemIndex+1}O${ii+1}P${j+1}Hl${k+1}`}>
+                                                     {
+                                                        k === currentHistoLayerIndex &&
+                                                        <>
+                                                            <g>
+                                                                <line x1={histo_layer.lx1} y1={histo_layer.ly1} x2={histo_layer.lx2} y2={histo_layer.ly2} stroke="grey" style={{strokeWidth:"7"}}/>
+                                                                <circle cx={histo_layer.cx} cy={histo_layer.cy} r={histo_layer_radius} stroke="black" fill="#e5ffe5" style={{strokeWidth:"1"}}/>
+                                                                <text x={histo_layer.cx-26} y={histo_layer.cy+9} stroke="black" style={{fontSize:"1.8em"}}>hl-{k+1}</text>
+                                                            </g>
+                                                        </>                                                  
+                                                     }
                                                      {                                                       
                                                         showItemContents[histo_layer.histo_layer_histo_sublayers_idx] && histo_layer.histo_sublayers !== undefined && histo_layer.histo_sublayers.length > 0 && 
                                                             histo_layer.histo_sublayers.map((histo_sublayer,l) => (                                
@@ -828,7 +895,8 @@ export default function Orominer(props){
                 <Col id ="harchframe" xs={3} className="w-40 p-0">
                     <span id="" style={headerStyle} className="w-100 d-flex justify-content-center">Hierarchy Display</span>
                     <Hierarchy handleDisplayRequest={handleDisplayRequest} useReferenceObject={useReferenceObject} showItemContents={showItemContents} setShowItemContents={setShowItemContents}
-                        showItems={showItems} showSystemOrgans={showSystemOrgans} setShowSystemOrgans={setShowSystemOrgans} openSystemOrgans={openSystemOrgans}/>   
+                        showItems={showItems} showSystemOrgans={showSystemOrgans} setShowSystemOrgans={setShowSystemOrgans} openSystemOrgans={openSystemOrgans}
+                        handleOpenClose={handleOpenClose}/>   
                 </Col>
                 <Col id="grphframe1" xs={8} className="w-60 p-0">
                     
@@ -850,7 +918,7 @@ export default function Orominer(props){
                                     <Draggable>
                                      <div id="requested_display" >
 
-                                            <RequestedDisplay  /> 
+                                            <RequestedDisplay showAll={showAll}  /> 
                                                      
                                     </div>
                                     </Draggable>
