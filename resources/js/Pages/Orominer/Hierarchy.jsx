@@ -28,7 +28,6 @@ export default function Hierarchy(props){
             "organs": []
         }
     ]);
-    
      
      const getXML = () => {
 
@@ -79,8 +78,6 @@ export default function Hierarchy(props){
 
 
     const ContentButton = (props) => {
-
-        //console.log("Content Button Props:", props);
         return (
             <>
             {
@@ -107,10 +104,8 @@ export default function Hierarchy(props){
                             {!props.showItemContents[props.idx] && <span style={{color:"green"}}><i className="bi bi-box-arrow-in-down"></i></span>}
                             {props.showItemContents[props.idx] && <i className="bi bi-x"></i>}
                         </span>                      
-                    </div>                                                                   
-
+                    </div>    
                     }
-            
                 </Button>
                 :   
                 /* If not items, show 0 items */
@@ -262,7 +257,7 @@ export default function Hierarchy(props){
                         // Define Histo Layer Obj to hold Histo Sublayer contents
                         let histo_layer_Obj = {
                             "name":"",
-                            "histo_sublayers":[]
+                            "histo_sublayers":[],
                         };
                         switch ($(part_content)[0].nodeName) {
                             case "#text":
@@ -350,7 +345,7 @@ export default function Hierarchy(props){
                                         "histo_chars":[],
                                         "other_structures":[],
                                         "content":histo_sublayer,
-                                        "histo_sublayer_idx":getItemIdx(),
+                                        "histo_sublayer_histo_chars_idx":getItemIdx()
                                     };
 
                                   
@@ -451,7 +446,6 @@ export default function Hierarchy(props){
                                     // Push into Larger Histo Layer Object
                                     histo_layer_Obj.name = histo_layer_name;
                                     histo_layer_Obj.histo_sublayers.push(histo_sublayer_Obj);
-                                    histo_layer_Obj.histo_sublayer_idx = getItemIdx();
 
             
 
@@ -460,8 +454,9 @@ export default function Hierarchy(props){
                                 desc = { 
                                     "type":$(histo_layer)[0].nodeName, 
                                     "name":histo_layer_name, 
-                                    "content":histo_layer_Obj, 
-                                    "histo_sublayer_idx":getItemIdx()
+                                    "histo_sublayers":histo_layer_Obj.histo_sublayers, 
+                                    "histo_layer_idx":getItemIdx(),
+                                    "histo_layer_histo_sublayers_idx":getItemIdx()
                                 };
                                 histo_layers.push(desc);
                                 break;
@@ -507,7 +502,7 @@ return (
         local_systems.map((system, s_i) => (                                
         <>
             
-            <Container key={s_i.toString()} className={`S-${s_i+1}`} style={{width:"75%",marginLeft:"1em",padding:"1.5em",backgroundColor:"#ffff99",
+            <Container key={s_i.toString()+system.systemName} className={`S-${s_i+1}`} style={{width:"75%",marginLeft:"1em",padding:"1.5em",backgroundColor:"#ffff99",
                                 border:"2px solid black", borderRadius:"10px",marginTop:"1.5em"}} >
                                     
                 <Row><p className="d-flex justify-content-center">System:&nbsp;&nbsp;<span style={{color:"red"}}>{system.systemName} (S-{s_i+1})</span></p></Row>                     
@@ -529,7 +524,7 @@ return (
                     system.organs.map((organ, o_i) => (
                         <>
                             
-                            <Container key={o_i.toString()} className={`S-${s_i+1}O-${o_i+1}`} style={{width:"75%",marginLeft:"2em",padding:"1.5em",backgroundColor:"#e6eeff",
+                            <Container key={o_i.toString()+organ.organ_name} className={`S-${s_i+1}O-${o_i+1}`} style={{width:"75%",marginLeft:"2em",padding:"1.5em",backgroundColor:"#e6eeff",
                                 border:"2px solid black", borderRadius:"10px",marginTop:"1em",marginBottom:"1em"}} >
                                 <Row>
                                     <Col>
@@ -575,7 +570,7 @@ return (
                                 Array.from(organ.parts).map((part, p_i) => (
                                 <>
                                     
-                                    <Container  key={p_i.toString()} className={`S-${s_i+1}O-${o_i+1}P-${p_i+1}`} style={{width:"75%",height:"auto",color:"black",fontSize:"1em",marginBottom:"1em",
+                                    <Container  key={p_i.toString()+part.name} className={`S-${s_i+1}O-${o_i+1}P-${p_i+1}`} style={{width:"75%",height:"auto",color:"black",fontSize:"1em",marginBottom:"1em",
                                         border:"2px solid black", borderRadius:"10px",padding:"1.5em",marginLeft:"3em",marginTop:"1em",backgroundColor:"#ffe6f2"}} >
                                             <Row className="p-0">
                                                 <Col>
@@ -640,7 +635,7 @@ return (
                                     props.showItemContents[part.part_histo_layers_idx] && part.contents[0].histo_layers.length > 0 &&
                                         part.contents[0].histo_layers.filter((histo_layer) => {return histo_layer.name != "null"}).map((histo_layer,hl_i) => (
                                         <>
-                                            <Container key={hl_i.toString()} style={{width:"75%",fontSize:"1.0em",padding:"1.5em",marginLeft:"4em",border:"2px solid black", borderRadius:"10px",
+                                            <Container key={hl_i.toString()+histo_layer.name} style={{width:"75%",fontSize:"1.0em",padding:"1.5em",marginLeft:"4em",border:"2px solid black", borderRadius:"10px",
                                                 marginTop:"1em",backgroundColor:"#e5ffe5",
                                                 color:"black"}}>
                                                 <Row className="p-0" style={{marginBottom:"0.5em"}}>
@@ -653,7 +648,7 @@ return (
                                                         
                                                     </Col>                                                
                                                 </Row>            
-                                                <Row onMouseDown={() => props.showItems(histo_layer.histo_sublayer_idx)} onMouseUp={(e) => useReferenceObject({
+                                                <Row onMouseDown={() => props.showItems(histo_layer.histo_layer_histo_sublayers_idx)} onMouseUp={(e) => useReferenceObject({
                                                     "e":e,
                                                     "system_index":s_i,                                                                     
                                                     "system_name":systemReferenceArr[s_i].system_name,
@@ -663,30 +658,31 @@ return (
                                                     "part_name":systemReferenceArr[s_i].organs[o_i].parts[p_i].part_name,
                                                     "histo_layer_name":systemReferenceArr[s_i].organs[o_i].parts[p_i].histo_layers[hl_i].histo_layer_name,
                                                     "histo_layer_index":hl_i,
-                                                    "histo_sublayer_idx":histo_layer.histo_sublayer_idx,
-                                                    "histo_sublayers":histo_layer.content.histo_sublayers.filter((histo_sublayer) => histo_sublayer.name !== 'null')
+                                                    "histo_layer_histo_sublayers_idx":histo_layer.histo_layer_histo_sublayers_idx,
+                                                    "histo_sublayers":histo_layer.histo_sublayers.filter((histo_sublayer) => histo_sublayer.name !== 'null')
                                                         .map((histo_sublayer) => { return {"histo_sublayer_name": histo_sublayer.name}}),
                                                     "type":"Histo_Sublayers"
                                                 })}>
                                                     <ContentButton system_idx={s_i} organ_idx={o_i} organ_parts_idx={p_i} histo_layer_idx={hl_i}
-                                                    idx={histo_layer.histo_sublayer_idx} items={histo_layer.content.histo_sublayers} showItemContents={props.showItemContents} name="Histo_Sublayers"/>
+                                                    idx={histo_layer.histo_layer_histo_sublayers_idx} items={histo_layer.histo_sublayers} showItemContents={props.showItemContents} name="Histo_Sublayers"/>
                                                 </Row>
                                              </Container>
 
                                             {   
-                                                props.showItemContents[histo_layer.histo_sublayer_idx] && histo_layer.content.histo_sublayers != "undefined" && histo_layer.content.histo_sublayers.length > 0 
+                                                props.showItemContents[histo_layer.histo_layer_histo_sublayers_idx] && histo_layer.histo_sublayers != "undefined" && histo_layer.histo_sublayers.length > 0 
                                                 &&
-                                                histo_layer.content.histo_sublayers.map((histo_sublayer,hsl_i) => (
+                                                histo_layer.histo_sublayers.map((histo_sublayer,hsl_i) => (
                                                 <>
-                                                    <Container key={hsl_i.toString()} style={{width:"75%",fontSize:"1em",marginLeft:"5em",
+                                                    <Container key={hsl_i.toString()+histo_sublayer.name} style={{width:"75%",fontSize:"1em",marginLeft:"5em",
                                                         padding:"1em",border:"2px solid black", borderRadius:"10px",
                                                         backgroundColor:"#ccffff",color:"black"}}>
                                                         <Row style={{marginBottom:"0.5em"}}>
-                                                            <Col lg="2">
+                                                            <Col>
                                                                 <i style={{marginLeft:"-0.25em",transform:"scale(0.75)"}} className="bi bi-arrow-return-right"></i>
                                                             </Col>
-                                                            <Col lg="8" className="d-flex justify-content-start" style={{color:"black",marginLeft:"1em"}}>
-                                                                <span>Histo_SubLayers:</span>&nbsp;&nbsp;<span style={{color:"red"}}>{histo_sublayer.name}</span>
+                                                            <Col className="col-10 p-0 pb-3" style={{color:"black",fontSize:"1.1em",height:"auto"}}>
+                                                                   Histo_SubLayer&nbsp;(hsl-{hsl_i+1}):&nbsp;<span style={{color:"red"}}>{histo_sublayer.name}</span><br/>
+                                                                   for&nbsp;(S-{s_i+1})&nbsp;(O-{o_i+1})&nbsp;(P-{p_i+1})&nbsp;(Hl-{hl_i-1})
                                                             </Col>                                                
                                                         </Row>   
                                                         <Row onMouseDown={() => props.showItems(histo_sublayer.histo_sublayer_histo_chars_idx)} onMouseUp={(e) => useReferenceObject({
@@ -700,7 +696,7 @@ return (
                                                             "histo_layer_index":hl_i,
                                                             "histo_layer_name":systemReferenceArr[s_i].organs[o_i].parts[p_i].histo_layers[hl_i].histo_layer_name,
                                                             "histo_sublayer_index":hsl_i,  
-                                                            "histo_sublayer_name":systemReferenceArr[s_i].organs[o_i].parts[p_i].histo_layers[hl_i].histo_sublayers[hsl_i].histo_sublayer_name.split('<')[0],
+                                                          //  "histo_sublayer_name":systemReferenceArr[s_i].organs[o_i].parts[p_i].contents[0].histo_layers[hl_i].content.histo_sublayers[hsl_i].name.split('<')[0],
                                                             "histo_sublayer_histo_chars_idx":histo_sublayer.histo_sublayer_histo_chars_idx,         
                                                             "histo_chars": histo_sublayer.histo_chars.filter((histo_char) => histo_char.name !== 'null')
                                                                 .map((histo_char) => { return {"histo_char_name": histo_char.name} }),
@@ -717,14 +713,15 @@ return (
                                                         &&
                                                         histo_sublayer.histo_chars.map((histo_char,hc_i) => (
                                                         <>
-                                                            <Container key={hc_i.toString()} style={{width:"75%",fontSize:"1em",marginLeft:"6em",
+                                                            <Container key={hc_i.toString()+histo_char.name} style={{width:"75%",fontSize:"1em",marginLeft:"6em",
                                                                 padding:"1em",border:"2px solid black", borderRadius:"10px",backgroundColor:"#fff2cc",color:"black"}}>
                                                                 <Row style={{marginBottom:"0.5em"}}>
-                                                                    <Col lg="2">
+                                                                    <Col>
                                                                         <i style={{marginLeft:"-0.25em",transform:"scale(0.75)"}} className="bi bi-arrow-return-right"></i>
                                                                     </Col>
-                                                                    <Col lg="8" className="d-flex justify-content-start" style={{color:"black",marginLeft:"1em"}}>
-                                                                        <span>Histo_Chars:</span>&nbsp;&nbsp;<span style={{color:"red"}}>{histo_char.name}</span>
+                                                                    <Col className="col-10 p-0 pb-3" style={{color:"black",fontSize:"1.1em",height:"auto"}}>
+                                                                        Histo_Char&nbsp;(hc-{hc_i+1}):&nbsp;<span style={{color:"red"}}>{histo_char.name}</span><br/>
+                                                                        for&nbsp;(S-{s_i+1})&nbsp;(O-{o_i+1})&nbsp;(P-{p_i+1})&nbsp;(Hl-{hl_i-1})&nbsp;(Hsl-{hsl_i-1})
                                                                     </Col>                                                
                                                                 </Row>   
                                                                 <Row onMouseDown={() => props.showItems(histo_char.histo_char_cells_idx)} onMouseUp={(e) => useReferenceObject({
@@ -782,14 +779,15 @@ return (
                                                                 &&
                                                                 histo_char.cells.map((cell,hcc_i) => (
                                                                 <>
-                                                                    <Container key={hcc_i.toString()} style={{width:"75%",fontSize:"1em",marginLeft:"7em",
+                                                                    <Container key={hcc_i.toString()+cell.name} style={{width:"75%",fontSize:"1em",marginLeft:"7em",
                                                                         padding:"1em",border:"2px solid black", borderRadius:"10px",backgroundColor:"#ccd9ff",color:"black"}}>
                                                                         <Row style={{marginBottom:"0.5em"}}>
-                                                                            <Col lg="2">
+                                                                            <Col>
                                                                                 <i style={{marginLeft:"-0.25em",transform:"scale(0.75)"}} className="bi bi-arrow-return-right"></i>
                                                                             </Col>
-                                                                            <Col lg="8" className="d-flex justify-content-start" style={{color:"black",marginLeft:"1em"}}>
-                                                                                <span>Cell Type:</span>&nbsp;&nbsp;<span style={{color:"red"}}>{cell.name}</span>
+                                                                            <Col className="col-10 p-0 pb-3" style={{color:"black",fontSize:"1.1em",height:"auto"}}>
+                                                                                Cell Type&nbsp;(cl-{hcc_i+1}):&nbsp;<span style={{color:"red"}}>{cell.name}</span><br/>
+                                                                                for&nbsp;(S-{s_i+1})&nbsp;(O-{o_i+1})&nbsp;(P-{p_i+1})&nbsp;(Hl-{hl_i-1})&nbsp;(Hsl-{hsl_i-1})&nbsp;(Hc-{hc_i+1})
                                                                             </Col>                                                
                                                                         </Row>  
                                                                     </Container>
@@ -802,8 +800,8 @@ return (
                                                                 &&
                                                                 histo_char.ecell_matrices.map((ecell_matrix,hce_i) => (
                                                                 <>
-                                                                    <Container key={hce_i.toString()} style={{width:"75%",fontSize:"1em",marginLeft:"7em",
-                                                                        padding:"1em",border:"2px solid black", borderRadius:"10px",backgroundColor:"f2d9d9",color:"black"}}>
+                                                                    <Container key={hce_i.toString()+ecell_matrix.name} style={{width:"75%",fontSize:"1em",marginLeft:"7em",
+                                                                        padding:"1em",border:"2px solid black", borderRadius:"10px",backgroundColor:"#f2d9d9",color:"black"}}>
                                                                         <Row style={{marginBottom:"0.5em"}}>
                                                                             <Col lg="2">
                                                                                 <i style={{marginLeft:"-0.25em",transform:"scale(0.75)"}} className="bi bi-arrow-return-right"></i>
