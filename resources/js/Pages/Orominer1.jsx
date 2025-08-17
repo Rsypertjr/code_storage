@@ -1041,8 +1041,8 @@ export default function Orominer(props){
                                                                                 histo_char.ecell_matrices.length > 0 && 
                                                                                 histo_char.ecell_matrices.map((ecell,ecl) => (                                
                                                                                 <g key={ecl.toString()+ecell.name} id={`S${currentSystemIndex+1}O${ii+1}P${j+1}Hl${k+1}Hsl${l+1}Hc${hc+1}C${ecl+1}`}>
-                                                                                    <line x1={ecell.lx1} y1={ecell.ly1} x2={ecell.lx2} y2={ecell.ly2} stroke="#34afbfff" style={{strokeWidth:"7"}}/>
-                                                                                    <circle cx={ecell.cx} cy={ecell.cy} r={ecell_radius} stroke="black" fill="#ccd9ff" style={{strokeWidth:"1"}}/>
+                                                                                    <line x1={ecell.lx1} y1={ecell.ly1} x2={ecell.lx2} y2={ecell.ly2} stroke="#5E4F4B" style={{strokeWidth:"7"}}/>
+                                                                                    <circle cx={ecell.cx} cy={ecell.cy} r={ecell_radius} stroke="black" fill="#77999E" style={{strokeWidth:"1"}}/>
                                                                                     <text x={ecell.cx-29} y={ecell.cy+9} stroke="black" style={{fontSize:"1.8em"}}>ecl-{ecl+1}</text>
                                                                                 </g>                                                    
                                                                             )) 

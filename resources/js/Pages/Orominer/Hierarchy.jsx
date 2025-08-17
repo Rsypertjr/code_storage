@@ -792,7 +792,7 @@ return (
                                                                 histo_char.ecell_matrices.map((ecell_matrix,hce_i) => (
                                                                 <>
                                                                     <Container key={hce_i.toString()+ecell_matrix.name} style={{width:"75%",fontSize:"1em",marginLeft:"7em",
-                                                                        padding:"1em",border:"2px solid black", borderRadius:"10px",backgroundColor:"#f2d9d9",color:"black"}}>
+                                                                        padding:"1em",border:"2px solid black", borderRadius:"10px",backgroundColor:"#77999E",color:"black"}}>
                                                                         <Row style={{marginBottom:"0.5em"}}>
                                                                             <Col lg="2">
                                                                                 <i style={{marginLeft:"-0.25em",transform:"scale(0.75)"}} className="bi bi-arrow-return-right"></i>
