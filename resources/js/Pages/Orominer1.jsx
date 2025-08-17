@@ -18,6 +18,8 @@ export default function Orominer(props){
     const [currentOrganIndex, setCurrentOrganIndex] = useState(0);
     const [currentPartIndex, setCurrentPartIndex] = useState(0);
     const [currentHistoLayerIndex, setCurrentHistoLayerIndex] = useState(0);
+    const [currentHistoSublayerIndex, setCurrentHistoSublayerIndex] = useState(0);
+    const [currentHistoCharIndex, setCurrentHistoCharIndex] = useState(0);
     const [showItemContents, setShowItemContents] = useState([]);
     const [showSystemOrgans, setShowSystemOrgans] = useState([]);
     const [sysCx, setSysCx] = useState(1100);
@@ -39,6 +41,7 @@ export default function Orominer(props){
     const [showAll, setShowAll] = useState(false);
     
     const [cell_radius, setCellRadius] = useState(35);
+    const [ecell_radius, setECellRadius] = useState(40);
     const [other_structure_radius, setOtherStructureRadius] = useState(35);    
     const [subpart_radius, setSubpartRadius] = useState(35);
     const [organ_layer_radius, setOrganLayerRadius] = useState(35);
@@ -142,23 +145,44 @@ export default function Orominer(props){
         let system_index;
         let organ_index;
         let part_index;
+        let histo_layer_index;
+        let histo_sublayer_index;
         let item;
+        let sysColor;
+        let orgColor;
+        let partColor;
+        let histoLayerColor;
+        let histoSublayerColor;
 
         if(indexArr[0] !== undefined)
         {
             system_index = indexArr[0];
+            sysColor = "#ffff99";
         }
         if(indexArr[1] !== undefined){
             organ_index = indexArr[1];
+            orgColor = "#e6eeff";
             item = displayReferenceArr[system_index].organs[organ_index];
             console.log("Item contents:", item);         
         }
         if(indexArr[2] !== undefined){
             part_index = indexArr[2];
+            partColor = "#ffe6f2";
             item = displayReferenceArr[system_index].organs[organ_index].parts[part_index];
             console.log("Item contents:", item);         
         }
-             
+        if(indexArr[3] !== undefined){
+            histo_layer_index = indexArr[3];
+            histoLayerColor = "#e5ffe5";
+            item = displayReferenceArr[system_index].organs[organ_index].parts[part_index].histo_layers[histo_layer_index];
+            console.log("Item contents:", item);         
+        }
+          if(indexArr[4] !== undefined){
+            histo_sublayer_index = indexArr[4];
+            histoSublayerColor = "#ccffff";
+            item = displayReferenceArr[system_index].organs[organ_index].parts[part_index].histo_layers[histo_layer_index].histo_sublayers[histo_sublayer_index];
+            console.log("Item contents:", item);         
+        }    
 
         $("#graph_header").css("z-index",400);
         $("#infoBar").text('');
@@ -166,41 +190,58 @@ export default function Orominer(props){
 
         let el = `<span></span`;
         let search;
-        if(type === "system" || type === "organ" || type === "part" || type === "histo_layer"){
+        let test = type === "system" || type === "organ" || type === "part" || type === "histo_layer" || type === "histo_sublayer";
+        if(type === "system" || type === "organ" || type === "part" || type === "histo_layer" || type === "histo_sublayer"){
             console.log("Display Reference Arr:", displayReferenceArr);
             let system_name = displayReferenceArr[indexArr[0]].system_name;
             console.log("System Name:", system_name);            
             let id = `S${indexArr[0]+1}`;
-            tag = `<div id="S${indexArr[0]+1}">System Name is: ${system_name}</div>`;
+            tag = `<div id="S${system_index+1}" 
+            style="color:${sysColor};font-style=bold;background-color:black;padding:0.5em;margin-top:0.5em;border:10px solid ${sysColor};border-radius:25px">System Name (S-${system_index+1}) is: 
+            ${system_name}</div>`;
             console.log("tag",tag);
             //search = $("#infoBar").find(`#S${indexArr[0]+1}`);  
         }
-        if(type === "organ" || type === "part" || type === "histo_layer"){
+        if(type === "organ" || type === "part" || type === "part" || type === "histo_layer" || type === "histo_sublayer"){
             console.log("Display Reference Arr:", displayReferenceArr);
             let organ_name = displayReferenceArr[indexArr[0]].organs[indexArr[1]].organ_name;
             console.log("Organ Name:", organ_name);            
             let id = `S${indexArr[1]+1}`;
-            tag += `<br/><div id="S${indexArr[1]+1}">Organ Name is: ${organ_name}</div>`;
+            tag += `<div style="color:${orgColor};font-style=bold;background-color:black;padding:0.5em;margin-top:0.5em;border:10px solid ${orgColor};border-radius:25px" 
+            id="O${id}">Organ Name (O-${organ_index+1}) is: ${organ_name}</div>`;
             console.log("tag",tag);
             //search = $("#infoBar").find(`#S${indexArr[1]+1}`);  
            ;          
         }
-        if(type === "part" || type === "histo_layer"){
+        if(type === "part" || type === "histo_layer" || type === "histo_sublayer"){
             console.log("Display Reference Arr:", displayReferenceArr);
             let part_name = displayReferenceArr[indexArr[0]].organs[indexArr[1]].parts[indexArr[2]].part_name;
             console.log("Part Name:", part_name);            
-            let id = `S${indexArr[2]+1}`;
-            tag += `<br/><div id="S${indexArr[1]+1}">Part Name is: ${part_name}</div>`;
+            let id = `S${part_index+1}`;
+            tag += `<div style="color:${partColor};font-style=bold;background-color:black;padding:0.5em;margin-top:0.5em;border:10px solid ${partColor};border-radius:25px"} 
+            id="P${id}">Part Name (P-${part_index+1}) is:  ${part_name}</div>`;
             console.log("tag",tag);
             //search = $("#infoBar").find(`#S${indexArr[1]+1}`);  
            ;          
         }
-         if(type === "histo_layer"){
+         if(type === "histo_layer" || type === "histo_sublayer"){
             console.log("Display Reference Arr:", displayReferenceArr);
             let histo_layer_name = displayReferenceArr[indexArr[0]].organs[indexArr[1]].parts[indexArr[2]].histo_layers[indexArr[3]].histo_layer_name;
-            console.log("Part Name:", histo_layer_name);            
-            let id = `S${indexArr[3]+1}`;
-            tag += `<br/><div id="S${indexArr[1]+1}">Histo_Layer Name is: ${histo_layer_name}</div>`;
+            console.log("Histo Layer Name:", histo_layer_name);            
+            let id = `S${histo_layer_index+1}`;
+            tag += `<div style="color:${histoLayerColor};font-style=bold;background-color:black;padding:0.5em;margin-top:0.5em;border:10px solid ${histoLayerColor};border-radius:25px" 
+            id="S${id}">Histo_Layer Name (hl-${histo_layer_index+1}) is: ${histo_layer_name}</div>`;
+            console.log("tag",tag);
+            //search = $("#infoBar").find(`#S${indexArr[1]+1}`);  
+           ;          
+        }
+         if(type === "histo_sublayer"){
+            console.log("Display Reference Arr:", displayReferenceArr);
+            let histo_sublayer_name = displayReferenceArr[indexArr[0]].organs[indexArr[1]].parts[indexArr[2]].histo_layers[indexArr[3]].histo_sublayers[indexArr[4]].histo_sublayer_name;
+            console.log("Histo Sublayer Name:", histo_sublayer_name);            
+            let id = `S${histo_sublayer_index+1}`;
+            tag += `<div style="color:${histoSublayerColor};font-style=bold;background-color:black;padding:0.5em;margin-top:0.5em;border:10px solid ${histoSublayerColor};border-radius:25px" 
+            id="S${id}">Histo_Subayer Name (hl-${histo_sublayer_index+1}) is: ${histo_sublayer_name}</div>`;
             console.log("tag",tag);
             //search = $("#infoBar").find(`#S${indexArr[1]+1}`);  
            ;          
@@ -465,7 +506,7 @@ export default function Orominer(props){
             console.log("Check histo sublayers in setup:", req.histo_sublayers);
             currentArr[req.system_index].organs[req.organ_index].parts[req.part_index].histo_layers[req.histo_layer_index].histo_sublayers = req.histo_sublayers;
             currentArr[req.system_index].organs[req.organ_index].parts[req.part_index].histo_layers[req.histo_layer_index].histo_layer_histo_sublayers_idx = req.histo_layer_histo_sublayers_idx;
-
+            currentArr[req.system_index].organs[req.organ_index].parts[req.part_index].histo_layers[req.histo_layer_index].open = showItemContents[req.histo_layer_histo_sublayers_idx];
             let stemArr = [];
             for (let k = 1;k <= numItems; k++){
                 stemArr.push(k);
@@ -479,6 +520,7 @@ export default function Orominer(props){
 
                     setTransX(-cx);
                     setTransY(-cy);
+                    currentArr[req.system_index].organs[req.organ_index].parts[req.part_index].histo_layers[req.histo_layer_index].histo_sublayers[m-1].open = false;
                     currentArr[req.system_index].organs[req.organ_index].parts[req.part_index].histo_layers[req.histo_layer_index].histo_sublayers[m-1].lx1 = cx + Math.cos(m*conv + adj)*(part_radius);
                     currentArr[req.system_index].organs[req.organ_index].parts[req.part_index].histo_layers[req.histo_layer_index].histo_sublayers[m-1].ly1 = cy + Math.sin(m*conv + adj)*(part_radius);   
                     currentArr[req.system_index].organs[req.organ_index].parts[req.part_index].histo_layers[req.histo_layer_index].histo_sublayers[m-1].lx2 = cx + Math.cos(m*conv + adj)*(part_radius-histo_layer_radius) + Math.cos(m*conv + adj)*(len);
@@ -499,7 +541,9 @@ export default function Orominer(props){
             len = 150; 
             setCurrentSystemIndex(req.system_index);    
             setCurrentOrganIndex(req.organ_index);    
-            setCurrentPartIndex(req.part_index);     
+            setCurrentPartIndex(req.part_index);      
+            setCurrentHistoLayerIndex(req.histo_layer_index);  
+            setCurrentHistoSublayerIndex(req.histo_sublayer_index);
                      
             setEClientY(req.e.clientY);
             setEPageY(req.e.pageY);
@@ -509,6 +553,7 @@ export default function Orominer(props){
             if (currentArr[req.system_index].organs[req.organ_index].parts[req.part_index].histo_layers[req.histo_layer_index].histo_sublayers[req.histo_sublayer_index].histo_chars === undefined)
                 currentArr[req.system_index].organs[req.organ_index].parts[req.part_index].histo_layers[req.histo_layer_index].histo_sublayers[req.histo_sublayer_index].histo_chars = req.histo_chars;
             currentArr[req.system_index].organs[req.organ_index].parts[req.part_index].histo_layers[req.histo_layer_index].histo_sublayers[req.histo_sublayer_index].histo_sublayer_histo_chars_idx = req.histo_sublayer_histo_chars_idx;
+            currentArr[req.system_index].organs[req.organ_index].parts[req.part_index].histo_layers[req.histo_layer_index].histo_sublayers[req.histo_sublayer_index].open = showItemContents[req.histo_sublayer_histo_chars_idx];
 
             let stemArr = [];
             for (let k = 1;k <= numItems; k++){
@@ -534,7 +579,8 @@ export default function Orominer(props){
                         .histo_chars[m-1].cx = cx + Math.cos(m*conv + adj)*(histo_sublayer_radius) + Math.cos(m*conv + adj)*(len);
                     currentArr[req.system_index].organs[req.organ_index].parts[req.part_index].histo_layers[req.histo_layer_index].histo_sublayers[req.histo_sublayer_index]
                         .histo_chars[m-1].cy = cy + Math.sin(m*conv + adj)*(histo_sublayer_radius) + Math.sin(m*conv + adj)*(len); 
-            
+                    currentArr[req.system_index].organs[req.organ_index].parts[req.part_index].histo_layers[req.histo_layer_index].histo_sublayers[req.histo_sublayer_index]
+                        .histo_chars[m-1].open = false;
                 
                 }      
                     
@@ -551,7 +597,10 @@ export default function Orominer(props){
             len = 300; 
             setCurrentSystemIndex(req.system_index);    
             setCurrentOrganIndex(req.organ_index);    
-            setCurrentPartIndex(req.part_index);     
+            setCurrentPartIndex(req.part_index);      
+            setCurrentHistoLayerIndex(req.histo_layer_index);  
+            setCurrentHistoSublayerIndex(req.histo_sublayer_index); 
+            setCurrentHistoCharIndex(req.histo_char_index);
                      
             setEClientY(req.e.clientY);
             setEPageY(req.e.pageY);
@@ -561,7 +610,7 @@ export default function Orominer(props){
             if (currentArr[req.system_index].organs[req.organ_index].parts[req.part_index].histo_layers[req.histo_layer_index].histo_sublayers[req.histo_sublayer_index].histo_chars[req.histo_chars_index].cells === undefined)
                 currentArr[req.system_index].organs[req.organ_index].parts[req.part_index].histo_layers[req.histo_layer_index].histo_sublayers[req.histo_sublayer_index].histo_chars[req.histo_chars_index].cells = req.cells;
             currentArr[req.system_index].organs[req.organ_index].parts[req.part_index].histo_layers[req.histo_layer_index].histo_sublayers[req.histo_sublayer_index].histo_chars[req.histo_chars_index].histo_char_cells_idx = req.histo_char_cells_idx;
-
+            currentArr[req.system_index].organs[req.organ_index].parts[req.part_index].histo_layers[req.histo_layer_index].histo_sublayers[req.histo_sublayer_index].histo_chars[req.histo_chars_index].open = showItemContents[req.histo_char_cells_idx];
             let stemArr = [];
             for (let k = 1;k <= numItems; k++){
                 stemArr.push(k);
@@ -586,8 +635,71 @@ export default function Orominer(props){
                         .histo_chars[req.histo_chars_index].cells[m-1].cx = cx + Math.cos(m*conv + adj)*(histo_sublayer_radius) + Math.cos(m*conv + adj)*(len);
                     currentArr[req.system_index].organs[req.organ_index].parts[req.part_index].histo_layers[req.histo_layer_index].histo_sublayers[req.histo_sublayer_index]
                         .histo_chars[req.histo_chars_index].cells[m-1].cy = cy + Math.sin(m*conv + adj)*(histo_sublayer_radius) + Math.sin(m*conv + adj)*(len); 
-            
+                    currentArr[req.system_index].organs[req.organ_index].parts[req.part_index].histo_layers[req.histo_layer_index].histo_sublayers[req.histo_sublayer_index]
+                        .histo_chars[req.histo_chars_index].cells[m-1].open = false;
                 
+                }      
+                    
+            });
+              console.log("Current Arr after Cells Add:",currentArr); 
+            
+        }
+
+          else if(req.type.match(/Ecell_Matrix/g) ){
+           
+            numItems = req.ecell_matrices.length;
+            let adj = 2*(Math.PI)/-30;
+            conv = rads/getRandomIntInclusive(numItems,numItems+2); // Randomsly shift item angles
+            len = 300; 
+            setCurrentSystemIndex(req.system_index);    
+            setCurrentOrganIndex(req.organ_index);    
+            setCurrentPartIndex(req.part_index);      
+            setCurrentHistoLayerIndex(req.histo_layer_index);  
+            setCurrentHistoSublayerIndex(req.histo_sublayer_index); 
+            setCurrentHistoCharIndex(req.histo_char_index);
+                     
+            setEClientY(req.e.clientY);
+            setEPageY(req.e.pageY);
+
+            console.log("Check cells in setup:", req.cells);
+            console.log("Check currentArr in setup",currentArr);
+            if (currentArr[req.system_index].organs[req.organ_index].parts[req.part_index].histo_layers[req.histo_layer_index].histo_sublayers[req.histo_sublayer_index].histo_chars[req.histo_chars_index].ecell_matrices === undefined)
+                currentArr[req.system_index].organs[req.organ_index].parts[req.part_index].histo_layers[req.histo_layer_index].histo_sublayers[req.histo_sublayer_index].histo_chars[req.histo_chars_index].ecell_matrices = req.ecell_matrices;
+            currentArr[req.system_index].organs[req.organ_index].parts[req.part_index].histo_layers[req.histo_layer_index].histo_sublayers[req.histo_sublayer_index].histo_chars[req.histo_chars_index].histo_char_cells_idx = req.histo_char_ecells_matrices_idx;
+            currentArr[req.system_index].organs[req.organ_index].parts[req.part_index].histo_layers[req.histo_layer_index]
+                .histo_sublayers[req.histo_sublayer_index].histo_chars[req.histo_chars_index].open = showItemContents[req.histo_char_ecells_matrices_idx];
+                
+            currentArr[req.system_index].organs[req.organ_index].parts[req.part_index].histo_layers[req.histo_layer_index]
+                .histo_sublayers[req.histo_sublayer_index].histo_chars[req.histo_chars_index].histo_char_ecells_matrices_idx = req.histo_char_ecells_matrices_idx;
+
+
+            let stemArr = [];
+            for (let k = 1;k <= numItems; k++){
+                stemArr.push(k);
+            }
+            stemArr.map((m) => {
+                if(currentArr[req.system_index] !== undefined && currentArr[req.system_index].organs[req.organ_index].parts[req.part_index].histo_layers[req.histo_layer_index].histo_sublayers[req.histo_sublayer_index].histo_chars[req.histo_chars_index].ecell_matrices[m-1].lx1 === undefined){
+                    
+                    cx = currentArr[req.system_index].organs[req.organ_index].parts[req.part_index].histo_layers[req.histo_layer_index].histo_sublayers[req.histo_sublayer_index].histo_chars[req.histo_chars_index].cx;
+                    cy = currentArr[req.system_index].organs[req.organ_index].parts[req.part_index].histo_layers[req.histo_layer_index].histo_sublayers[req.histo_sublayer_index].histo_chars[req.histo_chars_index].cy;
+
+                    setTransX(-cx);
+                    setTransY(-cy);
+                    currentArr[req.system_index].organs[req.organ_index].parts[req.part_index].histo_layers[req.histo_layer_index].histo_sublayers[req.histo_sublayer_index]
+                        .histo_chars[req.histo_chars_index].ecell_matrices[m-1].lx1 = cx + Math.cos(m*conv + adj)*(histo_sublayer_radius);
+                    currentArr[req.system_index].organs[req.organ_index].parts[req.part_index].histo_layers[req.histo_layer_index].histo_sublayers[req.histo_sublayer_index]
+                        .histo_chars[req.histo_chars_index].ecell_matrices[m-1].ly1 = cy + Math.sin(m*conv + adj)*(histo_sublayer_radius);   
+                    currentArr[req.system_index].organs[req.organ_index].parts[req.part_index].histo_layers[req.histo_layer_index].histo_sublayers[req.histo_sublayer_index]
+                        .histo_chars[req.histo_chars_index].ecell_matrices[m-1].lx2 = cx + Math.cos(m*conv + adj)*(histo_sublayer_radius-histo_char_radius) + Math.cos(m*conv + adj)*(len);
+                    currentArr[req.system_index].organs[req.organ_index].parts[req.part_index].histo_layers[req.histo_layer_index].histo_sublayers[req.histo_sublayer_index]
+                        .histo_chars[req.histo_chars_index].ecell_matrices[m-1].ly2 = cy + Math.sin(m*conv + adj)*(histo_sublayer_radius-histo_char_radius) + Math.sin(m*conv + adj)*(len);   
+                    currentArr[req.system_index].organs[req.organ_index].parts[req.part_index].histo_layers[req.histo_layer_index].histo_sublayers[req.histo_sublayer_index]
+                        .histo_chars[req.histo_chars_index].ecell_matrices[m-1].cx = cx + Math.cos(m*conv + adj)*(histo_sublayer_radius) + Math.cos(m*conv + adj)*(len);
+                    currentArr[req.system_index].organs[req.organ_index].parts[req.part_index].histo_layers[req.histo_layer_index].histo_sublayers[req.histo_sublayer_index]
+                        .histo_chars[req.histo_chars_index].ecell_matrices[m-1].cy = cy + Math.sin(m*conv + adj)*(histo_sublayer_radius) + Math.sin(m*conv + adj)*(len); 
+            
+                     currentArr[req.system_index].organs[req.organ_index].parts[req.part_index].histo_layers[req.histo_layer_index].histo_sublayers[req.histo_sublayer_index]
+                        .histo_chars[req.histo_chars_index].ecell_matrices[m-1].open = false;
                 }      
                     
             });
@@ -812,9 +924,7 @@ export default function Orominer(props){
                                 showItemContents[organ.organ_organ_parts_idx]  && organ.parts.map((part,j) => (  
                                     <g key={j.toString()}>    
                                         { 
-                                      
                                         itemsDisplay(organ.open && part.open && !part.histo_layers[currentHistoLayerIndex].open,currentOrganIndex,currentPartIndex,ii,j) && 
-                                     
                                             <>  
                                                 <g  id={`S${currentSystemIndex+1}O${ii+1}P${j+1}`} onClick={(e) => getIndices("part",[currentSystemIndex,ii,j],e)}>
                                                     <line x1={part.lx1} y1={part.ly1} x2={part.lx2} y2={part.ly2} stroke="black" style={{strokeWidth:"7",opacity:"1"}}/>
@@ -824,7 +934,6 @@ export default function Orominer(props){
                                             </>    
                                         }              
                                         { 
-                                            
                                             showItemContents[part.part_histo_layers_idx] && part.histo_layers !== undefined &&
                                             part.histo_layers.length > 0 && part.histo_layers.map((histo_layer,k) => (   
                                                 currentPartIndex === j && currentHistoLayerIndex !== k &&          
@@ -841,43 +950,115 @@ export default function Orominer(props){
                                         {  
                                             showItemContents[part.part_histo_layers_idx] && part.histo_layers !== undefined &&
                                             part.histo_layers.length > 0 && part.histo_layers.map((histo_layer,k) => (                                
-                                                <g key={k.toString()+histo_layer.lx2} id={`S${currentSystemIndex+1}O${ii+1}P${j+1}Hl${k+1}`}onClick={(e) => getIndices("histo_layer",[currentSystemIndex,ii,j,k],e)} >
+                                                <g key={k.toString()+histo_layer.lx2} id={`S${currentSystemIndex+1}O${ii+1}P${j+1}Hl${k+1}`}  >
                                                      {
-                                                         itemsDisplay(part.open && histo_layer.open,currentPartIndex,currentHistoLayerIndex,j,k) &&   
+                                                        itemsDisplay(part.open && histo_layer.open,currentPartIndex,currentHistoLayerIndex,j,k) &&   
                                                         <>
-                                                            <g>
+                                                            <g onClick={(e) => getIndices("histo_layer",[currentSystemIndex,ii,j,k],e)}>
                                                                 <line x1={histo_layer.lx1} y1={histo_layer.ly1} x2={histo_layer.lx2} y2={histo_layer.ly2} stroke="grey" style={{strokeWidth:"7"}}/>
                                                                 <circle cx={histo_layer.cx} cy={histo_layer.cy} r={histo_layer_radius} stroke="black" fill="#e5ffe5" style={{strokeWidth:"1"}}/>
                                                                 <text x={histo_layer.cx-26} y={histo_layer.cy+9} stroke="black" style={{fontSize:"1.8em"}}>hl-{k+1}</text>
                                                             </g>
                                                         </>                                                  
                                                      }
+                                                     {
+                                                        showItemContents[histo_layer.histo_layer_histo_sublayers_idx] && histo_layer.histo_sublayers !== undefined && histo_layer.histo_sublayers.length > 0 && 
+                                                            histo_layer.histo_sublayers.map((histo_sublayer,l) => (   
+                                                            currentHistoLayerIndex === k && currentHistoSublayerIndex !== l &&
+                                                            <>     
+                                                                <g key={l.toString()} id={`S${currentSystemIndex+1}O${ii+1}P${j+1}Hl${k+1}Hsl${l+1}`} onClick={(e) => getIndices("histo_sublayer",[currentSystemIndex,ii,j,k,l],e)}>
+                                                                    <line x1={histo_sublayer.lx1} y1={histo_sublayer.ly1} x2={histo_sublayer.lx2} y2={histo_sublayer.ly2} stroke="#149900ff" style={{strokeWidth:"7",opacity:sys_opacity}}/>
+                                                                    <circle cx={histo_sublayer.cx} cy={histo_sublayer.cy} r={histo_sublayer_radius} stroke="black" fill="#ccffff" style={{strokeWidth:"1",opacity:sys_opacity}}/>
+                                                                    <text x={histo_sublayer.cx-31} y={histo_sublayer.cy+9} stroke="black" style={{fontSize:"1.8em",opacity:sys_opacity}}>hsl-{l+1}</text>
+                                                                </g>   
+                                                            </>                            
+                                                           
+                                                        ))
+                                                     }
+                                                    
                                                      {                                                       
                                                         showItemContents[histo_layer.histo_layer_histo_sublayers_idx] && histo_layer.histo_sublayers !== undefined && histo_layer.histo_sublayers.length > 0 && 
                                                             histo_layer.histo_sublayers.map((histo_sublayer,l) => (                                
-                                                            <g key={k.toString()} id={`S${currentSystemIndex+1}O${ii+1}P${j+1}Hl${k+1}Hsl${l+1}`}>
-                                                                <line x1={histo_sublayer.lx1} y1={histo_sublayer.ly1} x2={histo_sublayer.lx2} y2={histo_sublayer.ly2} stroke="#149900ff" style={{strokeWidth:"7"}}/>
-                                                                <circle cx={histo_sublayer.cx} cy={histo_sublayer.cy} r={histo_sublayer_radius} stroke="black" fill="#ccffff" style={{strokeWidth:"1"}}/>
-                                                                <text x={histo_sublayer.cx-31} y={histo_sublayer.cy+9} stroke="black" style={{fontSize:"1.8em"}}>hsl-{l+1}</text>
+                                                            <g key={l.toString()} id={`S${currentSystemIndex+1}O${ii+1}P${j+1}Hl${k+1}Hsl${l+1}`} onClick={(e) => getIndices("histo_sublayer",[currentSystemIndex,ii,j,k,l],e)}>
+                                                                {
+                                                                    itemsDisplay(histo_layer.open && histo_sublayer.open,currentHistoLayerIndex,currentHistoSublayerIndex,k,l) &&   
+                                                                    <>
+                                                                        <g>
+                                                                            <line x1={histo_sublayer.lx1} y1={histo_sublayer.ly1} x2={histo_sublayer.lx2} y2={histo_sublayer.ly2} stroke="#149900ff" style={{strokeWidth:"7"}}/>
+                                                                            <circle cx={histo_sublayer.cx} cy={histo_sublayer.cy} r={histo_sublayer_radius} stroke="black" fill="#ccffff" style={{strokeWidth:"1"}}/>
+                                                                            <text x={histo_sublayer.cx-31} y={histo_sublayer.cy+9} stroke="black" style={{fontSize:"1.8em"}}>hsl-{l+1}</text>
+                                                                        </g>
+                                                                    </>
+                                                                }
+                                                          
+                                                             {
+                                                                showItemContents[histo_sublayer.histo_sublayer_histo_chars_idx] && histo_sublayer.histo_chars !== undefined && 
+                                                                    histo_sublayer.histo_chars.length > 0 && 
+                                                                    histo_sublayer.histo_chars.map((histo_char,hc) => (    
+                                                                        <>  
+                                                                            {  
+                                                                                currentHistoSublayerIndex === l && currentHistoCharIndex !== hc &&                                                                           
+                                                                                <g key={hc.toString()} id={`S${currentSystemIndex+1}O${ii+1}P${j+1}Hl${k+1}Hsl${l+1}Hc${hc+1}`}>
+                                                                                    <line x1={histo_char.lx1} y1={histo_char.ly1} x2={histo_char.lx2} y2={histo_char.ly2} stroke="#990061ff" style={{strokeWidth:"7",opacity:sys_opacity}}/>
+                                                                                    <circle cx={histo_char.cx} cy={histo_char.cy} r={histo_char_radius} stroke="black" fill="#fff2cc" style={{strokeWidth:"1",opacity:sys_opacity}}/>
+                                                                                    <text x={histo_char.cx-26} y={histo_char.cy+10} stroke="black" style={{fontSize:"1.8em",opacity:sys_opacity}}>hc-{hc+1}</text> 
+                                                                                </g>  
+                                                                            } 
+                                                                        </>                            
+                                                                 
+                                                                    ))
+                                                             }
+                                                                
                                                              {                                                       
                                                                 showItemContents[histo_sublayer.histo_sublayer_histo_chars_idx] && histo_sublayer.histo_chars !== undefined && 
                                                                     histo_sublayer.histo_chars.length > 0 && 
                                                                     histo_sublayer.histo_chars.map((histo_char,hc) => (                                
-                                                                    <g key={k.toString()} id={`S${currentSystemIndex+1}O${ii+1}P${j+1}Hl${k+1}Hsl${l+1}Hc${hc+1}`}>
-                                                                        <line x1={histo_char.lx1} y1={histo_char.ly1} x2={histo_char.lx2} y2={histo_char.ly2} stroke="#990061ff" style={{strokeWidth:"7"}}/>
-                                                                        <circle cx={histo_char.cx} cy={histo_char.cy} r={histo_char_radius} stroke="black" fill="#fff2cc" style={{strokeWidth:"1"}}/>
-                                                                        <text x={histo_char.cx-26} y={histo_char.cy+10} stroke="black" style={{fontSize:"1.8em"}}>hc-{hc+1}</text>                                                                    
-                                                                     {                                                       
-                                                                        showItemContents[histo_char.histo_char_cells_idx] && histo_char.cells !== undefined && 
-                                                                            histo_char.cells.length > 0 && 
-                                                                            histo_char.cells.map((cell,cl) => (                                
-                                                                            <g key={k.toString()+cell.name} id={`S${currentSystemIndex+1}O${ii+1}P${j+1}Hl${k+1}Hsl${l+1}Hc${hc+1}C${cl+1}`}>
-                                                                                <line x1={cell.lx1} y1={cell.ly1} x2={cell.lx2} y2={cell.ly2} stroke="#34afbfff" style={{strokeWidth:"7"}}/>
-                                                                                <circle cx={cell.cx} cy={cell.cy} r={cell_radius} stroke="black" fill="#ccd9ff" style={{strokeWidth:"1"}}/>
-                                                                                <text x={cell.cx-22} y={cell.cy+9} stroke="black" style={{fontSize:"1.8em"}}>cl-{cl+1}</text>
-                                                                            </g>                                                    
-                                                                        )) 
-                                                                    }
+                                                                    <g key={hc.toString()} id={`S${currentSystemIndex+1}O${ii+1}P${j+1}Hl${k+1}Hsl${l+1}Hc${hc+1}`}>
+                                                                        {
+                                                                            itemsDisplay(histo_sublayer.open && histo_char.open,currentHistoSublayerIndex,currentHistoCharIndex,l,hc) && 
+                                                                            <> 
+                                                                                
+                                                                                <g>
+                                                                                    <line x1={histo_char.lx1} y1={histo_char.ly1} x2={histo_char.lx2} y2={histo_char.ly2} stroke="#990061ff" style={{strokeWidth:"7"}}/>
+                                                                                    <circle cx={histo_char.cx} cy={histo_char.cy} r={histo_char_radius} stroke="black" fill="#fff2cc" style={{strokeWidth:"1"}}/>
+                                                                                    <text x={histo_char.cx-26} y={histo_char.cy+10} stroke="black" style={{fontSize:"1.8em"}}>hc-{hc+1}</text>   
+                                                                                </g>     
+                                                                            </>
+                                                                        }                                                                                                                                   
+                                                                        {                                                       
+                                                                            showItemContents[histo_char.histo_char_cells_idx] && histo_char.cells !== undefined && 
+                                                                                histo_char.cells.length > 0 && 
+                                                                                histo_char.cells.map((cell,cl) => (                                
+                                                                                <g key={cl.toString()+cell.name} id={`S${currentSystemIndex+1}O${ii+1}P${j+1}Hl${k+1}Hsl${l+1}Hc${hc+1}C${cl+1}`}>
+                                                                                    <line x1={cell.lx1} y1={cell.ly1} x2={cell.lx2} y2={cell.ly2} stroke="#34afbfff" style={{strokeWidth:"7"}}/>
+                                                                                    <circle cx={cell.cx} cy={cell.cy} r={cell_radius} stroke="black" fill="#ccd9ff" style={{strokeWidth:"1"}}/>
+                                                                                    <text x={cell.cx-22} y={cell.cy+9} stroke="black" style={{fontSize:"1.8em"}}>cl-{cl+1}</text>
+                                                                                </g>                                                    
+                                                                            )) 
+                                                                        }
+                                                                          {                                                       
+                                                                            showItemContents[histo_char.histo_char_ecells_matrices_idx] && histo_char.ecell_matrices !== undefined && 
+                                                                                histo_char.ecell_matrices.length > 0 && 
+                                                                                histo_char.ecell_matrices.map((ecell,ecl) => (                                
+                                                                                <g key={ecl.toString()+ecell.name} id={`S${currentSystemIndex+1}O${ii+1}P${j+1}Hl${k+1}Hsl${l+1}Hc${hc+1}C${ecl+1}`}>
+                                                                                    <line x1={ecell.lx1} y1={ecell.ly1} x2={ecell.lx2} y2={ecell.ly2} stroke="#34afbfff" style={{strokeWidth:"7"}}/>
+                                                                                    <circle cx={ecell.cx} cy={ecell.cy} r={ecell_radius} stroke="black" fill="#ccd9ff" style={{strokeWidth:"1"}}/>
+                                                                                    <text x={ecell.cx-29} y={ecell.cy+9} stroke="black" style={{fontSize:"1.8em"}}>ecl-{ecl+1}</text>
+                                                                                </g>                                                    
+                                                                            )) 
+                                                                        }
+                                                                        
+                                                                         {/*                                                      
+                                                                            showItemContents[histo_char.histo_char_cells_idx] && histo_char.cells !== undefined && 
+                                                                                histo_char.cells.length > 0 && 
+                                                                                histo_char.cells.map((cell,cl) => (                                
+                                                                                <g key={cl.toString()+cell.name} id={`S${currentSystemIndex+1}O${ii+1}P${j+1}Hl${k+1}Hsl${l+1}Hc${hc+1}C${cl+1}`}>
+                                                                                    <line x1={cell.lx1} y1={cell.ly1} x2={cell.lx2} y2={cell.ly2} stroke="#34afbfff" style={{strokeWidth:"7"}}/>
+                                                                                    <circle cx={cell.cx} cy={cell.cy} r={cell_radius} stroke="black" fill="#ccd9ff" style={{strokeWidth:"1"}}/>
+                                                                                    <text x={cell.cx-22} y={cell.cy+9} stroke="black" style={{fontSize:"1.8em"}}>cl-{cl+1}</text>
+                                                                                </g>                                                    
+                                                                            )) 
+                                                                        */}
                                                                     
                                                                     </g>                                                    
                                                                 )) 
