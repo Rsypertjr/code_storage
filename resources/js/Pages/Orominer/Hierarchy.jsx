@@ -73,7 +73,7 @@ export default function Hierarchy(props){   // Component for the left side butto
                 /* If items exist: show open/close button, number of items, open/close icon  */       
                 <Button style={{width:"100%",float:"left",height:"2.5em",fontSize:"0.9em"}} variant="light">
                 {                   
-                    <div style={{position:"relative",width:"100%"}}>
+                    <div id="" style={{position:"relative",width:"100%"}}>
                         <span style={{float:"left",width:"80%",fontSize:"0.9em",color:"#800080"}}>
                             {/* Open or Close */}
                             {!props2.showItemContents[props2.idx] && <span style={{color:"green"}}><b>Click to See&nbsp;&nbsp;</b></span>}
@@ -181,6 +181,7 @@ export default function Hierarchy(props){   // Component for the left side butto
             });
          
             systemsRefArr[i].organs = [];
+            systemsRefArr[i].open = false;
             Array.from(filtered_organs).forEach((organ,j) => {
                
                 partContents[i][j] = [];
@@ -189,7 +190,7 @@ export default function Hierarchy(props){   // Component for the left side butto
                 organ_name = organ_contents[0].textContent;  // Get name for the organ              
                 systemsRefArr[i].organs[j].organ_name = organ_name;
                 systemsRefArr[i].organs[j].organ_idx = getItemIdx();
-                systemsRefArr[i].organs[j].open =  props.showSystemOrgans[i]; 
+                systemsRefArr[i].organs[j].open =  true; 
                 // Find Organ Layers and build array for them
                 // use getOrganLayerIdx() for a unique organ_layer_idx
 
