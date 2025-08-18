@@ -6,6 +6,7 @@ const parser = new DOMParser();
 const itemIndexes = [];
 const organLayerIndexes = [];
 
+
 // Variables used for different copies of master data set
 let local_systems;
 let systemsArr = [];   
@@ -141,12 +142,13 @@ export default function Hierarchy(props){   // Component for the left side butto
         );
     };
    
+    let props2 = props;
 
-     useEffect(() => {
+    useEffect(() => {
         getXML();
      },[]);
 
-     useEffect(() => {
+    useEffect(() => {
 
         let setArr = [];      
         let partContents = [];        
@@ -489,7 +491,7 @@ return (
         local_systems.map((system, s_i) => (                                
         <>
             
-            <Container key={s_i.toString()+system.systemName} className={`S-${s_i+1}`} style={{width:"75%",marginLeft:"1em",padding:"1.5em",backgroundColor:"#ffff99",
+            <Container key={s_i.toString()+system.systemName} className={`S-${s_i+1}`} style={{width:"75%",marginLeft:"1em",padding:"1.5em",backgroundColor:props2.colors.system,
                                 border:"2px solid black", borderRadius:"10px",marginTop:"1.5em"}} >
                                     
                 <Row><p className="d-flex justify-content-center">System:&nbsp;&nbsp;<span style={{color:"red"}}>{system.systemName} (S-{s_i+1})</span></p></Row>                     
@@ -511,7 +513,7 @@ return (
                     system.organs.map((organ, o_i) => (
                         <>
                             
-                            <Container key={o_i.toString()+organ.organ_name} className={`S-${s_i+1}O-${o_i+1}`} style={{width:"75%",marginLeft:"2em",padding:"1.5em",backgroundColor:"#e6eeff",
+                            <Container key={o_i.toString()+organ.organ_name} className={`S-${s_i+1}O-${o_i+1}`} style={{width:"75%",marginLeft:"2em",padding:"1.5em",backgroundColor:props2.colors.organ,
                                 border:"2px solid black", borderRadius:"10px",marginTop:"1em",marginBottom:"1em"}} >
                                 <Row>
                                     <Col>
@@ -560,7 +562,7 @@ return (
                                 <>
                                     
                                     <Container  key={p_i.toString()+part.name} className={`S-${s_i+1}O-${o_i+1}P-${p_i+1}`} style={{width:"75%",height:"auto",color:"black",fontSize:"1em",marginBottom:"1em",
-                                        border:"2px solid black", borderRadius:"10px",padding:"1.5em",marginLeft:"3em",marginTop:"1em",backgroundColor:"#ffe6f2"}} >
+                                        border:"2px solid black", borderRadius:"10px",padding:"1.5em",marginLeft:"3em",marginTop:"1em",backgroundColor:props2.colors.part}} >
                                             <Row className="p-0">
                                                 <Col>
                                                     <i style={{marginLeft:"-0.5em",marginTop:"-0.25em",transform:"scale(0.75)"}} className="bi bi-arrow-return-right"></i>
@@ -627,8 +629,7 @@ return (
                                         part.contents[0].histo_layers.filter((histo_layer) => {return histo_layer.name != "null"}).map((histo_layer,hl_i) => (
                                         <>
                                             <Container key={hl_i.toString()+histo_layer.name} style={{width:"75%",fontSize:"1.0em",padding:"1.5em",marginLeft:"4em",border:"2px solid black", borderRadius:"10px",
-                                                marginTop:"1em",backgroundColor:"#e5ffe5",
-                                                color:"black"}}>
+                                                  marginTop:"1em",backgroundColor:props2.colors.histo_layer,color:"black"}} className={`S-${s_i+1}O-${o_i+1}P-${p_i+1}hl=${hl_i+1}`} >
                                                 <Row className="p-0" style={{marginBottom:"0.5em"}}>
                                                     <Col>
                                                         <i style={{marginLeft:"-0.5em",marginTop:"-0.25em",transform:"scale(0.75)"}} className="bi bi-arrow-return-right"></i>
@@ -665,8 +666,8 @@ return (
                                                 histo_layer.histo_sublayers.map((histo_sublayer,hsl_i) => (
                                                 <>
                                                     <Container key={hsl_i.toString()+histo_sublayer.name} style={{width:"75%",fontSize:"1em",marginLeft:"5em",
-                                                        padding:"1em",border:"2px solid black", borderRadius:"10px",
-                                                        backgroundColor:"#ccffff",color:"black"}}>
+                                                        padding:"1em",border:"2px solid black", borderRadius:"10px",backgroundColor:props2.colors.histo_sublayer,color:"black"}}
+                                                        className={`S-${s_i+1}O-${o_i+1}P-${p_i+1}hl-${hl_i+1}hsl-${hsl_i+1}`}  >
                                                         <Row style={{marginBottom:"0.5em"}}>
                                                             <Col>
                                                                 <i style={{marginLeft:"-0.25em",transform:"scale(0.75)"}} className="bi bi-arrow-return-right"></i>
@@ -705,7 +706,8 @@ return (
                                                         histo_sublayer.histo_chars.map((histo_char,hc_i) => (
                                                         <>
                                                             <Container key={hc_i.toString()+histo_char.name} style={{width:"75%",fontSize:"1em",marginLeft:"6em",
-                                                                padding:"1em",border:"2px solid black", borderRadius:"10px",backgroundColor:"#fff2cc",color:"black"}}>
+                                                                padding:"1em",border:"2px solid black", borderRadius:"10px",backgroundColor:props2.colors.histo_char,color:"black"}}
+                                                                 className={`S-${s_i+1}O-${o_i+1}P-${p_i+1}hl-${hl_i+1}hsl-${hsl_i+1}hc-${hc_i+1}`} >
                                                                 <Row style={{marginBottom:"0.5em"}}>
                                                                     <Col>
                                                                         <i style={{marginLeft:"-0.25em",transform:"scale(0.75)"}} className="bi bi-arrow-return-right"></i>
@@ -771,7 +773,8 @@ return (
                                                                 histo_char.cells.map((cell,hcc_i) => (
                                                                 <>
                                                                     <Container key={hcc_i.toString()+cell.name} style={{width:"75%",fontSize:"1em",marginLeft:"7em",
-                                                                        padding:"1em",border:"2px solid black", borderRadius:"10px",backgroundColor:"#ccd9ff",color:"black"}}>
+                                                                        padding:"1em",border:"2px solid black", borderRadius:"10px",backgroundColor:props2.colors.cell,color:"black"}}
+                                                                          className={`S-${s_i+1}O-${o_i+1}P-${p_i+1}hl-${hl_i+1}hsl-${hsl_i+1}hc-${hc_i+1}hcc-${hcc_i+1}`}>
                                                                         <Row style={{marginBottom:"0.5em"}}>
                                                                             <Col>
                                                                                 <i style={{marginLeft:"-0.25em",transform:"scale(0.75)"}} className="bi bi-arrow-return-right"></i>
@@ -792,7 +795,8 @@ return (
                                                                 histo_char.ecell_matrices.map((ecell_matrix,hce_i) => (
                                                                 <>
                                                                     <Container key={hce_i.toString()+ecell_matrix.name} style={{width:"75%",fontSize:"1em",marginLeft:"7em",
-                                                                        padding:"1em",border:"2px solid black", borderRadius:"10px",backgroundColor:"#77999E",color:"black"}}>
+                                                                        padding:"1em",border:"2px solid black", borderRadius:"10px",backgroundColor:props2.colors.ecell,color:"black"}}
+                                                                          className={`S-${s_i+1}O-${o_i+1}P-${p_i+1}hl-${hl_i+1}hsl-${hsl_i+1}hc-${hc_i+1}hce-${hce_i+1}`}>
                                                                         <Row style={{marginBottom:"0.5em"}}>
                                                                             <Col lg="2">
                                                                                 <i style={{marginLeft:"-0.25em",transform:"scale(0.75)"}} className="bi bi-arrow-return-right"></i>
@@ -827,7 +831,7 @@ return (
                                         part.contents[0].subparts.filter((subpart) => {return subpart.name != "null"}).map((subpart,m) => (
                                         <>
                                             <Container key={m.toString()} style={{width:"20em",fontSize:"1em",marginLeft:"4em",padding:"1em",border:"2px solid black", borderRadius:"10px",
-                                                backgroundColor:"#e8daef",color:"black"}}>
+                                                backgroundColor:props2.colors.subpart,color:"black"}}>
                                                
                                                 <Row style={{marginBottom:"0.5em"}}>
                                                     <Col lg="2">
@@ -849,7 +853,7 @@ return (
                                         <>
                                             <Container key={n.toString()} style={{width:"20em",fontSize:"1em",marginLeft:"4em",marginTop:"1em",marginBottom:"1em",
                                                 padding:"1em",border:"2px solid black", borderRadius:"10px",
-                                                backgroundColor:" #f9ffe6",color:"black"}}>
+                                                backgroundColor:props2.colors.part_structure,color:"black"}}>
 
                                                 <Row style={{marginBottom:"0.5em"}}>
                                                     <Col>
