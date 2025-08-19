@@ -5,7 +5,7 @@ import Card from 'react-bootstrap/Card';
 
 import Hierarchy from "./Orominer/Hierarchy.jsx"
 import Draggable from 'react-draggable';
-import { padStart } from 'lodash';
+import { add, padStart } from 'lodash';
 const parser = new DOMParser();
 const partContentIndexes = [];
 const organLayerIndexes = [];
@@ -79,8 +79,14 @@ export default function Orominer(props){
 
     useEffect(() => {
        // $(myRef.current);
-       setSysColor("#ffff99");
-       setOrgColor("#e6eeff");
+       /*
+       $("#infoBar").text('').css('margin-left','20%').css('margin-top',"-65em").css("height","65%");
+       let tag = `<div><p style="color:#0066CC">The is the Organism Relation Ontology or ORO Miner.  Click on Buttons under the Hierarchy Display to open up graphic displays of sub-organisms of their higher-level
+        parent organisms.</p><br/><p style="color:#336600" >This begins with a System and the highest level and burrows down to cells.  The Graph Display shows labeled nodes for each organism and connections to their parent and sub-organisms.</p>
+        <br/><p>If you click on one of these nodes this panel will open with a description of the organism from the highest to lowest level.</p></div>`;
+        add_to_bar($(tag).css("font-size","1.25em").css("padding","1em"),"40%");
+        */
+        
     },[])
 
     useEffect(() => {
@@ -183,6 +189,7 @@ export default function Orominer(props){
         console.log("type",type);
         console.log("indexArr",indexArr);
 
+
         let system_index;
         let organ_index;
         let part_index;
@@ -207,7 +214,7 @@ export default function Orominer(props){
             item = displayReferenceArr[system_index].organs[organ_index];
             console.log("Item contents:", item);         
         }
-        if(indexArr[2] !== undefined && (indexArr[3] !== undefined)){
+        if(indexArr[2] !== undefined ){
             part_index = indexArr[2];
             req.part_index = part_index;
             item = displayReferenceArr[system_index].organs[organ_index].parts[part_index];
@@ -260,7 +267,7 @@ export default function Orominer(props){
         }     
 
         $("#graph_header").css("z-index",400);
-        $("#infoBar").text('');
+        $("#infoBar").text('').css("margin-left","0%");
         let tag;
 
         if(type === "system" || type === "organ" || type === "part" || type === "histo_layer" || type === "other_structure" || type === "histo_sublayer" || type === "histo_char" ||
@@ -271,7 +278,7 @@ export default function Orominer(props){
             style="color:${colors.system};font-style=bold;background-color:black;padding:0.5em;margin-top:0.5em;border:10px solid ${colors.system};border-radius:25px">System Name (S-${system_index+1}) is: 
             ${system_name}</div>`;
         }
-        if(type === "organ" || type === "part" || type === "part" || type === "histo_layer" || type === "other_structure" || type === "histo_sublayer" || type === "histo_char" ||
+        if(type === "organ" || type === "part" || type === "histo_layer" || type === "other_structure" || type === "histo_sublayer" || type === "histo_char" ||
                 type === "organ_layer" || type === "cell" || type === "ecell"){
             let organ_name = displayReferenceArr[indexArr[0]].organs[indexArr[1]].organ_name;
             let id = `O${indexArr[1]+1}`;
@@ -338,28 +345,27 @@ export default function Orominer(props){
 
     
 
-    let add_to_bar = (tag) => {
+    let add_to_bar = (tag,w="30%") => {
         
             $("#displayBar").css("display","block").css("width","100%").animate({
             width:"70%",
-            height:"100%",
+            height:"100em",
             display:"block",
             },500);  
             
             $("#infoBar").css("width","0%").animate({
             width:"30%",
-            display:"block",
             position:"absolute",
             zIndex:"400",
-            fontSize:"1.5em"
-            },500).append(tag).css("display","block").css("width","0%");       
+            fontSize:"1.5em",      
+            },500).append(tag).css("display","block");       
     };
 
      const closeInfoBar = () => {
          
                 $("#displayBar").css("display","block").css("width","70%").animate({
                 width:"100%",
-                height:"100%",
+                height:"100em",
                 display:"block",
                 },1000);  
                 
@@ -369,13 +375,15 @@ export default function Orominer(props){
                 position:"absolute",
                 zIndex:"400",
                 fontSize:"1.5em"
-                },1000).append(tag).css("display","block");       
+                },1000).html('').css("display","none");       
 
      };
  
     // Handles request for svg items display requested by the Hierachy buttons 
      const handleDisplayRequest = (obj) => {
         console.log("Top level Display Request:", obj );
+        closeInfoBar();
+        $('#infoBar').html('').css("margin-top","0").css("width","0%");
         setDisplayRequest(true);
         let req =  obj;
 
@@ -820,12 +828,7 @@ export default function Orominer(props){
             console.log("Check currentArr in setup",currentArr);
             if (currentArr[req.system_index].organs[req.organ_index].parts[req.part_index].histo_layers[req.histo_layer_index].histo_sublayers[req.histo_sublayer_index].histo_chars[req.histo_chars_index].ecell_matrices === undefined)
                 currentArr[req.system_index].organs[req.organ_index].parts[req.part_index].histo_layers[req.histo_layer_index].histo_sublayers[req.histo_sublayer_index].histo_chars[req.histo_chars_index].ecell_matrices = req.ecell_matrices;
-            currentArr[req.system_index].organs[req.organ_index].parts[req.part_index].histo_layers[req.histo_layer_index].histo_sublayers[req.histo_sublayer_index].histo_chars[req.histo_chars_index].histo_char_cells_idx = req.histo_char_ecells_matrices_idx;
-            currentArr[req.system_index].organs[req.organ_index].parts[req.part_index].histo_layers[req.histo_layer_index]
-                .histo_sublayers[req.histo_sublayer_index].histo_chars[req.histo_chars_index].open = true;
-                
-            currentArr[req.system_index].organs[req.organ_index].parts[req.part_index].histo_layers[req.histo_layer_index]
-                .histo_sublayers[req.histo_sublayer_index].histo_chars[req.histo_chars_index].histo_char_ecells_matrices_idx = req.histo_char_ecells_matrices_idx;
+            currentArr[req.system_index].organs[req.organ_index].parts[req.part_index].histo_layers[req.histo_layer_index].histo_sublayers[req.histo_sublayer_index].histo_chars[req.histo_chars_index].histo_char_ecells_matrices_idx = req.histo_char_ecells_matrices_idx;
 
 
                // Map Histo Chars of other indexes closed and this one to open for display purposes
@@ -835,7 +838,8 @@ export default function Orominer(props){
             });
 
             // Reset all ecells open for display
-              if(items = currentArr[req.system_index].organs[req.organ_index].parts[req.part_index].histo_layers[req.histo_layer_index].histo_sublayers[req.histo_sublayer_index].histo_chars[req.histo_chars_index].ecell_matrices !== undefined && items.length > 0){
+            let items = currentArr[req.system_index].organs[req.organ_index].parts[req.part_index].histo_layers[req.histo_layer_index].histo_sublayers[req.histo_sublayer_index].histo_chars[req.histo_chars_index].ecell_matrices;
+            if(items !== undefined ){
                 items.map((ecell) => ecell.open = true);
             }
 
@@ -1323,23 +1327,29 @@ export default function Orominer(props){
     return (
     <>
         
-        <Container id="" style={{position:"relative",width:"100%",height:"100%"}} fluid>         
-            <Row style={{width:"100%"}}>
-                <div id="" style={{border:"20px ridge silver", width:"70%", marginLeft:"15%", fontSize:"1.5em"}} className="mb-4 p-2 d-flex justify-content-center">
+        <Container id="" style={{position:"relative",width:"100%"}} fluid>         
+            <Row style={{width:"100%",marginBottom:"1em"}}>
+                <Container id="" className="d-flex justify-content-center top-head" style={{marginBottom:"2em"}}>
                     Organism Relation Ontology (ORO) Miner
-                </div>
+                </Container>
             </Row>
-            <Row style={{position:"relative",height:"90%",width:"100%"}}>
-                <Col id ="harchframe" xs={3} className="w-40 p-0">
-                    <span id="" style={headerStyle} className="w-100 d-flex justify-content-center">Hierarchy Display</span>
-                    <Hierarchy handleDisplayRequest={handleDisplayRequest} useReferenceObject={useReferenceObject} showItemContents={showItemContents} setShowItemContents={setShowItemContents}
-                        showItems={showItems} showSystemOrgans={showSystemOrgans} setShowSystemOrgans={setShowSystemOrgans} openSystemOrgans={openSystemOrgans}
-                        handleOpenClose={handleOpenClose} colors={colors}/>   
-                </Col>
-                <Col id="grphframe1" xs={8} className="w-60 p-0">
+            <Row>
+                <Col xs={3} style={{position:"relative",width:"30%",backgroundColor:"lightgrey",border:"solid 3px line"}}>
+                    <Row style={{position:"relative",zIndex:"200",marginLeft:"0",width:"100%"}}>
+                        <Container id="" className="top-head">Hierarchy Display</Container>
+                    </Row>
+                    <Row id ="harchframe" style={{zIndex:"-1",width:"100%",marginLeft:"0.5em"}}>
+                        <Hierarchy handleDisplayRequest={handleDisplayRequest} useReferenceObject={useReferenceObject} showItemContents={showItemContents} setShowItemContents={setShowItemContents}
+                            showItems={showItems} showSystemOrgans={showSystemOrgans} setShowSystemOrgans={setShowSystemOrgans} openSystemOrgans={openSystemOrgans}
+                            handleOpenClose={handleOpenClose} colors={colors}/>   
+                    </Row>
+                  
                     
-                    <Row  id="graph_header" className="h-10">
-                        <span id="" style={headerStyle} className="d-flex justify-content-center">Graph Display</span> 
+                </Col>
+                <Col xs={8} style={{backgroundColor:"lightgrey"}}>
+                    
+                    <Row  id="graph_header">
+                        <Container id="" className="d-flex justify-content-center top-head">Graph Display</Container> 
                     </Row>    
                     {/*                   
                     <Row id="gphtitle" className="h-20">
@@ -1349,8 +1359,7 @@ export default function Orominer(props){
                     </Row>
                     */}
                     <Row style={{position:"relative"}} >
-                        <div id="displayBar">
-                            <div style={{zIndex:"-1"}}>
+                        <div id="displayBar"  style={{zIndex:"-1"}}> 
                                 {
                                     displayRequest && 
                                     <Draggable>
@@ -1362,10 +1371,12 @@ export default function Orominer(props){
                                     </Draggable>
                                    
                                 }
-                         
-                            </div> 
+                          
                         </div>
                         <div id="infoBar" style={{paddingTop:groupY+transY+ePageY-transLen}}>
+                           
+                        </div>
+                        <div id="initInfoBar" style={{paddingTop:groupY+transY+ePageY-transLen}}>
                            
                         </div>
                     </Row>
