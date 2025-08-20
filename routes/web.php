@@ -5,6 +5,8 @@ use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 use App\Http\Controllers\AminoController;
+use App\Http\Controllers\Orominer1Controller;
+use App\Http\Controllers\CodeTestingController;
 
 Route::get('/notused', function () {
     return Inertia::render('Welcome', [
@@ -33,14 +35,33 @@ Route::get('/amino', function () {
 });
 
 
+
+Route::get('/orominer1', function () {
+    return Inertia::render('Orominer1');
+});
+
+
+Route::get('/drawingcanvas', function () {
+    return Inertia::render('DrawingCanvas');
+});
+
 Route::get('/migrations', [AminoController::class, 'view_migrations']);
 
+Route::get('/codetesting', [CodeTestingController::class, 'code_testing']);
+
+Route::get('/frontcodetesting', function() {
+    return view('codetesting',['name' => 'Richard']);
+});
+
 Route::get('/minimotifsize', [AminoController::class, 'miniMotif_size']);
+
+
 Route::post('/makerequest', [AminoController::class, 'index']);
 
 Route::get('/checkstatus', [AminoController::class, 'checkStatus']);
 
 
+Route::get('/getxmlfile', [Orominer1Controller::class, 'get_xml_file']);
 
 
 
