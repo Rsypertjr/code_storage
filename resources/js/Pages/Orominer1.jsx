@@ -24,7 +24,23 @@ const colors = {
     ecell:"#77999E",
 
 };
-
+const tooltipStyle = {
+    visibility:"hidden",
+    height:"auto",
+    width: "120px",
+    fill: "#555",
+    color: "#fff",
+    textAlign: "center",
+    //borderRadius: "6px",
+    padding: "5px 0",
+    position: "absolute",
+    zIndex: "1",
+    bottom: "125%",
+    left: "50%",
+    marginLeft: "-60px",
+    opacity: "0",
+    transition: "opacity 0.3s"
+}
 
 export default function Orominer(props){
     const [displayRequest, setDisplayRequest] = useState(false);
@@ -226,7 +242,7 @@ export default function Orominer(props){
             item = displayReferenceArr[system_index].organs[organ_index].organ_layers[organ_layer_index];
             console.log("Item contents:", item);         
         } 
-        if(indexArr[3] !== undefined && (indexArr[4] !== undefined)){
+        if(indexArr[3] !== undefined){
             histo_layer_index = indexArr[3];
             req.histo_layer_index = histo_layer_index;
             item = displayReferenceArr[system_index].organs[organ_index].parts[part_index].histo_layers[histo_layer_index];
@@ -341,7 +357,7 @@ export default function Orominer(props){
          console.log("group Y:",bboxGroup.y);
          setGroupY(bboxGroup.y);
          $('#infoBar').css("padding-top",groupY+transY+ePageY-transLen);
-         $('#initInfoBar').css("padding-top",groupY+transY+ePageY-transLen);
+         $('#initInfoBar').css("display","none");
      };
 
     
@@ -1069,7 +1085,7 @@ export default function Orominer(props){
          setTransLen(len);
      };
 
-   
+    
      const RequestedDisplay = (props) => {
         
         let rads = 2*(Math.PI);
@@ -1087,7 +1103,17 @@ export default function Orominer(props){
             return boolCalc;
         };
 
-       
+        const GToolTip = (props) => {
+            console.log(props);
+        return (
+            <>
+                <path className={props.className}  d={`M${props.cx-24+25} ${props.cy-14+75} L${props.cx-24+50} ${props.cy-14-25+75} L${props.cx-24+75} ${props.cy-14+75} Z`} fill="lightgrey" fill-opacity="0.4"/>
+                <rect className={props.className}  x={props.cx-24} y={props.cy+60} width="250" height="100" fill="lightgrey" fill-opacity="0.4"></rect>
+                <text className={props.className}  x={props.cx-11} y={props.cy+105} stroke="black">Click to See Hierachy</text>     
+                <text className={props.className}  x={props.cx-11} y={props.cy+135} stroke="black">{`for ${props.sym}`}</text>                      
+            </>          
+            );
+        };
       
 
         console.log("E Client Y:",eClientY);
@@ -1123,11 +1149,16 @@ export default function Orominer(props){
                         showSystemOrgans[currentSystemIndex] && 
                         currentSystemIndex === i && currentOrganIndex !== ii && 
                         <>                             
-                            <g key={ii.toString()+"organ"} id={`S${currentSystemIndex+1}O${ii+1}`} onClick={(e) => getIndices("organ",[currentSystemIndex,ii],e)}>                                
+                            <g key={ii.toString()+"organ"} id={`S${currentSystemIndex+1}O${ii+1}`} 
+                                onMouseOver={() => {$(`.tooltiptext.${currentSystemIndex+1}O${ii+1}` ).css("visibility","visible").css("opacity","1")}}
+                                onMouseLeave={() => {$(`.tooltiptext.${currentSystemIndex+1}O${ii+1}` ).css("visibility","hidden").css("opacity","0")}}
+                                onClick={(e) => getIndices("organ",[currentSystemIndex,ii],e)}>                                
                                 <line x1={organ.lx1} y1={organ.ly1} x2={organ.lx2} y2={organ.ly2} stroke="black" style={{strokeWidth:"5",opacity:sys_opacity}}/>
                                 <circle cx={organ.cx} cy={organ.cy} r={org_radius} stroke="black" fill={colors.organ} style={{strokeWidth:"1",opacity:sys_opacity}}/>                           
                                 <text x={organ.cx-24} y={organ.cy+10} stroke="black" style={{opacity:sys_opacity,fontSize:"2.0em"}}>O-{ii+1}</text>
+                                <GToolTip  className={`tooltiptext ${currentSystemIndex+1}O${ii+1}`} index={ii} cx={organ.cx} cy={organ.cy} sym={`O-${ii+1}`}/>
                             </g>
+                            
                         </>
                        
                     )))
@@ -1143,10 +1174,15 @@ export default function Orominer(props){
                             {   
                                 organ.open &&
                                 <>
-                                    <g id={`S${currentSystemIndex+1}O${ii+1}`} onClick={(e) => getIndices("organ",[currentSystemIndex,ii],e)} >
+                                    <g id={`S${currentSystemIndex+1}O${ii+1}`} 
+                                        onClick={(e) => getIndices("organ",[currentSystemIndex,ii],e)} 
+                                        onMouseOver={() => {$(`.tooltiptext.${currentSystemIndex+1}O${ii+1}` ).css("visibility","visible").css("opacity","1")}}
+                                        onMouseLeave={() => {$(`.tooltiptext.${currentSystemIndex+1}O${ii+1}` ).css("visibility","hidden").css("opacity","0")}}
+                                    >
                                         <line x1={organ.lx1} y1={organ.ly1} x2={organ.lx2} y2={organ.ly2} stroke="black" style={{strokeWidth:"5",opacity:"1"}}/>
                                         <circle cx={organ.cx} cy={organ.cy} r={org_radius} stroke="black" fill={colors.organ} style={{strokeWidth:"1",opacity:"1"}}/>                           
-                                        <text x={organ.cx-24} y={organ.cy+10} stroke="black" style={{opacity:"1",fontSize:"2.0em"}}>O-{ii+1}</text>     
+                                        <text x={organ.cx-24} y={organ.cy+10} stroke="black" style={{opacity:"1",fontSize:"2.0em"}}>O-{ii+1}</text>  
+                                        <GToolTip  className={`tooltiptext ${currentSystemIndex+1}O${ii+1}`} index={ii} cx={organ.cx} cy={organ.cy} sym={`O-${ii+1}`}/> 
                                     </g>    
                                 </>
                              }
@@ -1154,10 +1190,16 @@ export default function Orominer(props){
                             {   
                                 showItemContents[organ.organ_organ_parts_idx] && organ.parts.map((part,j) => (   
                                     currentOrganIndex === ii && currentPartIndex !== j && 
-                                    <g key={j.toString()} id={`S${currentSystemIndex+1}O${ii+1}P${j+1}`} onClick={(e) => getIndices("part",[currentSystemIndex,ii,j],e)}>
+                                    <g key={j.toString()} id={`S${currentSystemIndex+1}O${ii+1}P${j+1}`} 
+                                        onClick={(e) => getIndices("part",[currentSystemIndex,ii,j],e)}
+                                        onMouseOver={() => {$(`.tooltiptext.${currentOrganIndex+1}P${j+1}` ).css("visibility","visible").css("opacity","1")}}
+                                        onMouseLeave={() => {$(`.tooltiptext.${currentOrganIndex+1}P${j+1}` ).css("visibility","hidden").css("opacity","0")}}
+                                    >
                                         <line x1={part.lx1} y1={part.ly1} x2={part.lx2} y2={part.ly2} stroke="black" style={{strokeWidth:"7",opacity:sys_opacity}}/>
                                         <circle cx={part.cx} cy={part.cy} r={part_radius} stroke="black" fill={colors.part} style={{strokeWidth:"1",opacity:sys_opacity}}/>
                                         <text x={part.cx-20} y={part.cy+9} stroke="black" style={{fontSize:"1.9em",opacity:sys_opacity}}>P-{j+1}</text>
+                                        <GToolTip  className={`tooltiptext ${currentOrganIndex+1}P${j+1}`} index={j} cx={part.cx} cy={part.cy} sym={`P-${j+1}`}/>
+                         
                                     </g>
                                 ))
                             }  
@@ -1169,10 +1211,16 @@ export default function Orominer(props){
                                         { 
                                         part.open && 
                                             <>  
-                                                <g  id={`S${currentSystemIndex+1}O${ii+1}P${j+1}`} onClick={(e) => getIndices("part",[currentSystemIndex,ii,j],e)}>
+                                                <g  id={`S${currentSystemIndex+1}O${ii+1}P${j+1}`} 
+                                                    onClick={(e) => getIndices("part",[currentSystemIndex,ii,j],e)}
+                                                    onMouseOver={() => {$(`.tooltiptext.${currentOrganIndex+1}P${j+1}` ).css("visibility","visible").css("opacity","1")}}
+                                                    onMouseLeave={() => {$(`.tooltiptext.${currentOrganIndex+1}P${j+1}` ).css("visibility","hidden").css("opacity","0")}}
+                                                >
                                                     <line x1={part.lx1} y1={part.ly1} x2={part.lx2} y2={part.ly2} stroke="black" style={{strokeWidth:"7",opacity:"1"}}/>
                                                     <circle cx={part.cx} cy={part.cy} r={part_radius} stroke="black" fill={colors.part} style={{strokeWidth:"1",opacity:"1"}}/>
                                                     <text x={part.cx-20} y={part.cy+9} stroke="black" style={{fontSize:"1.9em",opacity:"1"}}>P-{j+1}</text>
+                                                    <GToolTip  className={`tooltiptext ${currentOrganIndex+1}P${j+1}`} index={j} cx={part.cx} cy={part.cy} sym={`P-${j+1}`}/>
+                         
                                                 </g>
                                             </>    
                                         }              
@@ -1181,10 +1229,15 @@ export default function Orominer(props){
                                             part.histo_layers.length > 0 && part.histo_layers.map((histo_layer,k) => (   
                                                 currentPartIndex === j && currentHistoLayerIndex !== k &&          
                                                 <>                                                
-                                                    <g key={k.toString()+histo_layer.lx1} id={`S${currentSystemIndex+1}O${ii+1}P${j+1}hl${k+1}`}onClick={(e) => getIndices("histo_layer",[currentSystemIndex,ii,j,k],e)}>
+                                                    <g key={k.toString()+histo_layer.lx1} id={`S${currentSystemIndex+1}O${ii+1}P${j+1}hl${k+1}`} 
+                                                        onClick={(e) => getIndices("histo_layer",[currentSystemIndex,ii,j,k],e)}
+                                                        onMouseOver={() => {$(`.tooltiptext.O${currentOrganIndex}P${currentPartIndex+1}P${k+1}` ).css("visibility","visible").css("opacity","1")}}
+                                                        onMouseLeave={() => {$(`.tooltiptext.O${currentOrganIndex}P${currentPartIndex+1}P${k+1}` ).css("visibility","hidden").css("opacity","0")}}                                              
+                                                    >
                                                         <line x1={histo_layer.lx1} y1={histo_layer.ly1} x2={histo_layer.lx2} y2={histo_layer.ly2} stroke="black" style={{strokeWidth:"7",opacity:sys_opacity}}/>
                                                         <circle cx={histo_layer.cx} cy={histo_layer.cy} r={histo_layer_radius} stroke="black" fill={colors.histo_layer} style={{strokeWidth:"1",opacity:sys_opacity}}/>
                                                         <text x={histo_layer.cx-26} y={histo_layer.cy+9} stroke="black" style={{fontSize:"1.8em",opacity:sys_opacity}}>hl-{k+1}</text>
+                                                        <GToolTip  className={`tooltiptext O${currentOrganIndex}P${currentPartIndex+1}P${k+1}`} index={j} cx={histo_layer.cx} cy={histo_layer.cy} sym={`hl-${k+1}`}/>
                                                     </g>
                                                 </>   
                                             ))
@@ -1197,10 +1250,15 @@ export default function Orominer(props){
                                                      {
                                                         histo_layer.open &&   
                                                         <>
-                                                            <g onClick={(e) => getIndices("histo_layer",[currentSystemIndex,ii,j,k],e)}>
+                                                            <g 
+                                                                onClick={(e) => getIndices("histo_layer",[currentSystemIndex,ii,j,k],e)}
+                                                                onMouseOver={() => {$(`.tooltiptext.O${currentOrganIndex+1}P${currentPartIndex+1}hl${k+1}` ).css("visibility","visible").css("opacity","1")}}
+                                                                onMouseLeave={() => {$(`.tooltiptext.O${currentOrganIndex+1}P${currentPartIndex+1}hl${k+1}` ).css("visibility","hidden").css("opacity","0")}}
+                                                            >
                                                                 <line x1={histo_layer.lx1} y1={histo_layer.ly1} x2={histo_layer.lx2} y2={histo_layer.ly2} stroke="black" style={{strokeWidth:"7"}}/>
                                                                 <circle cx={histo_layer.cx} cy={histo_layer.cy} r={histo_layer_radius} stroke="black" fill={colors.histo_layer} style={{strokeWidth:"1"}}/>
                                                                 <text x={histo_layer.cx-26} y={histo_layer.cy+9} stroke="black" style={{fontSize:"1.8em"}}>hl-{k+1}</text>
+                                                                <GToolTip  className={`tooltiptext O${currentOrganIndex+1}P${currentPartIndex+1}hl${k+1}`} index={j} cx={histo_layer.cx} cy={histo_layer.cy} sym={`hl-${k+1}`}/>
                                                             </g>
                                                         </>                                                  
                                                      }
@@ -1209,10 +1267,15 @@ export default function Orominer(props){
                                                             histo_layer.histo_sublayers.map((histo_sublayer,l) => (   
                                                             currentHistoLayerIndex === k && currentHistoSublayerIndex !== l &&
                                                             <>     
-                                                                <g key={l.toString()} id={`S${currentSystemIndex+1}O${ii+1}P${j+1}hl${k+1}hsl${l+1}`} onClick={(e) => getIndices("histo_sublayer",[currentSystemIndex,ii,j,k,l],e)}>
+                                                                <g key={l.toString()} id={`S${currentSystemIndex+1}O${ii+1}P${j+1}hl${k+1}hsl${l+1}`} 
+                                                                    onClick={(e) => getIndices("histo_sublayer",[currentSystemIndex,ii,j,k,l],e)}
+                                                                    onMouseOver={() => {$(`.tooltiptext.O${currentOrganIndex+1}P${currentPartIndex+1}hl${currentHistoLayerIndex+1}hsl${l+1}` ).css("visibility","visible").css("opacity","1")}}
+                                                                    onMouseLeave={() => {$(`.tooltiptext.O${currentOrganIndex+1}P${currentPartIndex+1}hl${currentHistoLayerIndex+1}hsl${l+1}` ).css("visibility","hidden").css("opacity","0")}}
+                                                                >
                                                                     <line x1={histo_sublayer.lx1} y1={histo_sublayer.ly1} x2={histo_sublayer.lx2} y2={histo_sublayer.ly2} stroke="black" style={{strokeWidth:"7",opacity:sys_opacity}}/>
                                                                     <circle cx={histo_sublayer.cx} cy={histo_sublayer.cy} r={histo_sublayer_radius} stroke="black" fill={colors.histo_sublayer} style={{strokeWidth:"1",opacity:sys_opacity}}/>
                                                                     <text x={histo_sublayer.cx-31} y={histo_sublayer.cy+9} stroke="black" style={{fontSize:"1.8em",opacity:sys_opacity}}>hsl-{l+1}</text>
+                                                                    <GToolTip  className={`tooltiptext O${currentOrganIndex+1}P${currentPartIndex+1}hl${currentHistoLayerIndex+1}hsl${l+1}`} index={l} cx={histo_sublayer.cx} cy={histo_sublayer.cy} sym={`hsl-${l+1}`}/>
                                                                 </g>   
                                                             </>                            
                                                            
@@ -1226,10 +1289,15 @@ export default function Orominer(props){
                                                                 {
                                                                     histo_sublayer.open && 
                                                                     <>
-                                                                        <g onClick={(e) => getIndices("histo_sublayer",[currentSystemIndex,ii,j,k,l],e)}>
+                                                                        <g 
+                                                                            onClick={(e) => getIndices("histo_sublayer",[currentSystemIndex,ii,j,k,l],e)}
+                                                                            onMouseOver={() => {$(`.tooltiptext.O${currentOrganIndex+1}P${currentPartIndex+1}hl${currentHistoLayerIndex+1}hsl${l+1}` ).css("visibility","visible").css("opacity","1")}}
+                                                                            onMouseLeave={() => {$(`.tooltiptext.O${currentOrganIndex+1}P${currentPartIndex+1}hl${currentHistoLayerIndex+1}hsl${l+1}` ).css("visibility","hidden").css("opacity","0")}}
+                                                                        >
                                                                             <line x1={histo_sublayer.lx1} y1={histo_sublayer.ly1} x2={histo_sublayer.lx2} y2={histo_sublayer.ly2} stroke="black" style={{strokeWidth:"7"}}/>
                                                                             <circle cx={histo_sublayer.cx} cy={histo_sublayer.cy} r={histo_sublayer_radius} stroke="black" fill={colors.histo_sublayer} style={{strokeWidth:"1"}}/>
                                                                             <text x={histo_sublayer.cx-31} y={histo_sublayer.cy+9} stroke="black" style={{fontSize:"1.8em"}}>hsl-{l+1}</text>
+                                                                            <GToolTip  className={`tooltiptext O${currentOrganIndex+1}P${currentPartIndex+1}hl${currentHistoLayerIndex+1}hsl${l+1}`} index={l} cx={histo_sublayer.cx} cy={histo_sublayer.cy} sym={`hsl-${l+1}`}/>
                                                                         </g>
                                                                     </>
                                                                 }
@@ -1241,10 +1309,18 @@ export default function Orominer(props){
                                                                         <>  
                                                                             {  
                                                                                 currentHistoSublayerIndex === l && currentHistoCharIndex !== hc &&                                                                           
-                                                                                <g key={hc.toString()} id={`S${currentSystemIndex+1}O${ii+1}P${j+1}hl${k+1}hsl${l+1}hc${hc+1}`} onClick={(e) => getIndices("histo_char",[currentSystemIndex,ii,j,k,l,hc],e)}>
+                                                                                <g key={hc.toString()} id={`S${currentSystemIndex+1}O${ii+1}P${j+1}hl${k+1}hsl${l+1}hc${hc+1}`} 
+                                                                                    onClick={(e) => getIndices("histo_char",[currentSystemIndex,ii,j,k,l,hc],e)}
+                                                                                    onMouseOver={() => {$(`.tooltiptext.O${currentOrganIndex+1}P${currentPartIndex+1}hl${currentHistoLayerIndex+1}hsl${currentHistoSublayerIndex+1}hc${hc+1}`)
+                                                                                        .css("visibility","visible").css("opacity","1")}}
+                                                                                    onMouseLeave={() => {$(`.tooltiptext.O${currentOrganIndex+1}P${currentPartIndex+1}hl${currentHistoLayerIndex+1}hsl${currentHistoSublayerIndex+1}hc${hc+1}`)
+                                                                                        .css("visibility","hidden").css("opacity","0")}}
+                                                                    
+                                                                                >
                                                                                     <line x1={histo_char.lx1} y1={histo_char.ly1} x2={histo_char.lx2} y2={histo_char.ly2} stroke="black" style={{strokeWidth:"7",opacity:sys_opacity}}/>
                                                                                     <circle cx={histo_char.cx} cy={histo_char.cy} r={histo_char_radius} stroke="black" fill={colors.histo_char} style={{strokeWidth:"1",opacity:sys_opacity}}/>
                                                                                     <text x={histo_char.cx-26} y={histo_char.cy+10} stroke="black" style={{fontSize:"1.8em",opacity:sys_opacity}}>hc-{hc+1}</text> 
+                                                                                    <GToolTip  className={`tooltiptext O${currentOrganIndex+1}P${currentPartIndex+1}hl${currentHistoLayerIndex+1}hsl${currentHistoSublayerIndex+1}hc${hc+1}`} index={hc} cx={histo_char.cx} cy={histo_char.cy} sym={`hc-${hc+1}`}/>
                                                                                 </g>  
                                                                             } 
                                                                         </>                            
@@ -1261,10 +1337,17 @@ export default function Orominer(props){
                                                                            histo_char.open === true && 
                                                                             <> 
                                                                                 
-                                                                                <g onClick={(e) => getIndices("histo_char",[currentSystemIndex,ii,j,k,l,hc],e)}>
+                                                                                <g 
+                                                                                    onClick={(e) => getIndices("histo_char",[currentSystemIndex,ii,j,k,l,hc],e)}
+                                                                                    onMouseOver={() => {$(`.tooltiptext.O${currentOrganIndex+1}P${currentPartIndex+1}hl${currentHistoLayerIndex+1}hsl${currentHistoSublayerIndex+1}hc${hc+1}`)
+                                                                                        .css("visibility","visible").css("opacity","1")}}
+                                                                                    onMouseLeave={() => {$(`.tooltiptext.O${currentOrganIndex+1}P${currentPartIndex+1}hl${currentHistoLayerIndex+1}hsl${currentHistoSublayerIndex+1}hc${hc+1}`)
+                                                                                        .css("visibility","hidden").css("opacity","0")}}
+                                                                                >
                                                                                     <line x1={histo_char.lx1} y1={histo_char.ly1} x2={histo_char.lx2} y2={histo_char.ly2} stroke="black" style={{strokeWidth:"7"}}/>
                                                                                     <circle cx={histo_char.cx} cy={histo_char.cy} r={histo_char_radius} stroke="black" fill={colors.histo_char} style={{strokeWidth:"1"}}/>
                                                                                     <text x={histo_char.cx-26} y={histo_char.cy+10} stroke="black" style={{fontSize:"1.8em"}}>hc-{hc+1}</text>   
+                                                                                    <GToolTip  className={`tooltiptext O${currentOrganIndex+1}P${currentPartIndex+1}hl${currentHistoLayerIndex+1}hsl${currentHistoSublayerIndex+1}hc${hc+1}`} index={hc} cx={histo_char.cx} cy={histo_char.cy} sym={`hc-${hc+1}`}/>
                                                                                 </g>     
                                                                             </>
                                                                         }                                                                                                                                   
@@ -1273,14 +1356,20 @@ export default function Orominer(props){
                                                                                 histo_char.cells.length > 0 && 
                                                                                 histo_char.cells.map((cell,cl) => (                                
                                                                                 <g key={cl.toString()+cell.name} id={`S${currentSystemIndex+1}O${ii+1}P${j+1}hl${k+1}hsl${l+1}hc${hc+1}C${cl+1}`}
-                                                                                 onClick={(e) => getIndices("cell",[currentSystemIndex,ii,j,k,l,hc,cl],e)}>
+                                                                                    onClick={(e) => getIndices("cell",[currentSystemIndex,ii,j,k,l,hc,cl],e)}
+                                                                                    onMouseOver={() => {$(`.tooltiptext.O${currentOrganIndex+1}P${currentPartIndex+1}hl${currentHistoLayerIndex+1}hsl${currentHistoSublayerIndex+1}hc${currentHistoCharIndex}cl${cl+1}`)
+                                                                                        .css("visibility","visible").css("opacity","1")}}
+                                                                                    onMouseLeave={() => {$(`.tooltiptext.O${currentOrganIndex+1}P${currentPartIndex+1}hl${currentHistoLayerIndex+1}hsl${currentHistoSublayerIndex+1}hc${currentHistoCharIndex}cl${cl+1}`)
+                                                                                        .css("visibility","hidden").css("opacity","0")}} 
+                                                                                 >
                                                                                     {   
                                                                                      cell.open &&   
                                                                                         <>
                                                                                             <line x1={cell.lx1} y1={cell.ly1} x2={cell.lx2} y2={cell.ly2} stroke="black" style={{strokeWidth:"7"}}/>
                                                                                             <circle cx={cell.cx} cy={cell.cy} r={cell_radius} stroke="black" fill={colors.cell} style={{strokeWidth:"1"}}/>
                                                                                             <text x={cell.cx-23} y={cell.cy+9} stroke="black" style={{fontSize:"1.8em"}}>cl-{cl+1}</text>
-                                                                                        </>
+                                                                                            <GToolTip  className={`tooltiptext O${currentOrganIndex+1}P${currentPartIndex+1}hl${currentHistoLayerIndex+1}hsl${currentHistoSublayerIndex+1}hc${currentHistoCharIndex}cl${cl+1}`} index={cl} cx={cell.cx} cy={cell.cy} sym={`cl-${cl+1}`}/>
+                                                                                       </>
                                                                                         
                                                                                     }
                                                                                 </g>                                                    
@@ -1291,13 +1380,20 @@ export default function Orominer(props){
                                                                                 histo_char.ecell_matrices.length > 0 && 
                                                                                 histo_char.ecell_matrices.map((ecell,ecl) => (                                
                                                                                 <g key={ecl.toString()+ecell.name} id={`S${currentSystemIndex+1}O${ii+1}P${j+1}hl${k+1}hsl${l+1}hc${hc+1}C${ecl+1}`}
-                                                                                 onClick={(e) => getIndices("ecell",[currentSystemIndex,ii,j,k,l,hc,ecl],e)} >
+                                                                                    onClick={(e) => getIndices("ecell",[currentSystemIndex,ii,j,k,l,hc,ecl],e)}
+                                                                                    onMouseOver={() => {$(`.tooltiptext.O${currentOrganIndex+1}P${currentPartIndex+1}hl${currentHistoLayerIndex+1}hsl${currentHistoSublayerIndex+1}hc${currentHistoCharIndex}ecl${ecl+1}`)
+                                                                                        .css("visibility","visible").css("opacity","1")}}
+                                                                                    onMouseLeave={() => {$(`.tooltiptext.O${currentOrganIndex+1}P${currentPartIndex+1}hl${currentHistoLayerIndex+1}hsl${currentHistoSublayerIndex+1}hc${currentHistoCharIndex}ecl${ecl+1}`)
+                                                                                        .css("visibility","hidden").css("opacity","0")}}  
+                                                                                >
                                                                                     {
                                                                                      ecell.open &&
                                                                                         <>
                                                                                             <line x1={ecell.lx1} y1={ecell.ly1} x2={ecell.lx2} y2={ecell.ly2} stroke="black" style={{strokeWidth:"7"}}/>
                                                                                             <circle cx={ecell.cx} cy={ecell.cy} r={ecell_radius} stroke="black" fill={colors.ecell} style={{strokeWidth:"1"}}/>
-                                                                                            <text x={ecell.cx-31} y={ecell.cy+9} stroke="black" style={{fontSize:"1.8em"}}>ecl-{ecl+1}</text>                                                                              
+                                                                                            <text x={ecell.cx-31} y={ecell.cy+9} stroke="black" style={{fontSize:"1.8em"}}>ecl-{ecl+1}</text>    
+                                                                                            <GToolTip  className={`tooltiptext O${currentOrganIndex+1}P${currentPartIndex+1}hl${currentHistoLayerIndex+1}hsl${currentHistoSublayerIndex+1}hc${currentHistoCharIndex}ecl${ecl+1}`} index={ecl} cx={ecell.cx} cy={ecell.cy} sym={`ecl-${ecl+1}`}/>
+                                                                                                                                                        
                                                                                         </> 
                                                                                     }     
                                                                                 </g>                                                    
