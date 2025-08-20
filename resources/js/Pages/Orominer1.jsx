@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Container, Row, Col, Nav, Navbar, CardText, Tooltip, OverlayTrigger, ButtonGroup, Button } from 'react-bootstrap';
+
 import $ from 'jquery';
 import Card from 'react-bootstrap/Card';
 
@@ -76,18 +77,15 @@ export default function Orominer(props){
         border:"2px black solid",
         backgroundColor:"white"
      };
-
+  
     useEffect(() => {
-       // $(myRef.current);
-       /*
-       $("#infoBar").text('').css('margin-left','20%').css('margin-top',"-65em").css("height","65%");
+       $("#initInfoBar").text('').css("display","block").css('margin-left','20%').css("height","65%");
        let tag = `<div><p style="color:#0066CC">The is the Organism Relation Ontology or ORO Miner.  Click on Buttons under the Hierarchy Display to open up graphic displays of sub-organisms of their higher-level
         parent organisms.</p><br/><p style="color:#336600" >This begins with a System and the highest level and burrows down to cells.  The Graph Display shows labeled nodes for each organism and connections to their parent and sub-organisms.</p>
         <br/><p>If you click on one of these nodes this panel will open with a description of the organism from the highest to lowest level.</p></div>`;
-        add_to_bar($(tag).css("font-size","1.25em").css("padding","1em"),"40%");
-        */
-        
-    },[])
+        add_to_bar2($(tag).css("font-size","1.25em").css("padding","1em"),"40%");
+    },[]);
+
 
     useEffect(() => {
         setShowAll(showAll);
@@ -188,6 +186,8 @@ export default function Orominer(props){
         e.stopPropagation();
         console.log("type",type);
         console.log("indexArr",indexArr);
+        $('#infoBar').html('').css("margin-top","0").css("width","0%");
+       
 
 
         let system_index;
@@ -267,7 +267,6 @@ export default function Orominer(props){
         }     
 
         $("#graph_header").css("z-index",400);
-        $("#infoBar").text('').css("margin-left","0%");
         let tag;
 
         if(type === "system" || type === "organ" || type === "part" || type === "histo_layer" || type === "other_structure" || type === "histo_sublayer" || type === "histo_char" ||
@@ -341,12 +340,14 @@ export default function Orominer(props){
          setGroupY(bboxGroup.y);
          console.log("group Y:",bboxGroup.y);
          setGroupY(bboxGroup.y);
+         $('#infoBar').css("padding-top",groupY+transY+ePageY-transLen);
+         $('#initInfoBar').css("padding-top",groupY+transY+ePageY-transLen);
      };
 
     
 
-    let add_to_bar = (tag,w="30%") => {
-        
+    let add_to_bar = (tag,w="30%") => {  
+            
             $("#displayBar").css("display","block").css("width","100%").animate({
             width:"70%",
             height:"100em",
@@ -358,6 +359,24 @@ export default function Orominer(props){
             position:"absolute",
             zIndex:"400",
             fontSize:"1.5em",      
+            },500).append(tag).css("display","block");       
+    };
+
+     let add_to_bar2 = (tag,w="30%") => {     
+        /*   
+            $("#displayBar").css("display","block").css("width","100%").animate({
+            width:"70%",
+            height:"100em",
+            display:"block",
+            },500);  
+            */
+            $("#infoBar").html('');
+            $("#initInfoBar").css("width","0%").animate({
+            width:"50%",
+            position:"absolute",
+            zIndex:"400",
+            fontSize:"1.5em",
+            marginTop:"2em",      
             },500).append(tag).css("display","block");       
     };
 
@@ -380,12 +399,26 @@ export default function Orominer(props){
      };
  
     // Handles request for svg items display requested by the Hierachy buttons 
-     const handleDisplayRequest = (obj) => {
+     const handleDisplayRequest = (obj) => {  
+        $("#infoBar").css("display","block");
+        $("#initInfoBar").css("display","none");      
+        let tag = `<div style="color:${colors.system};font-size:2.0em;font-style=bold;background-color:black;padding:0.5em;margin-top:0.5em;border:10px solid ${colors.system};border-radius:25px">Click on an Organism Node to see its Hierachy!</div>`;
+       
+        $('#infoBar').html('').css("margin-top","0").css("width","0%").css("padding-top","0em");
+      
+            add_to_bar(tag);
+            tag = `<div style="color:${colors.organ};font-size:2.0em;font-style=bold;background-color:black;padding:0.5em;margin-top:0.5em;border:10px solid ${colors.organ};border-radius:25px">Also, You can Click and Drag the Graph Displa Area!</div>`;
+            add_to_bar(tag);
+            
+           
+
         console.log("Top level Display Request:", obj );
-        closeInfoBar();
-        $('#infoBar').html('').css("margin-top","0").css("width","0%");
+        //closeInfoBar();
+       
         setDisplayRequest(true);
         let req =  obj;
+
+        $("#initInfoBar").css("display","none");    
 
         let len = 400;  // length of item stem
         let rads = 2*(Math.PI);  // 360 degrees in radians
@@ -1030,7 +1063,7 @@ export default function Orominer(props){
             console.log("Current Arr after Subparts Add:",currentArr);
              
         }
-
+      
          console.log("Bottom Current Arr after selected add:", currentArr);
          setDisplayReferenceArr(currentArr);
          setTransLen(len);
@@ -1064,15 +1097,17 @@ export default function Orominer(props){
 
        
         return (
-        <svg id="mySvg" version="1.1"
-             width={4*sysCx} height={4*sysCy}
+        <svg id="mySvg" version="1.1" 
+             width={4*sysCx} height={4*sysCy} 
              xmlns="http://www.w3.org/2000/svg" transform={`translate(${transX+len} ${transY+len+(ePageY-eClientY)})`} >
             <g id="myGElement" style={{zoom:zoomFac}} >
                 {console.log("Before Run DisplayReferenceArr: ", displayReferenceArr)}
                 {   
                     showSystemOrgans[currentSystemIndex] && 
                         <>
-                           { <g key={currentSystemIndex.toString()+"system"} onClick={(e) => getIndices("system",[currentSystemIndex],e)} id={`S${currentSystemIndex+1}`}>
+                           { 
+                            <g key={currentSystemIndex.toString()+"system"} onClick={(e) => getIndices("system",[currentSystemIndex],e)} id={`S${currentSystemIndex+1}`}
+                                className="btn btn-secondary" data-bs-toggle="tooltip" data-bs-html="true" data-bs-title="<em>Tooltip</em> <u>with</u> <b>HTML</b>" >
                                 <circle  cx={2*sysCx} cy={2*sysCy} r={sys_radius} stroke="black"  fill={colors.system} style={{strokeWidth:"1"}} />
                                 <text x={2*sysCx-31} y={2*sysCy+14} stroke="black" style={{fontSize:"3.0em"}}>{`S-${currentSystemIndex+1}`}</text>
                             </g>
@@ -1327,7 +1362,7 @@ export default function Orominer(props){
     return (
     <>
         
-        <Container id="" style={{position:"relative",width:"100%"}} fluid>         
+        <Container id="" style={{position:"relative",width:"100%",backgroundColor:"#d1e0e0",border:"double 20px #A1A1A1"}} fluid>         
             <Row style={{width:"100%",marginBottom:"1em"}}>
                 <Container id="" className="d-flex justify-content-center top-head" style={{marginBottom:"2em"}}>
                     Organism Relation Ontology (ORO) Miner
@@ -1359,24 +1394,23 @@ export default function Orominer(props){
                     </Row>
                     */}
                     <Row style={{position:"relative"}} >
-                        <div id="displayBar"  style={{zIndex:"-1"}}> 
-                                {
-                                    displayRequest && 
-                                    <Draggable>
-                                     <div id="requested_display" >
-
+                       
+                            <div id="displayBar"  style={{zIndex:"-1"}}> 
+                                    {
+                                        displayRequest && 
+                                        <Draggable>
+                                        <div id="requested_display" >                                         
                                             <RequestedDisplay showAll={showAll} showItems={showItems}  /> 
-                                                     
-                                    </div>
-                                    </Draggable>
-                                   
-                                }
-                          
-                        </div>
-                        <div id="infoBar" style={{paddingTop:groupY+transY+ePageY-transLen}}>
+                                        </div>
+                                        </Draggable>
+                                    
+                                    }
+                            
+                            </div> 
+                        <div id="infoBar">
                            
                         </div>
-                        <div id="initInfoBar" style={{paddingTop:groupY+transY+ePageY-transLen}}>
+                        <div id="initInfoBar">
                            
                         </div>
                     </Row>
