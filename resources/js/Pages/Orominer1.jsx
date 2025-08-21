@@ -81,7 +81,7 @@ export default function Orominer(props){
     const [subpart_radius, setSubpartRadius] = useState(35);
     const [organ_layer_radius, setOrganLayerRadius] = useState(35);
     const [sys_opacity, setSysOpacity] = useState(1.0);    
-    const [zoomFac, setZoomFac] = useState(0.75);
+    const [zoomFac, setZoomFac] = useState("0.75");
     let isDragging = false;
     let initialX, initialY;
     let currentTranslateX = 0;
@@ -391,7 +391,7 @@ export default function Orominer(props){
             width:"50%",
             position:"absolute",
             zIndex:"400",
-            fontSize:"1.5em",
+            fontSize:"1.25em",
             marginTop:"2em",      
             },500).append(tag).css("display","block");       
     };
@@ -418,19 +418,14 @@ export default function Orominer(props){
      const handleDisplayRequest = (obj) => {  
         $("#infoBar").css("display","block");
         $("#initInfoBar").css("display","none");      
-        let tag = `<div style="color:${colors.system};font-size:2.0em;font-style=bold;background-color:black;padding:0.5em;margin-top:0.5em;border:10px solid ${colors.system};border-radius:25px">Click on an Organism Node to see its Hierachy!</div>`;
+        let tag = `<div style="color:${colors.system};font-style=bold;background-color:black;padding:0.5em;margin-top:0.5em;border:10px solid ${colors.system};border-radius:25px">Click on an Organism Node to see its Hierachy!</div>`;
        
-        $('#infoBar').html('').css("margin-top","0").css("width","0%").css("padding-top","0em");
-      
-            add_to_bar(tag);
-            tag = `<div style="color:${colors.organ};font-size:2.0em;font-style=bold;background-color:black;padding:0.5em;margin-top:0.5em;border:10px solid ${colors.organ};border-radius:25px">Also, You can Click and Drag the Graph Displa Area!</div>`;
-            add_to_bar(tag);
-            
-           
+        $('#infoBar').html('').css("margin-top","0").css("width","0%").css("padding-top","0em");      
+        add_to_bar(tag);
+        tag = `<div style="color:${colors.organ};font-style=bold;background-color:black;padding:0.5em;margin-top:0.5em;border:10px solid ${colors.organ};border-radius:25px">Also, You can Click and Drag the Graph Displa Area!</div>`;
+        add_to_bar(tag);        
 
         console.log("Top level Display Request:", obj );
-        //closeInfoBar();
-       
         setDisplayRequest(true);
         let req =  obj;
 
@@ -1126,7 +1121,7 @@ export default function Orominer(props){
         <svg id="mySvg" version="1.1" 
              width={4*sysCx} height={4*sysCy} 
              xmlns="http://www.w3.org/2000/svg" transform={`translate(${transX+len} ${transY+len+(ePageY-eClientY)})`} >
-            <g id="myGElement" style={{zoom:zoomFac}} >
+            <g id="myGElement"  >
                 {console.log("Before Run DisplayReferenceArr: ", displayReferenceArr)}
                 {   
                     showSystemOrgans[currentSystemIndex] && 
@@ -1458,7 +1453,7 @@ export default function Orominer(props){
     return (
     <>
         
-        <Container id="" style={{position:"relative",width:"100%",backgroundColor:"#d1e0e0",border:"double 20px #A1A1A1"}} fluid>         
+        <Container id="" style={{position:"relative",width:"100%",backgroundColor:"#d1e0e0",border:"double 20px #A1A1A1",zoom:zoomFac}} fluid>         
             <Row style={{width:"100%",marginBottom:"1em"}}>
                 <Container id="" className="d-flex justify-content-center top-head" style={{marginBottom:"2em"}}>
                     Organism Relation Ontology (ORO) Miner
@@ -1480,7 +1475,12 @@ export default function Orominer(props){
                 <Col xs={8} style={{backgroundColor:"lightgrey"}}>
                     
                     <Row  id="graph_header">
-                        <Container id="" className="d-flex justify-content-center top-head">Graph Display</Container> 
+                        <Col xs={2}>
+                            <Button id="reset_button" onClick={() => location.reload()} style={{width:"12em",height:"6em",color:"black",fontSize:"1.25em",marginTop:"2.5em",marginLeft:"2em"}} variant="danger" >RESET</Button>
+                        </Col>
+                        <Col xs={10}>                            
+                            <Container id="" className="d-flex justify-content-center top-head">Graph Display</Container> 
+                        </Col>
                     </Row>    
                     {/*                   
                     <Row id="gphtitle" className="h-20">
