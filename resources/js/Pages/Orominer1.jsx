@@ -1458,7 +1458,7 @@ export default function Orominer(props){
     return (
     <>
         
-        <Container id="" style={{position:"relative",width:"100%",backgroundColor:"#d1e0e0",border:"double 20px #A1A1A1"}} fluid>         
+        <Container id="" style={{position:"relative",width:"100%",backgroundColor:"#d1e0e0",border:"double 20px #A1A1A1",zoom:"70%"}} fluid>         
             <Row style={{width:"100%",marginBottom:"1em"}}>
                 <Container id="" className="d-flex justify-content-center top-head" style={{marginBottom:"2em"}}>
                     Organism Relation Ontology (ORO) Miner
