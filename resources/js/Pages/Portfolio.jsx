@@ -451,6 +451,34 @@ export default function Portfolio(props){
                             </Card.Text>
                         </Card.Body>
                     </Card>
+
+                    <Card style={{backgroundColor:'#7FFFD4'}}>
+                        <img src={dataanalysis} className="rounded mb-2" height="15%" width="15%" style={{margin:'1em 0 0 42.5%'}} alt="Data Analysis Image"/> 
+                        <Card.Body>             
+                            <Card.Link href="https://laravelportfolio.rsypertjr.net/orominer1" target="_blank">New Laravel/React/Bootstrap Orominer</Card.Link>
+                            <Card.Text><object data="https://laravelportfolio.rsypertjr.net/orominer1" height="200" width="300"></object></Card.Text>
+                            <Card.Text className="text-center app-description">
+                                This App is refactored and improved using Laravel11 with controller back-end for retrieval of XML file.  
+                                The front end code is formulated with React components rendered as routes by Vite technology. SVG is used within
+                                React for graphics. State variables are maintained within components to enable dynamic data/status representations.
+                                &nbsp;&nbsp;<a href="https://github.com/Rsypertjr/code_storage/tree/laravel-portfolio-dev" target="_blank">Here is the Code.</a>
+                            </Card.Text>
+                        </Card.Body>
+                    </Card>
+                    <Card style={{backgroundColor:'#FFFAFA'}}>
+                        <img src={dataanalysis} className="rounded mb-2" height="15%" width="15%" style={{margin:'1em 0 0 42.5%'}} alt="Data Analysis Image"/> 
+                        <Card.Body>
+                            <Card.Link href="https://lar10reactmix.rsypertjr.net/votes-table" target="_blank">Laravel(Mix) w/React & Chart.js & Bootstrap.js Vote Parser</Card.Link>
+                            <Card.Text><object data="https://lar10reactmix.rsypertjr.net/votes-table" height="200" width="300"></object></Card.Text>
+                            <Card.Text className="text-center app-description">
+                                This orominer program contains Histological Data within the Hierarchical Organization of Human Body 
+                                makeup. Histological Data is information about Human Organs and their tissues and cells. This 
+                                application uses JavaScript Objects to store active data requests from which graphics is generated.
+                                &nbsp;&nbsp;<a href="https://github.com/Rsypertjr/code_storage/tree/lar10-react-mix-prod-v2" target="_blank">Here is the Code.</a>
+                            </Card.Text>
+                        </Card.Body>
+                    </Card>
+
                     <Card style={{backgroundColor:'#EEE8AA'}}>
                         <img src={dataanalysis} className="rounded mb-2" height="15%" width="15%" style={{margin:'1em 0 0 42.5%'}} alt="Data Analysis Image"/> 
                         <Card.Body>
