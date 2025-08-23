@@ -18,16 +18,17 @@ export default function TopCarousel(props){
                 <Carousel.Item>
                     <Carousel.Caption>
                         <h4>Digital Ocean Cloud-based computing and Ubuntu Linux Virtual Hosting</h4> 
-                        <p className="top-desc rounded">This site is hosted on Ubuntu 18.04 Digital Ocean Droplets,&nbsp;utilizing Apache Virtual Hosting.&nbsp;&nbsp; Some apps have been deployed to Heroku Server.&nbsp;&nbsp;
-                        Microsoft Visual Studio Code using Virtual Linux (wsl) is the development environment for this portfolio.&nbsp;&nbsp;VirtualBox Ubuntu 18.04 machine is used for direct ssh access to the droplets,&nbsp;and 
-                        sshfs to the files on the droplets.
+                        <p className="top-desc rounded">This site is hosted on Ubuntu Digital Ocean Droplets,&nbsp;utilizing Apache Virtual Hosting.&nbsp;&nbsp; Microsoft Visual Studio Code using both Virtual Linux (wsl), and non-virtual Linux are the development environments for this portfolio.&nbsp;&nbsp;
+                            Remote SSH or SSHFS are used for direct access to the droplets operating system and files.
                         </p> 
                     </Carousel.Caption>                               
                 </Carousel.Item>				
                 <Carousel.Item>
                     <Carousel.Caption>
-                        <h4>PHP-based and JavaScript-based technologies and frameworks featured</h4>
-                        <p className="top-desc rounded"> Fuel CMS framework (CodeIgniter-based)</p>
+                        <h4>PHP-based and JavaScript-based, and other technologies and frameworks featured</h4>
+                        <p className="top-desc rounded">Laravel 11, React.js, React-Bootstrap, Chart.js, SVG, NPM, Vite asset bundling, MySQL, Docker, Docker-Compose,
+                            PM2 process management, JSON formatting, Document Object Modeling, Mongo document database, Express.js
+                        </p>
                     </Carousel.Caption>								
                 </Carousel.Item>					
                 <Carousel.Item>

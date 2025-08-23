@@ -45,6 +45,12 @@ Route::get('/drawingcanvas', function () {
     return Inertia::render('DrawingCanvas');
 });
 
+
+Route::get('/javascriptplay', function () {
+    return Inertia::render('JavaScriptPlayBox');
+});
+
+
 Route::get('/migrations', [AminoController::class, 'view_migrations']);
 
 Route::get('/codetesting', [CodeTestingController::class, 'code_testing']);
