@@ -12,6 +12,30 @@ export interface StateData {
   reportingPercentage: number
 }
 
+export interface NationalStateData {
+  state: string
+  totalVotes: number
+  percentageOfNation: number
+}
+
+export interface NationalData {
+  states: NationalStateData[]
+  totalNationalVotes: number
+}
+
+export interface StateVsNationData {
+  selectedState: {
+    name: string
+    totalVotes: number
+    percentageOfNation: number
+  }
+  otherStates: {
+    totalVotes: number
+    percentageOfNation: number
+  }
+  totalNationalVotes: number
+}
+
 // Raw API response types
 export interface ElectionCandidate {
   name_display?: string

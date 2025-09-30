@@ -214,6 +214,7 @@ export default function TimeseriesChart({ state }: TimeseriesChartProps) {
         ],
       }
     } else if (chartView === 'spikes') {
+      const labels = currentData.map(entry => new Date(entry.timestamp))
       return {
         labels,
         datasets: [
@@ -264,8 +265,65 @@ export default function TimeseriesChart({ state }: TimeseriesChartProps) {
           },
         ],
       }
-    } else {
-      // Deviation view
+    } else if (chartView === 'spikes-sorted') {
+      // Sorted spikes view - sorted by total vote increases (highest first)
+      const labels = sortedSpikeData.map((item, index) => {
+        const time = new Date(item.entry.timestamp).toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' })
+        const totalVotes = item.entry.total_vote_add.toLocaleString()
+        return `#${index + 1}: +${totalVotes} (${time})`
+      })
+      return {
+        labels,
+        datasets: [
+          {
+            label: 'Biden Vote Increases',
+            data: sortedSpikeData.map(item => item.entry.total_vote_add_biden),
+            borderColor: '#1d4ed8',
+            backgroundColor: chartType === 'bar' ? 'rgba(29, 78, 216, 0.6)' : 'rgba(29, 78, 216, 0.2)',
+            borderWidth: chartType === 'line' ? 3 : 1,
+            pointRadius: chartType === 'line' ? 4 : 0,
+            pointHoverRadius: chartType === 'line' ? 6 : 0,
+            tension: chartType === 'line' ? 0.1 : 0,
+            fill: chartType === 'line' ? false : true,
+          },
+          {
+            label: 'Trump Vote Increases',
+            data: sortedSpikeData.map(item => item.entry.total_vote_add_trump),
+            borderColor: '#ef4444',
+            backgroundColor: chartType === 'bar' ? 'rgba(239, 68, 68, 0.6)' : 'rgba(239, 68, 68, 0.2)',
+            borderWidth: chartType === 'line' ? 3 : 1,
+            pointRadius: chartType === 'line' ? 4 : 0,
+            pointHoverRadius: chartType === 'line' ? 6 : 0,
+            tension: chartType === 'line' ? 0.1 : 0,
+            fill: chartType === 'line' ? false : true,
+          },
+          {
+            label: 'Other Vote Increases',
+            data: sortedSpikeData.map(item => item.entry.total_vote_add_other),
+            borderColor: '#64748b',
+            backgroundColor: chartType === 'bar' ? 'rgba(100, 116, 139, 0.6)' : 'rgba(100, 116, 139, 0.2)',
+            borderWidth: chartType === 'line' ? 2 : 1,
+            pointRadius: chartType === 'line' ? 3 : 0,
+            pointHoverRadius: chartType === 'line' ? 5 : 0,
+            tension: chartType === 'line' ? 0.1 : 0,
+            fill: chartType === 'line' ? false : true,
+          },
+          {
+            label: 'Total Vote Increases',
+            data: sortedSpikeData.map(item => item.entry.total_vote_add),
+            borderColor: '#3b82f6',
+            backgroundColor: chartType === 'bar' ? 'rgba(59, 130, 246, 0.6)' : 'rgba(59, 130, 246, 0.2)',
+            borderWidth: chartType === 'line' ? 2 : 1,
+            pointRadius: chartType === 'line' ? 3 : 0,
+            pointHoverRadius: chartType === 'line' ? 5 : 0,
+            tension: chartType === 'line' ? 0.1 : 0,
+            fill: chartType === 'line' ? false : true,
+            borderDash: [5, 5], // Dashed line to distinguish total
+          },
+        ],
+      }
+    } else if (chartView === 'deviation') {
+      const labels = currentData.map(entry => new Date(entry.timestamp))
       return {
         labels,
         datasets: [
@@ -328,6 +386,79 @@ export default function TimeseriesChart({ state }: TimeseriesChartProps) {
           },
         ],
       }
+    } else {
+      // Deviation sorted view - sorted by absolute deviation magnitude
+      const labels = sortedDeviationData.map((item, index) => {
+        const time = new Date(item.entry.timestamp).toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' })
+        const maxDeviation = Math.max(
+          Math.abs(item.bidenDeviation),
+          Math.abs(item.trumpDeviation),
+          Math.abs(item.otherDeviation)
+        ).toLocaleString()
+        return `#${index + 1}: ±${maxDeviation} (${time})`
+      })
+      return {
+        labels,
+        datasets: [
+          {
+            label: 'Biden Deviation from Average',
+            data: sortedDeviationData.map(d => d.bidenDeviation),
+            borderColor: '#1d4ed8',
+            backgroundColor: chartType === 'bar' ? 'rgba(29, 78, 216, 0.6)' : 'rgba(29, 78, 216, 0.2)',
+            borderWidth: chartType === 'line' ? 3 : 1,
+            pointRadius: chartType === 'line' ? 4 : 0,
+            pointHoverRadius: chartType === 'line' ? 6 : 0,
+            tension: chartType === 'line' ? 0.3 : 0,
+            fill: chartType === 'line' ? false : true,
+          },
+          {
+            label: 'Trump Deviation from Average',
+            data: sortedDeviationData.map(d => d.trumpDeviation),
+            borderColor: '#ef4444',
+            backgroundColor: chartType === 'bar' ? 'rgba(239, 68, 68, 0.6)' : 'rgba(239, 68, 68, 0.2)',
+            borderWidth: chartType === 'line' ? 3 : 1,
+            pointRadius: chartType === 'line' ? 4 : 0,
+            pointHoverRadius: chartType === 'line' ? 6 : 0,
+            tension: chartType === 'line' ? 0.3 : 0,
+            fill: chartType === 'line' ? false : true,
+          },
+          {
+            label: 'Other Deviation from Average',
+            data: sortedDeviationData.map(d => d.otherDeviation),
+            borderColor: '#64748b',
+            backgroundColor: chartType === 'bar' ? 'rgba(100, 116, 139, 0.6)' : 'rgba(100, 116, 139, 0.2)',
+            borderWidth: chartType === 'line' ? 2 : 1,
+            pointRadius: chartType === 'line' ? 3 : 0,
+            pointHoverRadius: chartType === 'line' ? 5 : 0,
+            tension: chartType === 'line' ? 0.3 : 0,
+            fill: chartType === 'line' ? false : true,
+          },
+          {
+            label: 'Average Vote Increases',
+            data: sortedDeviationData.map(d => d.average),
+            borderColor: '#10b981',
+            backgroundColor: chartType === 'bar' ? 'rgba(16, 185, 129, 0.6)' : 'rgba(16, 185, 129, 0.2)',
+            borderWidth: chartType === 'line' ? 2 : 1,
+            pointRadius: chartType === 'line' ? 2 : 0,
+            pointHoverRadius: chartType === 'line' ? 4 : 0,
+            tension: chartType === 'line' ? 0.3 : 0,
+            fill: chartType === 'line' ? false : true,
+            borderDash: [3, 3], // Dashed line for reference
+          },
+          {
+            label: 'Zero Line (Reference)',
+            data: sortedDeviationData.map(() => 0),
+            borderColor: '#6b7280',
+            backgroundColor: 'transparent',
+            borderWidth: 1,
+            pointRadius: 0,
+            pointHoverRadius: 0,
+            tension: 0,
+            fill: false,
+            borderDash: [8, 4], // Dashed reference line
+          },
+        ],
+      }
     }
   }
 
@@ -346,7 +477,8 @@ export default function TimeseriesChart({ state }: TimeseriesChartProps) {
       },
       title: {
         display: true,
-        text: `${timeseriesData.state} - ${chartView === 'cumulative' ? 'Vote Progress' : chartView === 'spikes' ? 'Vote Increases/Spikes' : 'Deviation from Average'} (Entries ${startIndex + 1}-${endIndex} of ${totalEntries})`,
+        text: `${timeseriesData.state} - ${chartView === 'cumulative' ? 'Vote Progress' : chartView === 'spikes' ? 'Vote Increases/Spikes' : chartView === 'spikes-sorted' ? 'Vote Spikes (Sorted by Total)' : chartView === 'deviation' ? 'Deviation from Average' : 'Deviation from Average (Sorted)'} (Entries ${startIndex + 1}-${endIndex} of ${totalEntries})`,
+
         font: {
           size: 16,
         },
@@ -355,7 +487,20 @@ export default function TimeseriesChart({ state }: TimeseriesChartProps) {
         callbacks: {
           afterBody: (context: any) => {
             const dataIndex = context[0].dataIndex
-            const entry = currentData[dataIndex]
+            let entry: TimeseriesEntry
+            let deviationEntry: any = null
+            
+            if (chartView === 'spikes-sorted') {
+              entry = sortedSpikeData[dataIndex].entry
+            } else if (chartView === 'deviation-sorted') {
+              entry = sortedDeviationData[dataIndex].entry
+              deviationEntry = sortedDeviationData[dataIndex]
+            } else {
+              entry = currentData[dataIndex]
+              if (chartView === 'deviation') {
+                deviationEntry = deviationData[dataIndex]
+              }
+            }
             
             if (chartView === 'cumulative') {
               return [
@@ -383,9 +528,100 @@ export default function TimeseriesChart({ state }: TimeseriesChartProps) {
                 `  Biden: ${(entry.bidenj * 100).toFixed(1)}%`,
                 `  Trump: ${(entry.trumpd * 100).toFixed(1)}%`,
               ]
+            } else if (chartView === 'spikes-sorted') {
+              // Enhanced data display for sorted spikes
+              const rankNumber = dataIndex + 1
+              const originalTime = new Date(entry.timestamp).toLocaleString()
+              return [
+                '',
+                `🏆 Rank #${rankNumber} Vote Spike`,
+                `📅 Original Time: ${originalTime}`,
+                `📊 Entry Index: ${entry.index}`,
+                '',
+                `📈 Vote Increases (This Batch):`,
+                `  Biden: +${entry.total_vote_add_biden.toLocaleString()}`,
+                `  Trump: +${entry.total_vote_add_trump.toLocaleString()}`,
+                `  Other: +${entry.total_vote_add_other.toLocaleString()}`,
+                `  Total Batch: +${entry.total_vote_add.toLocaleString()}`,
+                '',
+                `📊 Running Totals After This Batch:`,
+                `  Biden: ${entry.biden_votes.toLocaleString()}`,
+                `  Trump: ${entry.trump_votes.toLocaleString()}`,
+                `  Other: ${entry.other_votes.toLocaleString()}`,
+                `  Grand Total: ${entry.votes.toLocaleString()}`,
+                '',
+                `📊 Batch Composition:`,
+                `  Biden %: ${(entry.bidenj * 100).toFixed(1)}%`,
+                `  Trump %: ${(entry.trumpd * 100).toFixed(1)}%`,
+                '',
+                `📊 Remaining Vote Percentages:`,
+                `  Biden: ${(entry.percent_of_remaining_biden * 100).toFixed(1)}%`,
+                `  Trump: ${(entry.percent_of_remaining_trump * 100).toFixed(1)}%`,
+              ]
+            } else if (chartView === 'deviation-sorted') {
+              // Enhanced data display for sorted deviations
+              const rankNumber = dataIndex + 1
+              const originalTime = new Date(entry.timestamp).toLocaleString()
+              
+              if (!deviationEntry) {
+                // Fallback calculation if deviationEntry is not set
+                const candidateIncreases = [entry.total_vote_add_biden, entry.total_vote_add_trump, entry.total_vote_add_other]
+                const average = candidateIncreases.reduce((sum, val) => sum + val, 0) / candidateIncreases.length
+                deviationEntry = {
+                  average,
+                  bidenDeviation: entry.total_vote_add_biden - average,
+                  trumpDeviation: entry.total_vote_add_trump - average,
+                  otherDeviation: entry.total_vote_add_other - average,
+                }
+              }
+              
+              const maxDeviation = Math.max(
+                Math.abs(deviationEntry.bidenDeviation),
+                Math.abs(deviationEntry.trumpDeviation),
+                Math.abs(deviationEntry.otherDeviation)
+              )
+              
+              return [
+                '',
+                `📊 Rank #${rankNumber} Deviation Magnitude`,
+                `📅 Original Time: ${originalTime}`,
+                `📊 Entry Index: ${entry.index}`,
+                `🎯 Max Deviation: ${maxDeviation.toLocaleString()}`,
+                '',
+                `📈 Raw Vote Increases:`,
+                `  Biden: +${entry.total_vote_add_biden.toLocaleString()}`,
+                `  Trump: +${entry.total_vote_add_trump.toLocaleString()}`,
+                `  Other: +${entry.total_vote_add_other.toLocaleString()}`,
+                `  Batch Average: ${deviationEntry.average.toFixed(0)}`,
+                '',
+                `📊 Deviations from Average:`,
+                `  Biden: ${deviationEntry.bidenDeviation >= 0 ? '+' : ''}${deviationEntry.bidenDeviation.toLocaleString()}`,
+                `  Trump: ${deviationEntry.trumpDeviation >= 0 ? '+' : ''}${deviationEntry.trumpDeviation.toLocaleString()}`,
+                `  Other: ${deviationEntry.otherDeviation >= 0 ? '+' : ''}${deviationEntry.otherDeviation.toLocaleString()}`,
+                '',
+                `📊 Running Totals After This Batch:`,
+                `  Biden: ${entry.biden_votes.toLocaleString()}`,
+                `  Trump: ${entry.trump_votes.toLocaleString()}`,
+                `  Other: ${entry.other_votes.toLocaleString()}`,
+                `  Grand Total: ${entry.votes.toLocaleString()}`,
+                '',
+                `📊 Batch Composition:`,
+                `  Biden %: ${(entry.bidenj * 100).toFixed(1)}%`,
+                `  Trump %: ${(entry.trumpd * 100).toFixed(1)}%`,
+              ]
             } else {
-              // Deviation view
-              const deviationEntry = deviationData[dataIndex]
+              // Regular deviation view
+              if (!deviationEntry) {
+                // Fallback calculation if deviationEntry is not set
+                const candidateIncreases = [entry.total_vote_add_biden, entry.total_vote_add_trump, entry.total_vote_add_other]
+                const average = candidateIncreases.reduce((sum, val) => sum + val, 0) / candidateIncreases.length
+                deviationEntry = {
+                  average,
+                  bidenDeviation: entry.total_vote_add_biden - average,
+                  trumpDeviation: entry.total_vote_add_trump - average,
+                  otherDeviation: entry.total_vote_add_other - average,
+                }
+              }
               return [
                 '',
                 `Vote Increases:`,
@@ -405,7 +641,20 @@ export default function TimeseriesChart({ state }: TimeseriesChartProps) {
       }
     },
     scales: {
-      x: {
+      x: (chartView === 'spikes-sorted' || chartView === 'deviation-sorted') ? {
+        type: 'category' as const,
+        display: true,
+        title: {
+          display: true,
+          text: chartView === 'spikes-sorted' ? 'Ranked by Total Vote Increases' : 'Ranked by Deviation Magnitude'
+        },
+        ticks: {
+          maxTicksLimit: currentData.length,
+          autoSkip: false,
+          maxRotation: 45,
+          minRotation: 0
+        }
+      } : {
         type: 'time' as const,
         display: true,
         title: {
@@ -431,7 +680,7 @@ export default function TimeseriesChart({ state }: TimeseriesChartProps) {
         display: true,
         title: {
           display: true,
-          text: chartView === 'cumulative' ? 'Vote Count' : chartView === 'spikes' ? 'Vote Increases' : 'Deviation from Average'
+          text: chartView === 'cumulative' ? 'Vote Count' : (chartView === 'spikes' || chartView === 'spikes-sorted') ? 'Vote Increases' : 'Deviation from Average'
         },
         beginAtZero: true,
         ticks: {
@@ -485,12 +734,14 @@ export default function TimeseriesChart({ state }: TimeseriesChartProps) {
             <label className="text-sm font-medium text-gray-700">Chart View:</label>
             <select
               value={chartView}
-              onChange={(e) => setChartView(e.target.value as 'cumulative' | 'spikes' | 'deviation')}
+              onChange={(e) => setChartView(e.target.value as 'cumulative' | 'spikes' | 'deviation' | 'spikes-sorted' | 'deviation-sorted')}
               className="px-3 py-1 border border-gray-300 rounded text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
             >
               <option value="cumulative">Cumulative Totals</option>
               <option value="spikes">Vote Increases/Spikes</option>
+              <option value="spikes-sorted">Vote Spikes (Sorted)</option>
               <option value="deviation">Deviation from Average</option>
+              <option value="deviation-sorted">Deviation (Sorted)</option>
             </select>
           </div>
           
@@ -628,14 +879,245 @@ export default function TimeseriesChart({ state }: TimeseriesChartProps) {
         </div>
       )}
 
+      {/* Analytical Explanation for Sorted Spikes View */}
+      {chartView === 'spikes-sorted' && (
+        <div className="mb-4 p-4 bg-purple-50 border-l-4 border-purple-400 rounded-r-lg">
+          <h3 className="text-lg font-semibold text-purple-800 mb-2">📊 Vote Spikes (Sorted by Total) Analysis</h3>
+          <p className="text-sm text-purple-700 mb-2">
+            This view ranks vote increases by total magnitude, making it easy to identify the largest spikes:
+          </p>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-3 text-xs text-purple-600">
+            <div className="flex items-start gap-2">
+              <span className="text-purple-500 font-bold">🏆</span>
+              <div>
+                <strong>Largest Spikes First:</strong> Ranked from highest to lowest total vote increases for easy identification
+              </div>
+            </div>
+            <div className="flex items-start gap-2">
+              <span className="text-purple-500 font-bold">🔍</span>
+              <div>
+                <strong>Batch Processing Analysis:</strong> Quickly identify the most significant vote batch uploads
+              </div>
+            </div>
+            <div className="flex items-start gap-2">
+              <span className="text-purple-500 font-bold">📈</span>
+              <div>
+                <strong>Magnitude Comparison:</strong> Compare relative sizes of vote increases without time dependency
+              </div>
+            </div>
+            <div className="flex items-start gap-2">
+              <span className="text-purple-500 font-bold">⚠️</span>
+              <div>
+                <strong>Anomaly Detection:</strong> Focus on outliers and unusually large vote additions that warrant investigation
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Analytical Explanation for Sorted Deviation View */}
+      {chartView === 'deviation-sorted' && (
+        <div className="mb-4 p-4 bg-orange-50 border-l-4 border-orange-400 rounded-r-lg">
+          <h3 className="text-lg font-semibold text-orange-800 mb-2">📊 Deviation (Sorted by Magnitude) Analysis</h3>
+          <p className="text-sm text-orange-700 mb-2">
+            This view ranks deviations by absolute magnitude, highlighting the most extreme performance variations:
+          </p>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-3 text-xs text-orange-600">
+            <div className="flex items-start gap-2">
+              <span className="text-orange-500 font-bold">🎯</span>
+              <div>
+                <strong>Extreme Deviations First:</strong> Ranked by absolute deviation magnitude to find the most unusual patterns
+              </div>
+            </div>
+            <div className="flex items-start gap-2">
+              <span className="text-orange-500 font-bold">📊</span>
+              <div>
+                <strong>Performance Outliers:</strong> Identify when candidates significantly over or under-performed vs. average
+              </div>
+            </div>
+            <div className="flex items-start gap-2">
+              <span className="text-orange-500 font-bold">🔄</span>
+              <div>
+                <strong>Statistical Analysis:</strong> Focus on data points that deviate most from expected patterns
+              </div>
+            </div>
+            <div className="flex items-start gap-2">
+              <span className="text-orange-500 font-bold">🚨</span>
+              <div>
+                <strong>Investigation Priorities:</strong> Rank time periods by their deviation magnitude for focused analysis
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
       {/* Chart */}
       <div className="h-96 mb-4">
         {chartType === 'line' ? (
-          <Line data={chartData} options={options} />
+          <Line data={chartData as any} options={options} />
         ) : (
-          <Bar data={chartData} options={options} />
+          <Bar data={chartData as any} options={options} />
         )}
       </div>
+
+      {/* Comprehensive Data Summary for Sorted Spikes View */}
+      {chartView === 'spikes-sorted' && sortedSpikeData.length > 0 && (
+        <div className="mb-6 p-4 bg-purple-50 border border-purple-200 rounded-lg">
+          <h3 className="text-lg font-semibold text-purple-800 mb-3">📊 Top Vote Spikes Summary</h3>
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+            {/* Top 5 Largest Spikes */}
+            <div className="bg-white p-4 rounded-lg shadow-sm">
+              <h4 className="font-semibold text-purple-700 mb-2">🏆 Top 5 Largest Vote Spikes</h4>
+              <div className="space-y-2 text-sm">
+                {sortedSpikeData.slice(0, 5).map((item, index) => (
+                  <div key={index} className="flex justify-between items-center p-2 bg-purple-25 rounded">
+                    <div>
+                      <span className="font-semibold">#{index + 1}</span>
+                      <span className="ml-2 text-gray-600">
+                        {new Date(item.entry.timestamp).toLocaleString()}
+                      </span>
+                    </div>
+                    <div className="text-right">
+                      <div className="font-semibold">+{item.entry.total_vote_add.toLocaleString()}</div>
+                      <div className="text-xs text-gray-500">
+                        B: +{item.entry.total_vote_add_biden.toLocaleString()} | 
+                        T: +{item.entry.total_vote_add_trump.toLocaleString()}
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* Statistical Analysis */}
+            <div className="bg-white p-4 rounded-lg shadow-sm">
+              <h4 className="font-semibold text-purple-700 mb-2">📈 Statistical Analysis</h4>
+              <div className="space-y-2 text-sm">
+                {(() => {
+                  const totalSpikes = sortedSpikeData.map(item => item.entry.total_vote_add)
+                  const avgSpike = totalSpikes.reduce((sum, val) => sum + val, 0) / totalSpikes.length
+                  const maxSpike = Math.max(...totalSpikes)
+                  const minSpike = Math.min(...totalSpikes)
+                  const medianSpike = totalSpikes.sort((a, b) => a - b)[Math.floor(totalSpikes.length / 2)]
+                  
+                  return (
+                    <>
+                      <div className="flex justify-between">
+                        <span>Largest Spike:</span>
+                        <span className="font-semibold">+{maxSpike.toLocaleString()}</span>
+                      </div>
+                      <div className="flex justify-between">
+                        <span>Smallest Spike:</span>
+                        <span className="font-semibold">+{minSpike.toLocaleString()}</span>
+                      </div>
+                      <div className="flex justify-between">
+                        <span>Average Spike:</span>
+                        <span className="font-semibold">+{avgSpike.toFixed(0).toLocaleString()}</span>
+                      </div>
+                      <div className="flex justify-between">
+                        <span>Median Spike:</span>
+                        <span className="font-semibold">+{medianSpike.toLocaleString()}</span>
+                      </div>
+                      <div className="flex justify-between">
+                        <span>Total Entries:</span>
+                        <span className="font-semibold">{sortedSpikeData.length}</span>
+                      </div>
+                    </>
+                  )
+                })()}
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Comprehensive Data Summary for Sorted Deviation View */}
+      {chartView === 'deviation-sorted' && sortedDeviationData.length > 0 && (
+        <div className="mb-6 p-4 bg-orange-50 border border-orange-200 rounded-lg">
+          <h3 className="text-lg font-semibold text-orange-800 mb-3">📊 Top Deviation Magnitudes Summary</h3>
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+            {/* Top 5 Largest Deviations */}
+            <div className="bg-white p-4 rounded-lg shadow-sm">
+              <h4 className="font-semibold text-orange-700 mb-2">🎯 Top 5 Extreme Deviations</h4>
+              <div className="space-y-2 text-sm">
+                {sortedDeviationData.slice(0, 5).map((item, index) => {
+                  const maxDeviation = Math.max(
+                    Math.abs(item.bidenDeviation),
+                    Math.abs(item.trumpDeviation),
+                    Math.abs(item.otherDeviation)
+                  )
+                  const dominantCandidate = Math.abs(item.bidenDeviation) === maxDeviation ? 'Biden' :
+                                           Math.abs(item.trumpDeviation) === maxDeviation ? 'Trump' : 'Other'
+                  const dominantValue = dominantCandidate === 'Biden' ? item.bidenDeviation :
+                                       dominantCandidate === 'Trump' ? item.trumpDeviation : item.otherDeviation
+                  
+                  return (
+                    <div key={index} className="flex justify-between items-center p-2 bg-orange-25 rounded">
+                      <div>
+                        <span className="font-semibold">#{index + 1}</span>
+                        <span className="ml-2 text-gray-600">
+                          {new Date(item.entry.timestamp).toLocaleString()}
+                        </span>
+                      </div>
+                      <div className="text-right">
+                        <div className="font-semibold">±{maxDeviation.toLocaleString()}</div>
+                        <div className="text-xs text-gray-500">
+                          {dominantCandidate}: {dominantValue >= 0 ? '+' : ''}{dominantValue.toLocaleString()}
+                        </div>
+                      </div>
+                    </div>
+                  )
+                })}
+              </div>
+            </div>
+
+            {/* Statistical Analysis */}
+            <div className="bg-white p-4 rounded-lg shadow-sm">
+              <h4 className="font-semibold text-orange-700 mb-2">📈 Deviation Statistics</h4>
+              <div className="space-y-2 text-sm">
+                {(() => {
+                  const allDeviations = sortedDeviationData.flatMap(item => [
+                    Math.abs(item.bidenDeviation),
+                    Math.abs(item.trumpDeviation),
+                    Math.abs(item.otherDeviation)
+                  ])
+                  const avgDeviation = allDeviations.reduce((sum, val) => sum + val, 0) / allDeviations.length
+                  const maxDeviation = Math.max(...allDeviations)
+                  const minDeviation = Math.min(...allDeviations)
+                  
+                  const bidenPositive = sortedDeviationData.filter(item => item.bidenDeviation > 0).length
+                  const trumpPositive = sortedDeviationData.filter(item => item.trumpDeviation > 0).length
+                  
+                  return (
+                    <>
+                      <div className="flex justify-between">
+                        <span>Max Deviation:</span>
+                        <span className="font-semibold">±{maxDeviation.toLocaleString()}</span>
+                      </div>
+                      <div className="flex justify-between">
+                        <span>Min Deviation:</span>
+                        <span className="font-semibold">±{minDeviation.toLocaleString()}</span>
+                      </div>
+                      <div className="flex justify-between">
+                        <span>Avg Deviation:</span>
+                        <span className="font-semibold">±{avgDeviation.toFixed(0).toLocaleString()}</span>
+                      </div>
+                      <div className="flex justify-between">
+                        <span>Biden Above Avg:</span>
+                        <span className="font-semibold">{bidenPositive}/{sortedDeviationData.length}</span>
+                      </div>
+                      <div className="flex justify-between">
+                        <span>Trump Above Avg:</span>
+                        <span className="font-semibold">{trumpPositive}/{sortedDeviationData.length}</span>
+                      </div>
+                    </>
+                  )
+                })()}
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* Summary Stats */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-center text-sm">
@@ -652,7 +1134,7 @@ export default function TimeseriesChart({ state }: TimeseriesChartProps) {
           <div className="text-red-900">{timeseriesData.metadata.trump_final_votes.toLocaleString()}</div>
         </div>
         <div className="bg-gray-50 p-3 rounded">
-          <div className="font-semibold text-gray-700">Other Final</div>
+          <div className="font-semiblen text-gray-700">Other Final</div>
           <div className="text-gray-900">{timeseriesData.metadata.other_final_votes.toLocaleString()}</div>
         </div>
       </div>
