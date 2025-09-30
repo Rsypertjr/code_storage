@@ -1,0 +1,50 @@
+{
+  "California": {
+    "state": "California",
+    "data": [
+      {
+        "index": 0,
+        "votes": 100000,
+        "timestamp": "2020-11-03T23:00:00Z",
+        "bidenj": 0.61,
+        "biden_votes": 61000,
+        "trumpd": 0.34,
+        "trump_votes": 34000,
+        "other_votes": 5000,
+        "total_vote_add": 0,
+        "total_vote_add_trump": 0,
+        "total_vote_add_biden": 0,
+        "total_vote_add_other": 0,
+        "total_vote_add_total": 0,
+        "percent_of_remaining_trump": 72.5,
+        "percent_of_remaining_biden": 26.8,
+        "time": "2020-11-03T23:00:00Z"
+      },
+      {
+        "index": 1,
+        "votes": 150000,
+        "timestamp": "2020-11-04T01:00:00Z",
+        "bidenj": 0.63,
+        "biden_votes": 94500,
+        "trumpd": 0.32,
+        "trump_votes": 48000,
+        "other_votes": 7500,
+        "total_vote_add": 50000,
+        "total_vote_add_trump": 14000,
+        "total_vote_add_biden": 33500,
+        "total_vote_add_other": 2500,
+        "total_vote_add_total": 50000,
+        "percent_of_remaining_trump": 68.2,
+        "percent_of_remaining_biden": 22.1,
+        "time": "2020-11-04T01:00:00Z"
+      }
+    ],
+    "metadata": {
+      "total_votes_final": 17500881,
+      "biden_final_votes": 11110250,
+      "trump_final_votes": 6006429,
+      "other_final_votes": 384202,
+      "generated_at": "2025-09-30T12:00:00.000Z"
+    }
+  }
+}
