@@ -6,7 +6,7 @@ const inter = Inter({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
   title: 'President Votes - 2020 Election Data',
-  description: 'Interactive visualization of 2020 presidential election data by state',
+  description: 'Interactive visualization of 2020 presidential election data by jurisdiction',
 }
 
 export default function RootLayout({

@@ -17,7 +17,7 @@ export default function Home() {
   const [availableStates, setAvailableStates] = useState<StateInfo[]>([])
   const [loading, setLoading] = useState<boolean>(true)
 
-  // Load available states from Supabase on component mount
+  // Load available jurisdictions from Supabase on component mount
   useEffect(() => {
     const loadStates = async () => {
       try {
@@ -28,18 +28,18 @@ export default function Home() {
         console.log('API Response:', result) // Debug log
         
         if (result.success) {
-          console.log('States loaded:', result.states.length, 'states') // Debug log
+          console.log('Jurisdictions loaded:', result.states.length, 'jurisdictions') // Debug log
           setAvailableStates(result.states)
-          // Set first state as default if none selected
+          // Set first jurisdiction as default if none selected
           if (result.states.length > 0 && !selectedState) {
-            console.log('Setting default state:', result.states[0].slug) // Debug log
+            console.log('Setting default jurisdiction:', result.states[0].slug) // Debug log
             setSelectedState(result.states[0].slug)
           }
         } else {
-          console.error('Failed to load states:', result.message)
+          console.error('Failed to load jurisdictions:', result.message)
         }
       } catch (error) {
-        console.error('Error loading states:', error)
+        console.error('Error loading jurisdictions:', error)
       } finally {
         setLoading(false)
       }
@@ -53,7 +53,7 @@ export default function Home() {
       <div className="container mx-auto p-6">
         <div className="flex justify-center items-center h-64">
           <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-blue-500"></div>
-          <div className="ml-4 text-gray-600">Loading states from database...</div>
+          <div className="ml-4 text-gray-600">Loading jurisdictions from database...</div>
         </div>
       </div>
     )

@@ -231,7 +231,7 @@ export default function AnalyticsDashboard({ className }: AnalyticsDashboardProp
         </div>
       )}
 
-      {/* Swing States */}
+      {/* Swing Jurisdictions */}
       {swingStates.length > 0 && (
         <Card>
           <CardHeader>
