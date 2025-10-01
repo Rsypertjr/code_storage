@@ -10,12 +10,16 @@
     "generate-timeseries": "node scripts/generate-timeseries.js"
   },
   "dependencies": {
+    "@supabase/supabase-js": "^2.58.0",
     "chart.js": "^4.4.4",
     "chartjs-adapter-date-fns": "^3.0.0",
+    "clsx": "^2.1.1",
+    "dotenv": "^17.2.3",
     "next": "^14.2.15",
     "react": "^18.3.1",
     "react-chartjs-2": "^5.2.0",
-    "react-dom": "^18.3.1"
+    "react-dom": "^18.3.1",
+    "tailwind-merge": "^3.3.1"
   },
   "devDependencies": {
     "@types/node": "^20.16.11",

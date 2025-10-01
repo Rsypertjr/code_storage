@@ -2,16 +2,31 @@
 
 import { useState, useRef, useEffect } from 'react'
 
+interface StateInfo {
+  name: string
+  slug: string
+  abbreviation: string
+  electoral_votes: number
+}
+
 interface StateSelectorProps {
-  states: string[]
+  states: StateInfo[]
   selectedState: string
   onStateChange: (state: string) => void
   processedStates?: string[]
+  unavailableStates?: string[]
 }
 
-export default function StateSelector({ states, selectedState, onStateChange, processedStates = [] }: StateSelectorProps) {
+export default function StateSelector({ states, selectedState, onStateChange, processedStates = [], unavailableStates = [] }: StateSelectorProps) {
   const [isOpen, setIsOpen] = useState(false)
   const dropdownRef = useRef<HTMLDivElement>(null)
+
+  // Debug logging
+  console.log('StateSelector received:', { 
+    statesCount: states.length, 
+    selectedState, 
+    firstState: states[0]?.name 
+  })
 
   // Close dropdown when clicking outside
   useEffect(() => {
@@ -31,7 +46,8 @@ export default function StateSelector({ states, selectedState, onStateChange, pr
   }
 
   const selectedStateProcessed = processedStates.includes(selectedState)
-  const selectedDisplayName = selectedState.replace(/-/g, ' ')
+  const selectedStateInfo = states.find(state => state.slug === selectedState)
+  const selectedDisplayName = selectedStateInfo ? selectedStateInfo.name : (selectedState ? selectedState.replace(/-/g, ' ') : 'Select a state')
 
   return (
     <div className="flex flex-col space-y-2">
@@ -69,31 +85,43 @@ export default function StateSelector({ states, selectedState, onStateChange, pr
         {/* Dropdown Menu */}
         {isOpen && (
           <div className="absolute z-10 w-full mt-1 bg-white border border-gray-300 rounded-md shadow-lg max-h-60 overflow-auto">
-            {states.map((state) => {
-              const isProcessed = processedStates.includes(state)
-              const displayName = state.replace(/-/g, ' ')
-              const isSelected = state === selectedState
+            {states.map((stateInfo) => {
+              const isProcessed = processedStates.includes(stateInfo.slug)
+              const isUnavailable = unavailableStates.includes(stateInfo.slug)
+              const hasData = true // All states in database have data available
+              const displayName = stateInfo.name
+              const isSelected = stateInfo.slug === selectedState
               
               return (
                 <button
-                  key={state}
+                  key={stateInfo.slug}
                   type="button"
-                  onClick={() => handleStateSelect(state)}
+                  onClick={() => handleStateSelect(stateInfo.slug)}
                   className={`w-full px-4 py-2 text-left hover:bg-gray-100 focus:bg-gray-100 focus:outline-none flex items-center gap-2 ${
                     isSelected ? 'bg-blue-50 text-blue-700' : ''
-                  } ${isProcessed ? 'border-l-2 border-l-green-500' : ''}`}
+                  } ${hasData && !isUnavailable ? 'border-l-2 border-l-green-500' : ''}`}
                 >
-                  {isProcessed && (
+                  {/* Show unavailable icon for states with no data */}
+                  {isUnavailable && (
+                    <svg className="w-4 h-4 text-red-500" fill="currentColor" viewBox="0 0 20 20">
+                      <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clipRule="evenodd" />
+                    </svg>
+                  )}
+                  {/* Show database icon for states with data */}
+                  {hasData && !isUnavailable && (
                     <svg className="w-4 h-4 text-green-600" fill="currentColor" viewBox="0 0 20 20">
-                      <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+                      <path fillRule="evenodd" d="M4 3a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V5a2 2 0 00-2-2H4zm12 12H4l4-8 3 6 2-4 3 6z" clipRule="evenodd" />
                     </svg>
                   )}
                   <div className="flex-1">
-                    <span className={isProcessed ? 'text-green-700 font-medium' : ''}>
+                    <span className={`${isUnavailable ? 'text-red-600 font-medium' : hasData ? 'text-green-700 font-medium' : ''}`}>
                       {displayName}
                     </span>
-                    {isProcessed && (
-                      <span className="text-xs text-green-600 block">Timeseries Available</span>
+                    {isUnavailable && (
+                      <span className="text-xs text-red-500 block">No Data Available</span>
+                    )}
+                    {hasData && !isUnavailable && (
+                      <span className="text-xs text-green-600 block">Database + Charts Available</span>
                     )}
                   </div>
                   {isSelected && (
@@ -110,17 +138,41 @@ export default function StateSelector({ states, selectedState, onStateChange, pr
       
       {/* Stats and Legend */}
       <div className="text-sm text-gray-600 space-y-1">
-        <div className="flex items-center gap-4">
+        <div className="flex items-center gap-4 flex-wrap">
           <span className="flex items-center gap-1">
             <svg className="w-3 h-3 text-green-600" fill="currentColor" viewBox="0 0 20 20">
-              <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+              <path fillRule="evenodd" d="M4 3a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V5a2 2 0 00-2-2H4zm12 12H4l4-8 3 6 2-4 3 6z" clipRule="evenodd" />
             </svg>
-            Enhanced charts available
+            Database records available
           </span>
           <span className="text-green-600">
-            {processedStates.length} of {states.length} states
+            {states.length} states
           </span>
         </div>
+        <div className="flex items-center gap-4 flex-wrap">
+          <span className="flex items-center gap-1">
+            <svg className="w-3 h-3 text-blue-600" fill="currentColor" viewBox="0 0 20 20">
+              <path fillRule="evenodd" d="M3 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm0 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm0 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm0 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z" clipRule="evenodd" />
+            </svg>
+            Charts & analytics ready
+          </span>
+          <span className="text-blue-600">
+            {states.filter(state => !unavailableStates.includes(state.slug)).length} states
+          </span>
+        </div>
+        {unavailableStates.length > 0 && (
+          <div className="flex items-center gap-4 flex-wrap">
+            <span className="flex items-center gap-1">
+              <svg className="w-3 h-3 text-red-500" fill="currentColor" viewBox="0 0 20 20">
+                <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clipRule="evenodd" />
+              </svg>
+              No data available
+            </span>
+            <span className="text-red-500">
+              {unavailableStates.length} states
+            </span>
+          </div>
+        )}
       </div>
     </div>
   )

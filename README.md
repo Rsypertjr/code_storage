@@ -10,18 +10,17 @@ A Next.js application that displays interactive charts showing 2020 presidential
   - Pie Chart: Vote share distribution
   - Donut Chart: Vote percentages with total vote count
   - Line Chart: Vote trends over time
-- **Timeseries Data Generator**: Extract and process timeseries voting data into JSON format
-- **Data Processing**: Automatically groups candidates into top 2 and "Other" category
+- **Analytics Dashboard**: Comprehensive election analytics including swing states, national summaries, and state performance metrics
+- **Data Processing**: All data is stored and served from Supabase PostgreSQL database
 - **Responsive Design**: Built with Tailwind CSS for mobile-friendly interface
-- **Real-time Data**: Fetches data from New York Times election API
-- **Batch Processing**: Generate JSON files for multiple states at once
+- **Real-time Data**: All election data served from Supabase database with fast queries
 
 ## Data Source
 
-Election data is sourced from:
-```
-https://static01.nyt.com/elections-assets/2020/data/api/2020-11-03/race-page/{state}/president.json
-```
+Election data is stored in Supabase PostgreSQL database with the following structure:
+- **states**: Basic state information (name, slug, abbreviation, electoral votes)
+- **state_metadata**: Election results and metadata (winner, margin, swing state status)
+- **timeseries_data**: Historical vote count data over time
 
 ## Tech Stack
 
@@ -97,54 +96,55 @@ The application automatically:
 
 ## Usage
 
-1. Select a state from the dropdown menu
-2. View the election data across four different chart visualizations
-3. Hover over chart elements for detailed information
-4. Charts automatically update when changing states
+### Using the Application
 
-## Timeseries Data Generation
+1. Open the application in your browser at http://localhost:3001
+2. Select a state from the dropdown menu (states are loaded from Supabase database)
+3. View the timeseries chart showing vote progression over time
+4. Explore the analytics dashboard with various metrics and insights
 
-### Using the Web Interface
-1. Click "Show Timeseries Generator" button on the main page
-2. View the progress summary showing processed vs remaining states
-3. Select the states you want to process (or use "Select All States")
-4. States with green checkmarks have already been processed
-5. Click "Generate Selected States" to download and save JSON files
-6. Files are automatically saved to the `db` folder on the server
-7. Processed states are automatically tracked and persist between sessions
+### Analytics Features
 
-### Using the Command Line
-Generate timeseries data for all states:
-```bash
-npm run generate-timeseries
-```
+The application provides comprehensive analytics including:
+- **National Summary**: Overall election statistics
+- **Swing States**: States with close margins and their electoral impact
+- **State Performance**: Voting patterns and turnout metrics
+- **Electoral Timeline**: Timeline of key electoral events
+- **Vote Momentum**: Analysis of vote changes over time
 
-This will create files in the `db` directory with:
-- Individual JSON files for each state
-- A combined file with all states' data
-- A `processed-states.json` file tracking which states have been completed
+### Data Structure
 
-### JSON Structure
-Each timeseries entry contains:
-```json
-{
-  "index": 0,
-  "votes": 100000,
-  "timestamp": "2020-11-03T23:00:00Z",
-  "bidenj": 0.61,
-  "biden_votes": 61000,
-  "trumpd": 0.34,
-  "trump_votes": 34000,
-  "other_votes": 5000,
-  "total_vote_add": 0,
-  "total_vote_add_trump": 0,
-  "total_vote_add_biden": 0,
-  "total_vote_add_other": 0,
-  "total_vote_add_total": 0,
-  "percent_of_remaining_trump": 72.5,
-  "percent_of_remaining_biden": 26.8,
-  "time": "2020-11-03T23:00:00Z"
-}
+The application uses Supabase PostgreSQL with the following schema:
+
+```sql
+-- States table
+CREATE TABLE states (
+  id SERIAL PRIMARY KEY,
+  name VARCHAR NOT NULL,
+  slug VARCHAR UNIQUE NOT NULL,
+  abbreviation VARCHAR(2) NOT NULL,
+  electoral_votes INTEGER NOT NULL
+);
+
+-- State metadata for election results
+CREATE TABLE state_metadata (
+  id SERIAL PRIMARY KEY,
+  state_id INTEGER REFERENCES states(id),
+  winner_2020 VARCHAR,
+  margin_2020 DECIMAL,
+  swing_state BOOLEAN DEFAULT false
+);
+
+-- Timeseries voting data
+CREATE TABLE timeseries_data (
+  id SERIAL PRIMARY KEY,
+  state_id INTEGER REFERENCES states(id),
+  timestamp TIMESTAMP NOT NULL,
+  biden_votes INTEGER DEFAULT 0,
+  trump_votes INTEGER DEFAULT 0,
+  total_votes INTEGER DEFAULT 0,
+  reporting_percent DECIMAL DEFAULT 0
+);
 ```
 
 ## Build Commands

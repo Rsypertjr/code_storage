@@ -14,7 +14,9 @@ const US_STATES = [
 
 async function fetchElectionData(state) {
   try {
-    const url = `https://static01.nyt.com/elections-assets/2020/data/api/2020-11-03/race-page/${state.toLowerCase().replace(/\-/g, '')}/president.json`;
+    // Convert state name for NYT API: replace spaces with hyphens and convert to lowercase
+    const apiStateName = state.toLowerCase().replace(/\s+/g, '-');
+    const url = `https://static01.nyt.com/elections-assets/2020/data/api/2020-11-03/race-page/${apiStateName}/president.json`;
     
     const fetch = (await import('node-fetch')).default;
     const response = await fetch(url);
