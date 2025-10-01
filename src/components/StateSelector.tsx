@@ -47,12 +47,12 @@ export default function StateSelector({ states, selectedState, onStateChange, pr
 
   const selectedStateProcessed = processedStates.includes(selectedState)
   const selectedStateInfo = states.find(state => state.slug === selectedState)
-  const selectedDisplayName = selectedStateInfo ? selectedStateInfo.name : (selectedState ? selectedState.replace(/-/g, ' ') : 'Select a state')
+  const selectedDisplayName = selectedStateInfo ? selectedStateInfo.name : (selectedState ? selectedState.replace(/-/g, ' ') : 'Select a jurisdiction')
 
   return (
     <div className="flex flex-col space-y-2">
       <label className="text-lg font-medium text-gray-700">
-        Select a State:
+        Select a Jurisdiction:
       </label>
       
       <div className="relative" ref={dropdownRef}>
@@ -146,7 +146,7 @@ export default function StateSelector({ states, selectedState, onStateChange, pr
             Database records available
           </span>
           <span className="text-green-600">
-            {states.length} states
+            {states.length} jurisdictions
           </span>
         </div>
         <div className="flex items-center gap-4 flex-wrap">
@@ -157,7 +157,7 @@ export default function StateSelector({ states, selectedState, onStateChange, pr
             Charts & analytics ready
           </span>
           <span className="text-blue-600">
-            {states.filter(state => !unavailableStates.includes(state.slug)).length} states
+            {states.filter(state => !unavailableStates.includes(state.slug)).length} jurisdictions
           </span>
         </div>
         {unavailableStates.length > 0 && (
@@ -169,7 +169,7 @@ export default function StateSelector({ states, selectedState, onStateChange, pr
               No data available
             </span>
             <span className="text-red-500">
-              {unavailableStates.length} states
+              {unavailableStates.length} jurisdictions
             </span>
           </div>
         )}

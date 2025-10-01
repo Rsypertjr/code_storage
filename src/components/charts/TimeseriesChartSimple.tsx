@@ -621,32 +621,32 @@ export default function TimeseriesChartSimple({ state }: { state: string }) {
       title: {
         display: true,
         text: (() => {
-          const stateName = timeseriesData?.state || state
+          const locationName = timeseriesData?.state || state
           switch (activeChart) {
             case 'basic':
-              return [`📊 Basic Vote Count - ${stateName}`, '📈 Shows absolute vote counts for Biden and Trump over time. Track cumulative vote reporting as results come in.']
+              return [`📊 Basic Vote Count - ${locationName}`, '📈 Shows absolute vote counts for Biden and Trump over time. Track cumulative vote reporting as results come in.']
             case 'diff-prev':
-              return [`📈 Vote Changes Analysis - ${stateName}`, '🔄 Shows vote increases/decreases from previous entry. Identifies reporting surges and patterns.']
+              return [`📈 Vote Changes Analysis - ${locationName}`, '🔄 Shows vote increases/decreases from previous entry. Identifies reporting surges and patterns.']
             case 'diff-avg':
-              return [`📊 Deviation from Average - ${stateName}`, '📐 Shows how each entry compares to the overall average. Highlights above/below average periods.']
+              return [`📊 Deviation from Average - ${locationName}`, '📐 Shows how each entry compares to the overall average. Highlights above/below average periods.']
             case 'diff-prev-sorted':
-              return [`📈 Vote Changes (Sorted) - ${stateName}`, '🔄 Same as Vote Changes but sorted by magnitude. Shows largest reporting jumps first.']
+              return [`📈 Vote Changes (Sorted) - ${locationName}`, '🔄 Same as Vote Changes but sorted by magnitude. Shows largest reporting jumps first.']
             case 'diff-avg-sorted':
-              return [`📊 Deviation from Average (Sorted) - ${stateName}`, '📐 Same as deviation analysis but sorted by magnitude. Identifies biggest outliers first.']
+              return [`📊 Deviation from Average (Sorted) - ${locationName}`, '📐 Same as deviation analysis but sorted by magnitude. Identifies biggest outliers first.']
             case 'running-avg':
-              return [`📈 5-Period Running Averages - ${stateName}`, '📊 Smoothed trends with 5-entry moving averages. Dotted lines show actual data, solid lines show trends.']
+              return [`📈 5-Period Running Averages - ${locationName}`, '📊 Smoothed trends with 5-entry moving averages. Dotted lines show actual data, solid lines show trends.']
             case 'vote-shares':
-              return [`📊 Vote Share Percentages - ${stateName}`, '📈 Shows Biden/Trump percentages and margin over time. Green line shows lead margin (Biden% - Trump%).']
+              return [`📊 Vote Share Percentages - ${locationName}`, '📈 Shows Biden/Trump percentages and margin over time. Green line shows lead margin (Biden% - Trump%).']
             case 'momentum':
-              return [`⚡ Momentum Analysis - ${stateName}`, '🚀 Shows vote acceleration patterns. Positive = gaining speed, negative = slowing down in vote reporting.']
+              return [`⚡ Momentum Analysis - ${locationName}`, '🚀 Shows vote acceleration patterns. Positive = gaining speed, negative = slowing down in vote reporting.']
             case 'volatility':
-              return [`📈 Volatility & Velocity Analysis - ${stateName}`, '📊 Purple = reporting volatility (consistency), Green = reporting velocity (speed). Dual y-axis chart.']
+              return [`📈 Volatility & Velocity Analysis - ${locationName}`, '📊 Purple = reporting volatility (consistency), Green = reporting velocity (speed). Dual y-axis chart.']
             case 'margin-analysis':
-              return [`📊 Candidate Margin Analysis - ${stateName}`, '🎯 Shows +/- margins for each candidate. Positive = leading, negative = behind. Zero line = tie.']
+              return [`📊 Candidate Margin Analysis - ${locationName}`, '🎯 Shows +/- margins for each candidate. Positive = leading, negative = behind. Zero line = tie.']
             case 'margin-analysis-sorted':
-              return [`📊 Margin Analysis (Sorted) - ${stateName}`, '🎯 Same margin data sorted by magnitude. Shows largest leads first, helps identify most competitive periods.']
+              return [`📊 Margin Analysis (Sorted) - ${locationName}`, '🎯 Same margin data sorted by magnitude. Shows largest leads first, helps identify most competitive periods.']
             default:
-              return [`📊 Election Data - ${stateName}`, 'Comprehensive election data visualization']
+              return [`📊 Election Data - ${locationName}`, 'Comprehensive election data visualization']
           }
         })(),
       },
@@ -1404,7 +1404,7 @@ export default function TimeseriesChartSimple({ state }: { state: string }) {
       {/* Metadata */}
       {timeseriesData.metadata && displayData.length > 0 && (
         <div className="mt-6 p-4 bg-gray-50 rounded-lg">
-          <h3 className="text-lg font-semibold text-gray-900 mb-3">State Election Information</h3>
+          <h3 className="text-lg font-semibold text-gray-900 mb-3">Election Information</h3>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm">
             <div>
               <span className="font-medium text-gray-700">Current Leader:</span>
@@ -1420,7 +1420,7 @@ export default function TimeseriesChartSimple({ state }: { state: string }) {
               </span>
             </div>
             <div>
-              <span className="font-medium text-gray-700">Swing State:</span>
+              <span className="font-medium text-gray-700">Swing Jurisdiction:</span>
               <span className="ml-2 text-gray-900">{timeseriesData.metadata?.swing_state ? 'Yes' : 'No'}</span>
             </div>
           </div>

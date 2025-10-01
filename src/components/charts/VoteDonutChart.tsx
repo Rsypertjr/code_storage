@@ -32,7 +32,7 @@ export default function VoteDonutChart({ data, viewType = 'state', showAllStates
   }
 
   const getStateColor = (index: number) => {
-    // Expanded color palette for all 50 states with distinct, vibrant colors
+    // Expanded color palette for all jurisdictions with distinct, vibrant colors
     const colors = [
       '#3b82f6', '#ef4444', '#10b981', '#f59e0b', '#8b5cf6', '#06b6d4', '#f97316', '#84cc16', 
       '#6366f1', '#ec4899', '#14b8a6', '#f43f5e', '#a855f7', '#22c55e', '#eab308', '#0ea5e9',
@@ -214,7 +214,7 @@ export default function VoteDonutChart({ data, viewType = 'state', showAllStates
                 {data.states.length} Available
               </div>
               <div className="text-xs text-gray-400">
-                (of 51 total)
+                (of {Object.keys(chartData.datasets[0].data).length} total)
               </div>
               {data.states.length > 0 && (
                 <div className="text-xs text-gray-400 mt-1">

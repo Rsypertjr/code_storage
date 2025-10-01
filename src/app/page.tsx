@@ -67,7 +67,7 @@ export default function Home() {
         </div>
         
         <p className="text-gray-600">
-          Data is loaded from Supabase database with {availableStates.length} states available.
+          Data is loaded from Supabase database with {availableStates.length} jurisdictions available.
         </p>
       </div>
 
@@ -82,7 +82,7 @@ export default function Home() {
         ) : (
           <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
             <p className="text-blue-700">
-              Loading states... ({availableStates.length} states loaded)
+              Loading jurisdictions... ({availableStates.length} jurisdictions loaded)
             </p>
           </div>
         )}
@@ -106,9 +106,9 @@ export default function Home() {
                 </svg>
               </div>
               <div className="flex-1">
-                <h3 className="text-lg font-medium text-yellow-800 mb-2">No States Found</h3>
+                <h3 className="text-lg font-medium text-yellow-800 mb-2">No Jurisdictions Found</h3>
                 <p className="text-yellow-700">
-                  No states were found in the Supabase database. Please check your database connection and ensure the migration has been completed.
+                  No jurisdictions were found in the Supabase database. Please check your database connection and ensure the migration has been completed.
                 </p>
               </div>
             </div>
