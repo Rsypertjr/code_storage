@@ -45,7 +45,7 @@ export default function TopCarousel(props){
                     <Carousel.Caption>
                         <h4>Docker Laravel-9 Vite,React 17/Bootstrap/Chartjs Vote Parser Implementation</h4>
                         <p className="top-desc rounded">Also included is the code for another Vote Parer implementation using Docker/Docker-compose of Laravel 9 with Vite for React 17 javascript compilation. React Bootstrap and Chartjs is also utilized as before.
-                        Link to this code is <a href="https://github.com/Rsypertjr/Docker-Laravel-Vite-React-Bootstrap-Chartjs/tree/docker-laravel-vite" target="_blank">Docker Laravel-Vite/React Code</a>&nbsp;&nbsp;<a href="https://preselections.rsypertjr.net/">See App</a>
+                        Link to this code is <a href="https://github.com/Rsypertjr/Docker-Laravel-Vite-React-Bootstrap-Chartjs/tree/docker-laravel-vite" target="_blank">Docker Laravel-Vite/React Code</a><br/><a href="https://preselections.rsypertjr.net/">See App</a>
                         </p>
                     </Carousel.Caption>								
                 </Carousel.Item>
