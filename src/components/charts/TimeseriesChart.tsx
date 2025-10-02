@@ -844,7 +844,7 @@ export default function TimeseriesChart({ state }: TimeseriesChartProps) {
         <div className="mb-4 p-4 bg-green-50 border-l-4 border-green-400 rounded-r-lg">
           <h3 className="text-lg font-semibold text-green-800 mb-2">📊 Deviation from Average Analysis</h3>
           <p className="text-sm text-green-700 mb-2">
-            This view shows how each candidate's vote increases differ from the average, helping identify performance patterns:
+            This view shows how each candidate&apos;s vote increases differ from the average, helping identify performance patterns:
           </p>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-3 text-xs text-green-600">
             <div className="flex items-start gap-2">

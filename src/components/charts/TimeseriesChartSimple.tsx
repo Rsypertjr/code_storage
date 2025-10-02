@@ -1359,7 +1359,7 @@ export default function TimeseriesChartSimple({ state }: { state: string }) {
             </div>
           </div>
           <div className="mt-3 text-green-800">
-            <strong>Chart Interpretation:</strong> Positive values show when that candidate is leading, negative values show when they're behind. The zero line represents a tie.
+            <strong>Chart Interpretation:</strong> Positive values show when that candidate is leading, negative values show when they&apos;re behind. The zero line represents a tie.
           </div>
         </div>
       )}
