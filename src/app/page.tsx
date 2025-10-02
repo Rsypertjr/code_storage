@@ -31,7 +31,7 @@ export default function Home() {
           console.log('Jurisdictions loaded:', result.states.length, 'jurisdictions') // Debug log
           setAvailableStates(result.states)
           // Set first jurisdiction as default if none selected
-          if (result.states.length > 0 && !selectedState) {
+          if (result.states.length > 0) {
             console.log('Setting default jurisdiction:', result.states[0].slug) // Debug log
             setSelectedState(result.states[0].slug)
           }

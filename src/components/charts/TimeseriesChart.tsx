@@ -67,10 +67,6 @@ export default function TimeseriesChart({ state }: TimeseriesChartProps) {
   const [chartView, setChartView] = useState<'cumulative' | 'spikes' | 'deviation' | 'spikes-sorted' | 'deviation-sorted'>('cumulative')
 
   useEffect(() => {
-    loadTimeseriesData()
-  }, [state])
-
-  useEffect(() => {
     // Reset to first page when changing items per page
     setCurrentPage(0)
   }, [itemsPerPage])
@@ -126,6 +122,11 @@ export default function TimeseriesChart({ state }: TimeseriesChartProps) {
       </div>
     )
   }
+
+  
+  useEffect(() => {
+    loadTimeseriesData()
+  }, [state, loadTimeseriesData])
 
   const totalEntries = timeseriesData.data.length
   const totalPages = Math.ceil(totalEntries / itemsPerPage)

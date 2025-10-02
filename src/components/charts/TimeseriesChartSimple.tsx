@@ -89,10 +89,6 @@ export default function TimeseriesChartSimple({ state }: { state: string }) {
   const [activeChart, setActiveChart] = useState<'basic' | 'diff-prev' | 'diff-avg' | 'diff-prev-sorted' | 'diff-avg-sorted' | 'running-avg' | 'vote-shares' | 'momentum' | 'volatility' | 'margin-analysis' | 'margin-analysis-sorted' | 'raw-table'>('basic')
   const [analyticalData, setAnalyticalData] = useState<AnalyticalData[]>([])
 
-  useEffect(() => {
-    if (!state) return
-    loadTimeseriesData()
-  }, [state])
 
   useEffect(() => {
     // Recalculate display data when dataPoints or activeChart changes
@@ -124,6 +120,14 @@ export default function TimeseriesChartSimple({ state }: { state: string }) {
     } finally {
       setLoading(false)
     }
+
+
+    useEffect(() => {
+      if (!state) return
+      loadTimeseriesData()
+    }, [state, loadTimeseriesData])
+
+
   }
 
   const calculateAnalyticalData = (data: TimeseriesEntry[]) => {
