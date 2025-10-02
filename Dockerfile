@@ -2,8 +2,6 @@ FROM node:18-alpine AS base
 
 # Install dependencies only when needed
 FROM base AS deps
-WORKDIR /var/www/presidential-elections/
-
 
 # Install dependencies based on the preferred package manager
 COPY package.json package-lock.json* ./
@@ -11,7 +9,6 @@ RUN npm ci --only=production
 
 # Rebuild the source code only when needed
 FROM base AS builder
-WORKDIR /var/www/presidential-elections/
 COPY --from=deps /node_modules ./node_modules
 COPY . .
 
@@ -20,7 +17,6 @@ RUN npm run build
 
 # Production image, copy all the files and run next
 FROM base AS runner
-WORKDIR /var/www/presidential-elections/
 
 ENV NODE_ENV production
 
@@ -28,8 +24,8 @@ RUN addgroup --system --gid 1001 nodejs
 RUN adduser --system --uid 1001 nextjs
 
 # Copy public directory if it exists (create empty one if not)
-RUN mkdir -p public
-COPY ./public ./public
+# RUN mkdir -p public
+# COPY ./public ./public
 
 # Set the correct permission for prerender cache
 RUN mkdir .next
