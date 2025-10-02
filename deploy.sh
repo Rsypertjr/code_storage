@@ -34,5 +34,6 @@ echo "🔄 Reloading Apache..."
 sudo apache2ctl configtest && sudo systemctl reload apache2
 
 echo "✅ Deployment completed successfully!"
-echo "🌐 App should be available at: http://137.184.92.95"
+echo "🌐 App should be available at: http://aipreselect.rsypertjr.net"
+echo "🌐 Direct IP access: http://137.184.92.95"
 echo "🔧 SSH into server: ssh root@137.184.92.95"
