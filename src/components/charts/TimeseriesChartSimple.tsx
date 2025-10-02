@@ -90,10 +90,6 @@ export default function TimeseriesChartSimple({ state }: { state: string }) {
   const [analyticalData, setAnalyticalData] = useState<AnalyticalData[]>([])
 
 
-  useEffect(() => {
-    // Recalculate display data when dataPoints or activeChart changes
-    // This ensures the chart updates properly when controls change
-  }, [dataPoints, activeChart])
 
   const loadTimeseriesData = async () => {
     if (!state) return
@@ -118,17 +114,25 @@ export default function TimeseriesChartSimple({ state }: { state: string }) {
       console.error('Error loading timeseries data:', error)
       setError(error instanceof Error ? error.message : 'Failed to load timeseries data')
     } finally {
-      setLoading(false)
-    }
+      setLoading(false)   }
+  }
 
 
-    useEffect(() => {
+
+  useEffect(() => {
+    // Recalculate display data when dataPoints or activeChart changes
+    // This ensures the chart updates properly when controls change
+  }, [dataPoints, activeChart])
+
+
+  
+
+  useEffect(() => {
       if (!state) return
       loadTimeseriesData()
     }, [state, loadTimeseriesData])
 
 
-  }
 
   const calculateAnalyticalData = (data: TimeseriesEntry[]) => {
     if (!data || data.length === 0) return
