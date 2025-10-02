@@ -115,7 +115,7 @@ export default function TimeseriesChartSimple({ state }: { state: string }) {
       setError(error instanceof Error ? error.message : 'Failed to load timeseries data')
     } finally {
       setLoading(false)   }
-  },[])
+  },[state])
 
 
 

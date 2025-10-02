@@ -98,7 +98,7 @@ export default function TimeseriesChart({ state }: TimeseriesChartProps) {
     } finally {
       setLoading(false)
     }
-  },[])
+  },[state])
 
   if (loading) {
     return (
