@@ -1,8 +1,9 @@
 FROM node:18-alpine AS base
 
 # Install dependencies only when needed
-WORKDIR /
 FROM base AS deps
+WORKDIR /var/www/presidential-elections/
+
 
 # Install dependencies based on the preferred package manager
 COPY package.json package-lock.json* ./
@@ -10,7 +11,7 @@ RUN npm ci --only=production
 
 # Rebuild the source code only when needed
 FROM base AS builder
-WORKDIR /
+WORKDIR /var/www/presidential-elections/
 COPY --from=deps /node_modules ./node_modules
 COPY . .
 
@@ -19,7 +20,7 @@ RUN npm run build
 
 # Production image, copy all the files and run next
 FROM base AS runner
-WORKDIR /
+WORKDIR /var/www/presidential-elections/
 
 ENV NODE_ENV production
 
