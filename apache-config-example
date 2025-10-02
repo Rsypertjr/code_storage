@@ -1,0 +1,46 @@
+# Apache Virtual Host Configuration for Presidential Elections App
+# Save this as: /etc/apache2/sites-available/presidential-elections.conf
+
+<VirtualHost *:80>
+    ServerName 137.184.92.95
+    DocumentRoot /var/www/presidential-elections
+
+    # Proxy all requests to Next.js app
+    ProxyPreserveHost On
+    ProxyRequests Off
+    ProxyPass / http://localhost:3000/
+    ProxyPassReverse / http://localhost:3000/
+
+    # Handle WebSocket connections for Next.js dev features
+    ProxyPass /api/ws/ ws://localhost:3000/api/ws/
+    ProxyPassReverse /api/ws/ ws://localhost:3000/api/ws/
+
+    # Logging
+    ErrorLog ${APACHE_LOG_DIR}/presidential-elections-error.log
+    CustomLog ${APACHE_LOG_DIR}/presidential-elections-access.log combined
+
+    # Security headers
+    Header always set X-Content-Type-Options nosniff
+    Header always set X-Frame-Options DENY
+    Header always set X-XSS-Protection "1; mode=block"
+    Header always set Referrer-Policy "strict-origin-when-cross-origin"
+</VirtualHost>
+
+# Optional: SSL Virtual Host (uncomment and configure if you have SSL)
+# <VirtualHost *:443>
+#     ServerName 137.184.92.95
+#     DocumentRoot /var/www/presidential-elections
+#
+#     SSLEngine on
+#     SSLCertificateFile /etc/ssl/certs/your-cert.crt
+#     SSLCertificateKeyFile /etc/ssl/private/your-key.key
+#
+#     # Same proxy configuration as above
+#     ProxyPreserveHost On
+#     ProxyRequests Off
+#     ProxyPass / http://localhost:3000/
+#     ProxyPassReverse / http://localhost:3000/
+#
+#     ErrorLog ${APACHE_LOG_DIR}/presidential-elections-ssl-error.log
+#     CustomLog ${APACHE_LOG_DIR}/presidential-elections-ssl-access.log combined
+# </VirtualHost>
