@@ -201,8 +201,8 @@ htop
 
 # Network information  
 netstat -tulpn | grep :80
-netstat -tulpn | grep :3000
-curl -I http://localhost:3000
+netstat -tulpn | grep :3001
+curl -I http://localhost:3001
 curl -I https://aipreselect.rsypertjr.net
 ```
 

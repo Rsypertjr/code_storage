@@ -68,11 +68,8 @@ ssh root@137.184.92.95 << 'EOF'
     # Build the application
     sudo -u appuser npm run build
     
-    # Restart the application
-    sudo -u appuser pm2 restart presidential-elections
-    
-    # Reload Apache
-    apache2ctl configtest && systemctl reload apache2
+    # Update port configuration and restart application
+    ./update-port.sh
     
     echo "✅ Deployment completed!"
     echo "🌐 App available at: https://aipreselect.rsypertjr.net"

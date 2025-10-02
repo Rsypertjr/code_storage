@@ -93,19 +93,19 @@ else
     print_warning "Port 80 is not in use"
 fi
 
-print_info "Checking port 3000 (Next.js):"
-if netstat -tulpn 2>/dev/null | grep -q ":3000 "; then
-    netstat -tulpn | grep ":3000 "
-    print_success "Port 3000 is in use"
+print_info "Checking port 3001 (Next.js):"
+if netstat -tulpn 2>/dev/null | grep -q ":3001 "; then
+    netstat -tulpn | grep ":3001 "
+    print_success "Port 3001 is in use"
 else
-    print_warning "Port 3000 is not in use (Next.js app may not be running)"
+    print_warning "Port 3001 is not in use (Next.js app may not be running)"
 fi
 
 echo ""
 echo "6. Testing Connectivity..."
 echo "========================="
-print_info "Testing localhost:3000 (Next.js direct):"
-if curl -s --connect-timeout 5 http://localhost:3000 > /dev/null; then
+print_info "Testing localhost:3001 (Next.js direct):"
+if curl -s --connect-timeout 5 http://localhost:3001 > /dev/null; then
     print_success "Next.js app is responding"
 else
     print_error "Next.js app is not responding"

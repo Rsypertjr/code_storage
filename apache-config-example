@@ -9,12 +9,11 @@
     # Proxy all requests to Next.js app
     ProxyPreserveHost On
     ProxyRequests Off
-    ProxyPass / http://localhost:3000/
-    ProxyPassReverse / http://localhost:3000/
-
+    ProxyPass / http://localhost:3001/
+    ProxyPassReverse / http://localhost:3001/
     # Handle WebSocket connections for Next.js dev features
-    ProxyPass /api/ws/ ws://localhost:3000/api/ws/
-    ProxyPassReverse /api/ws/ ws://localhost:3000/api/ws/
+    ProxyPass /api/ws/ ws://localhost:3001/api/ws/
+    ProxyPassReverse /api/ws/ ws://localhost:3001/api/ws/
 
     # Logging
     ErrorLog ${APACHE_LOG_DIR}/presidential-elections-error.log
@@ -40,8 +39,8 @@
 #     # Same proxy configuration as above
 #     ProxyPreserveHost On
 #     ProxyRequests Off
-#     ProxyPass / http://localhost:3000/
-#     ProxyPassReverse / http://localhost:3000/
+#     ProxyPass / http://localhost:3001/
+#     ProxyPassReverse / http://localhost:3001/
 #
 #     ErrorLog ${APACHE_LOG_DIR}/presidential-elections-ssl-error.log
 #     CustomLog ${APACHE_LOG_DIR}/presidential-elections-ssl-access.log combined

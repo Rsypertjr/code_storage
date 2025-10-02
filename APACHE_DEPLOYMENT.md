@@ -124,13 +124,13 @@ ls -la /etc/apache2/sites-enabled/
 
 ### Default Setup:
 - **Apache**: Listens on port 80 (HTTP)
-- **Next.js App**: Runs on port 3000 (internal)
-- **Apache Proxy**: Routes port 80 → port 3000
+- **Next.js App**: Runs on port 3001 (internal)
+- **Apache Proxy**: Routes port 80 → port 3001
 
 ### Check Port Usage:
 ```bash
 sudo netstat -tulpn | grep :80
-sudo netstat -tulpn | grep :3000
+sudo netstat -tulpn | grep :3001
 ```
 
 ## SSL Setup with Apache (Optional)
@@ -150,7 +150,7 @@ sudo certbot --apache -d your-domain.com
 
 ### 1. Test Next.js App Directly
 ```bash
-curl http://localhost:3000
+curl http://localhost:3001
 ```
 
 ### 2. Test Through Apache
