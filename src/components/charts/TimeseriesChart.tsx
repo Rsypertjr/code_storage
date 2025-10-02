@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import { Line, Bar } from 'react-chartjs-2'
 import {
   Chart as ChartJS,
@@ -66,8 +66,16 @@ export default function TimeseriesChart({ state }: TimeseriesChartProps) {
   const [chartType, setChartType] = useState<'line' | 'bar'>('line')
   const [chartView, setChartView] = useState<'cumulative' | 'spikes' | 'deviation' | 'spikes-sorted' | 'deviation-sorted'>('cumulative')
 
+  useEffect(() => {
+    loadTimeseriesData()
+  }, [state])
 
-  const loadTimeseriesData = async () => {
+  useEffect(() => {
+    // Reset to first page when changing items per page
+    setCurrentPage(0)
+  }, [itemsPerPage])
+
+  const loadTimeseriesData = useCallback(async () => {
     setLoading(true)
     setError(null)
     setCurrentPage(0)
@@ -90,7 +98,7 @@ export default function TimeseriesChart({ state }: TimeseriesChartProps) {
     } finally {
       setLoading(false)
     }
-  }
+  },[])
 
   if (loading) {
     return (
@@ -118,19 +126,6 @@ export default function TimeseriesChart({ state }: TimeseriesChartProps) {
       </div>
     )
   }
-
-
-
-
-  useEffect(() => {
-    // Reset to first page when changing items per page
-    setCurrentPage(0)
-  }, [itemsPerPage])  
-  
-  useEffect(() => {
-    loadTimeseriesData()
-  }, [state, loadTimeseriesData])
-  
 
   const totalEntries = timeseriesData.data.length
   const totalPages = Math.ceil(totalEntries / itemsPerPage)

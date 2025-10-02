@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect, useMemo } from 'react'
+import { useState, useEffect, useMemo, useCallback } from 'react'
 import { Line } from 'react-chartjs-2'
 import {
   Chart as ChartJS,
@@ -91,7 +91,7 @@ export default function TimeseriesChartSimple({ state }: { state: string }) {
 
 
 
-  const loadTimeseriesData = async () => {
+  const loadTimeseriesData = useCallback(async () => {
     if (!state) return
     
     setLoading(true)
@@ -115,7 +115,7 @@ export default function TimeseriesChartSimple({ state }: { state: string }) {
       setError(error instanceof Error ? error.message : 'Failed to load timeseries data')
     } finally {
       setLoading(false)   }
-  }
+  },[])
 
 
 
