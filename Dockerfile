@@ -2,7 +2,7 @@ FROM node:18-alpine AS base
 
 # Install dependencies only when needed
 FROM base AS deps
-WORKDIR /app
+WORKDIR /
 
 # Install dependencies based on the preferred package manager
 COPY package.json package-lock.json* ./
@@ -10,7 +10,7 @@ RUN npm ci --only=production
 
 # Rebuild the source code only when needed
 FROM base AS builder
-WORKDIR /app
+WORKDIR /
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
 
@@ -19,7 +19,7 @@ RUN npm run build
 
 # Production image, copy all the files and run next
 FROM base AS runner
-WORKDIR /app
+WORKDIR /
 
 ENV NODE_ENV production
 
