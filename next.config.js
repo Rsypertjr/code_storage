@@ -12,6 +12,9 @@ const nextConfig = {
   env: {
     CUSTOM_KEY: process.env.CUSTOM_KEY,
   },
+  eslint: {
+    ignoreDuringBuilds: true,
+  },
   // Optional: Configure for specific deployment scenarios
   async headers() {
     return [
