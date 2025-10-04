@@ -420,7 +420,16 @@ export default function Portfolio(props){
             <section id="frameworks">
             <OverlayTrigger placement="top" overlay={(tooltip("Click to Toggle Cover Layer"))}>
                 <Container  style={{backgroundColor:'#6A5ACD'}} className="panel-container" onClick={hideFrameworksCover} fluid>
-                    
+                    <Card style={{backgroundColor:'#b3f5daff'}}>
+                        <img src={tictactoe} className="rounded mb-2" height="15%" width="15%" style={{margin:'1em 0 0 42.5%'}} alt="Tic Tac Toe Image"/> 
+                        <Card.Body>             
+                            <Card.Link href="https://codestorage.vercel.app/" target="_blank">AI-CoPilot-Next.js-Suprabase-Voting Analyzer</Card.Link>
+                            <Card.Text><object data="https://codestorage.vercel.app/" height="200" width="300"></object></Card.Text>
+                            <Card.Text className="text-center app-description">New Next.js-AI-CoPilot Developed Presidential Voting Analyzer.&nbsp;&nbsp;Supabase SQL Integration for Front-End Dynamic Interaction, with Server-Side Rendering for SEO.&nbsp;&nbsp;
+										GitHub Copilot AI is used for Code Management and Intelligent Code Generation.<a href="https://github.com/Rsypertjr/code_storage/tree/presidentelect" target="_blank">Here is the Code.</a>
+                            </Card.Text>
+                        </Card.Body>
+                    </Card>
                     <Card style={{backgroundColor:'#F5DEB3'}}>
                         <img src={tictactoe} className="rounded mb-2" height="15%" width="15%" style={{margin:'1em 0 0 42.5%'}} alt="Tic Tac Toe Image"/> 
                         <Card.Body>             
@@ -529,6 +538,7 @@ export default function Portfolio(props){
                                 <Card.Text className="text-center">
                                     Programming I've done using:  Node.js based technologies of Vue, Angular, and React.  Some utilization of the Laravel MVC Framework and Node Express.
                                     Docker and Docker Compose Technologies used withth NPM and Webpack dependency management.
+                                    <br/>Added GitHub Copilot AI for Intelligent Code Generation and Management of Vercel-hosted Presidential Voting Analyzer App.
                                 </Card.Text>
                             </Card.Body>
                         </Card>
