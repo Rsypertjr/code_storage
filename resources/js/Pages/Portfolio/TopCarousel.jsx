@@ -3,7 +3,6 @@ import Carousel from 'react-bootstrap/Carousel';
 import CarouselImage from '../../Components/CarouselImage';
 
 export default function TopCarousel(props){
-
   
     return (
         <>
