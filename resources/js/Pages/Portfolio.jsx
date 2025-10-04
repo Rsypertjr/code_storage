@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from 'react';
+
+import { Head } from '@inertiajs/react';
 import { Container, Row, Col, Nav, Navbar, CardText, Tooltip, OverlayTrigger} from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import Card from 'react-bootstrap/Card';
@@ -23,10 +25,16 @@ import mobiledevelopmentimage from '../../images/mobiledevelopmentimage.jpg';
 import tictactoe from '../../images/tictactoe.png';
 import mern from '../../images/mern.jpeg';
 import vegas from '../../images/vegas/vegas6.jpg';
+import { set } from 'lodash';
 
 export default function Portfolio(props){  
     const [putLampCover, setPutLampCover] = useState(false);
-
+    const [pageTitle, setPageTitle] = useState("Work Portfolio");
+    
+      useEffect(() => {
+          document.title = pageTitle || 'Work Portfolio'; // Set the title
+          console.log("App Router page title:",pageTitle);
+      },[pageTitle]);
 
     const hideLampCover = (e) => {
         if($('#lampCover').css('visibility') == 'visible')
@@ -99,8 +107,9 @@ export default function Portfolio(props){
             $('#homeCover').css('visibility','visible');
     };
 
-    const selectNavItem = (e) => {
+    const selectNavItem = (e, pTitle) => {
       //console.log(e.target);
+      setPageTitle(pTitle);
       var targetEl = $(e.target.getAttribute('href'));
       if (targetEl.length) {
         e.preventDefault();
@@ -187,43 +196,41 @@ export default function Portfolio(props){
 					
            
 			<Container style={{width:"95%"}} fluid>
-                 <TopCarousel/> 
-                 <Container className="d-flex justify-content-center" style={{backgroundColor:"black"}} fluid>
-                 <Navbar expand="lg"  style={{zIndex:200}} className="bg-body-tertiary d-flex justify-content-center" id="topNav">  {/* Beginning of Navigation */}
+                <TopCarousel pageTitle={pageTitle}/> 
+                <Container className="d-flex justify-content-center" style={{backgroundColor:"black"}} fluid>
+                    <Navbar expand="lg"  style={{zIndex:200}} className="bg-body-tertiary d-flex justify-content-center" id="topNav">  {/* Beginning of Navigation */}
                     {/*<a className="navbar-brand" href="#">Bootstrap Work Portfolio</a>*/}
                     <Container>
-                        <Navbar.Brand href="/#home" onClick={(e) => selectNavItem(e)}>Bootstrap Work Portfolio</Navbar.Brand>
+                        <Navbar.Brand href="/#home" onClick={(e) => selectNavItem(e,"Home")}>Bootstrap Work Portfolio</Navbar.Brand>
                         <Navbar.Toggle aria-controls="basic-navbar-nav" />
                         {/*<button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                             <span className="navbar-toggler-icon"></span>
                         </button>*/}
                         <Navbar.Collapse id="myNavbar">
                             <Nav className="me-auto">
-                                <Nav.Link href="#home" onClick={selectNavItem}>Home/Code Repos</Nav.Link>
-                                <Nav.Link href="#about" onClick={(e) => selectNavItem(e)}>About</Nav.Link>
+                                <Nav.Link href="#home" onClick={(e) => selectNavItem(e,"Home/Code Repos")}>Home/Code Repos</Nav.Link>
+                                <Nav.Link href="#about" onClick={(e) => selectNavItem(e,"About")}>About</Nav.Link>
                                 <NavDropdown title="Software Development" id="basic-nav-dropdown">
-                                    <NavDropdown.Item href="#lamp" onClick={(e) => selectNavItem(e)}>LAMP - based</NavDropdown.Item>
+                                    <NavDropdown.Item href="#lamp" onClick={(e) => selectNavItem(e,"LAMP - based")}>LAMP - based</NavDropdown.Item>
                                     <NavDropdown.Divider />
-                                    <NavDropdown.Item href="#mobile" onClick={(e) => selectNavItem(e)}>JQuery Mobile</NavDropdown.Item>
+                                    <NavDropdown.Item href="#mobile" onClick={(e) => selectNavItem(e,"JQuery Mobile")}>JQuery Mobile</NavDropdown.Item>
                                     <NavDropdown.Divider />
-                                    <NavDropdown.Item href="#frameworks" onClick={(e) => selectNavItem(e)}>Frameworks</NavDropdown.Item>
+                                    <NavDropdown.Item href="#frameworks" onClick={(e) => selectNavItem(e,"Frameworks")}>Frameworks</NavDropdown.Item>
                                 </NavDropdown>
                                 <NavDropdown title="Technical Writing" id="basic-nav-dropdown">
-                                    <NavDropdown.Item href="#manuals" onClick={(e) => selectNavItem(e)}>Production and Maintenance Manuals</NavDropdown.Item>
+                                    <NavDropdown.Item href="#manuals" onClick={(e) => selectNavItem(e,"Production and Maintenance Manuals")}>Production and Maintenance Manuals</NavDropdown.Item>
                                     <NavDropdown.Divider />
-                                    <NavDropdown.Item href="#specifications" onClick={(e) => selectNavItem(e)} >Technical Specification Manuals</NavDropdown.Item>
+                                    <NavDropdown.Item href="#specifications" onClick={(e) => selectNavItem(e,"Technical Specification Manuals")}>Technical Specification Manuals</NavDropdown.Item>
                                 </NavDropdown>
-                                <Nav.Link href="#resume" onClick={(e) => selectNavItem(e)}>My Resume</Nav.Link>
-                                <Nav.Link href="#living" onClick={(e) => selectNavItem(e)}>Living In Vegas</Nav.Link>
-                                <Nav.Link href="#front" onClick={(e) => selectNavItem(e)}>Non-Bootstrap Portfolio</Nav.Link>               
+                                <Nav.Link href="#resume" onClick={(e) => selectNavItem(e,"My Resume")}>My Resume</Nav.Link>
+                                <Nav.Link href="#living" onClick={(e) => selectNavItem(e,"Living In Vegas")}>Living In Vegas</Nav.Link>
+                                <Nav.Link href="#front" onClick={(e) => selectNavItem(e,"Non-Bootstrap Portfolio")}>Non-Bootstrap Portfolio</Nav.Link>               
                             </Nav>
-                        </Navbar.Collapse>
-                        
-                       
+                        </Navbar.Collapse> 
                     </Container>
                    
-            </Navbar>    {/*---- End of Navigation Header ---------------------------------*/}	
-                 </Container>
+                </Navbar>    {/*---- End of Navigation Header ---------------------------------*/}	
+            </Container>
                  <MidCarousel/>
                  
             </Container>

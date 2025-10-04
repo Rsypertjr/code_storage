@@ -1,8 +1,8 @@
-import React, { useState, useEffect} from 'react';
+import React from 'react';
 import Carousel from 'react-bootstrap/Carousel';
 import CarouselImage from '../../Components/CarouselImage';
 
-export default function TopCarousel(props){
+export default function TopCarousel(props){  
   
     return (
         <>
@@ -12,6 +12,16 @@ export default function TopCarousel(props){
                         <h4>Richard L. Sypert Jr's Work Portfolio</h4> 
                         <p className="top-desc rounded">This site shows my experience as a Software Developer, Technical Writer, and Manufacturing Engineer (resume).&nbsp;&nbsp;It is coded with Laravel11, React, Vite, and Bootstrap 5, as well as 
                             other technologies.&nbsp;&nbsp;Please view this carousel for information about my work history.</p>
+                    </Carousel.Caption>								
+                </Carousel.Item>	
+                <Carousel.Item>                    
+                    <Carousel.Caption>
+                        <h4>VSCode CoPilot AI-Assisted Next.js Presidential Voting Analyzer</h4> 
+                        <p className="top-desc rounded">Comprehensive Next.js application with Supabase SQL integration featuring interactive electoral data analysis, real-time voting
+							trend visualization, and demographic insights. Incorporates GitHub Copilot-powered code management with intelligent organization, automated tagging, 
+                            search functionality, and collaborative development.&nbsp;&nbsp;Link to code:&nbsp;<a href="https://github.com/Rsypertjr/code_storage/tree/presidentelect" target="_blank">Next.js-Presidential-Voting-Analyzer Code</a><br/>
+                            Link to app:&nbsp;<a href="https://codestorage.vercel.app/" target="_blank">Next.js Presidential Voting Analyzer</a>
+                        </p>
                     </Carousel.Caption>								
                 </Carousel.Item>				
                 <Carousel.Item>

@@ -69,7 +69,7 @@ export default function AnalyticsBar(props) {
     };
 
     return(
-            <Container>
+            <Container style={{zoom:"90%"}}>
                 <Row className="mb-4" >
                     <Button variant="outline-success" onClick={handleCloseChart} className="viewerClose">Close Chart</Button>{' '}
                 </Row>

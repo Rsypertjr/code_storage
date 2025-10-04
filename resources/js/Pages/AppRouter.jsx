@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { Head } from '@inertiajs/react';
 import { createBrowserRouter, RouterProvider, BrowserRouter,useLocation,useNavigate,useParams,Link, Route, Routes, Navigate, Outlet,NavLink} from 'react-router-dom';
 import VotesLineChart2 from './Charts/VotesLineChart2';
 import SpikesLineChart from './Charts/SpikesLineChart';
@@ -24,6 +25,12 @@ const linkStyle = {
 export default function AppRouter(props){  
   const [isChartClosed,setIsChartClosed] = useState(true);
   const [getNavigate,setGetNavigate] = useState();
+  const [pageTitle, setPageTitle] = useState("Presidential Election");
+
+  useEffect(() => {
+      document.title = pageTitle || 'Work Portfolio'; // Set the title
+      console.log("App Router page title:",pageTitle);
+  },[pageTitle]);
 
   console.log("App Router props:",props);
   /*useEffect(() => {
@@ -58,33 +65,34 @@ export default function AppRouter(props){
 
         return (
             <>  
+               
                 <Row className="d-flex justify-content-center align-items-center">
                     <LinkContainer to="/" className="col-1 menu-tab">
-                        <NavLink className="menu-tab rounded text-center">Home</NavLink> 
+                        <NavLink onClick={()=>setPageTitle("Home")} className="menu-tab rounded text-center">Home</NavLink> 
                     </LinkContainer>
                     <LinkContainer to="/votestable" className="col-1 menu-tab"> 
-                        <NavLink className='menu-tab rounded text-center' >Votes Table</NavLink>    
+                        <NavLink onClick={()=>setPageTitle("Votes Table")} className='menu-tab rounded text-center' >Votes Table</NavLink>    
                     </LinkContainer>
                     <LinkContainer to="/voteslinechart" className="col-1 menu-tab"> 
-                        <NavLink className='menu-tab rounded text-center' >Votes Line Chart</NavLink>    
+                        <NavLink onClick={()=>setPageTitle("Votes Line Chart")}  className='menu-tab rounded text-center' >Votes Line Chart</NavLink>    
                     </LinkContainer>
                     <LinkContainer to="/spikeslinechart" className="col-1 menu-tab"> 
-                        <NavLink className='menu-tab rounded text-center' >Spikes Line Chart</NavLink>    
+                        <NavLink onClick={()=>setPageTitle("Spike Lines Chart")} className='menu-tab rounded text-center' >Spikes Line Chart</NavLink>    
                     </LinkContainer>
                     <LinkContainer to="/difflinechart" className="col-1 menu-tab"> 
-                        <NavLink className='menu-tab rounded text-center' >Difference Line Chart</NavLink>    
+                        <NavLink onClick={()=>setPageTitle("Difference Line Chart")}  className='menu-tab rounded text-center' >Difference Line Chart</NavLink>    
                     </LinkContainer>
                     <LinkContainer to="/perlinechart" className="col-1 menu-tab"> 
-                        <NavLink className='menu-tab rounded text-center' >Percent Line Chart</NavLink>    
+                        <NavLink onClick={()=>setPageTitle("Percentage Line Chart")}  className='menu-tab rounded text-center' >Percent Line Chart</NavLink>    
                     </LinkContainer>
                     <LinkContainer to="/piechart" className="col-1 menu-tab"> 
-                        <NavLink className='menu-tab rounded text-center' >Pie Chart</NavLink>    
+                        <NavLink onClick={()=>setPageTitle("Pie Chart")}  className='menu-tab rounded text-center' >Pie Chart</NavLink>    
                     </LinkContainer>
                     <LinkContainer to="/barchart" className="col-1 menu-tab"> 
-                        <NavLink className='menu-tab rounded text-center' >Bar Chart</NavLink>    
+                        <NavLink onClick={()=>setPageTitle("Bar Chart")}   className='menu-tab rounded text-center' >Bar Chart</NavLink>    
                     </LinkContainer>
                     <LinkContainer to="/binstackedchart" className="col-1 menu-tab"> 
-                        <NavLink className='menu-tab rounded text-center' >Bin Stacked Chart</NavLink>  
+                        <NavLink onClick={()=>setPageTitle("Bin Stacked Chart")}  className='menu-tab rounded text-center' >Bin Stacked Chart</NavLink>  
                     </LinkContainer>
                 </Row>            
                 
@@ -120,13 +128,19 @@ export default function AppRouter(props){
 
     return(
       <>
+        
         <BrowserRouter>
+            <Head>
+              <title>{pageTitle}</title>
+            </Head>
             <NavRoutes />
         </BrowserRouter>
     
          
         { isChartClosed &&
           <Container className="w-100 d-flex justify-content-center p-2 pt-3" style={{backgroundColor:"lightgray"}}>
+            
+            
             <h4 style={{float:"left"}}>
               <span>Please select a Chart Type above</span>
               <i className="bi bi-arrow-up-square-fill" style={{marginLeft:"0.25em",marginRight:"0.25em"}}></i>
