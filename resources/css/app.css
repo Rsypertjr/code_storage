@@ -83,14 +83,13 @@ nav.navbar {
 }
 
 .chart-viewer {
-
+    position:relative;
     opacity:0.95;
     transform:scale(0.70);
-    z-index:10;
+    z-index:100%;
     border-style:outset;
     padding:2em;
     background-color:white;
-    z-index:10;
     -webkit-animation: slideup 0.5s forwards;
     -webkit-animation-delay: 0.5s;
     animation: slideup 0.5s forwards;
@@ -100,7 +99,7 @@ nav.navbar {
 
 .upslide{
     /*opacity:1;*/
-    z-index:10;
+    z-index:100;
     -webkit-animation: slideup 0.5s forwards;
     -webkit-animation-delay: 0.5s;
     animation: slideup 0.5s forwards;
@@ -302,3 +301,22 @@ nav.navbar {
     text-decoration: underline;
 }
 
+
+@font-face {
+    font-family: "FiraSans";
+    src:
+    url("https://mdn.github.io/shared-assets/fonts/FiraSans-Italic.woff2")
+        format("woff2"),
+    url("https://mdn.github.io/shared-assets/fonts/FiraSans-Bold.woff2")
+        format("woff2");
+}
+
+text {
+    /* Specify the system or custom font to use */
+    font-family: "FiraSans", sans-serif;
+
+    /* Add other styling */
+    font-size: 24px;
+    font-weight: bold;
+    font-style: italic;
+}
