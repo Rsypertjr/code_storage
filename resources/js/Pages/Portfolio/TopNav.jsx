@@ -34,7 +34,8 @@ export default function TopNav() {
                                 </NavDropdown>
                                 <Nav.Link as={Link} to="#resume">My Resume</Nav.Link>
                                 <Nav.Link as={Link} to="#living">Living In Vegas</Nav.Link>
-                                <Nav.Link as={Link} to="#front">Non-Bootstrap Portfolio</Nav.Link>
+                                <Nav.Link as={Link} to="#nonBootstrap">Non-Bootstrap Portfolio</Nav.Link>
+                                <Nav.Link as={Link} to="#bootPortfolio">CodeIgniter Portfolio</Nav.Link> 
                                 <Nav.Link as={Link} to="#laravelreact">Laravel React Bootstrap Portfolio</Nav.Link>                                
                             </Nav>
                         </Navbar.Collapse>

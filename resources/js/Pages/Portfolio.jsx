@@ -93,12 +93,20 @@ export default function Portfolio(props){
             $('#livingCover').css('visibility','visible');
     };
 
-    const hideFrontCover = (e) => {
-        if($('#frontCover').css('visibility') == 'visible')
-            $('#frontCover').css('visibility','hidden');
+    const hideNonBootstrapCover = (e) => {
+        if($('#nonBootstrapCover').css('visibility') == 'visible')
+            $('#nonBootstrapCover').css('visibility','hidden');
         else
-            $('#frontCover').css('visibility','visible');
+            $('#nonBootstrapCover').css('visibility','visible');
     };
+
+
+    const hideBootPortfolioCover = (e) => {
+        if($('#bootPortfolioCover').css('visibility') == 'visible')
+            $('#bootPortfolioCover').css('visibility','hidden');
+        else
+            $('#bootPortfolioCover').css('visibility','visible');
+    };  
 
     const hideHomeCover = (e) => {
         if($('#homeCover').css('visibility') == 'visible')
@@ -176,6 +184,16 @@ export default function Portfolio(props){
                     $('#frontCover').css('visibility','visible');    
                 });
 
+
+                $('#nonBootstrap').on('mouseenter',function(){
+                    $('#nonBootstrapCover').css('visibility','visible');    
+                });
+
+
+                $('#bootPortfolio').on('mouseenter',function(){
+                    $('#bootPortfolioCover').css('visibility','visible');    
+                });
+
                 $('.nav-link').add('.dropdown').on('mouseover', function() {
                     $(this).css('background-color','#515a5a');
                 });
@@ -224,7 +242,8 @@ export default function Portfolio(props){
                                 </NavDropdown>
                                 <Nav.Link href="#resume" onClick={(e) => selectNavItem(e,"My Resume")}>My Resume</Nav.Link>
                                 <Nav.Link href="#living" onClick={(e) => selectNavItem(e,"Living In Vegas")}>Living In Vegas</Nav.Link>
-                                <Nav.Link href="#front" onClick={(e) => selectNavItem(e,"Non-Bootstrap Portfolio")}>Non-Bootstrap Portfolio</Nav.Link>               
+                                <Nav.Link href="#nonBootstrap" onClick={(e) => selectNavItem(e,"Non-Bootstrap Portfolio")}>Original CodeIgniter Portfolio</Nav.Link> 
+                                <Nav.Link href="#bootPortfolio" onClick={(e) => selectNavItem(e,"CodeIgniter Portfolio")}>CodeIgniter Bootstrap Portfolio</Nav.Link>      
                             </Nav>
                         </Navbar.Collapse> 
                     </Container>
@@ -706,9 +725,9 @@ export default function Portfolio(props){
             </OverlayTrigger>            
             {/* End of Living Panel */}
 
-            {/* Front Panel */}
+            {/* nonBootstrap Panel */}
             <OverlayTrigger placement="top" overlay={(tooltip("Click to Toggle Cover Layer"))}>
-                <Container id="front" style={{backgroundColor:'#B0C4DE'}} className="panel-container" onClick={hideFrontCover} fluid>
+                <Container id="nonBootstrap" style={{backgroundColor:'#B0C4DE'}} className="panel-container" onClick={hideNonBootstrapCover} fluid>
                     <Card>
                         <img src={lampTechs} height="20%" width="20%" style={{margin:'1em 0 0 40%'}} alt="Fuel CMS"/>
                         <Card.Body>
@@ -725,7 +744,7 @@ export default function Portfolio(props){
                             </Card.Text>
                         </Card.Body>
                     </Card>                
-                    <Container id="frontCover" className="coverPanel d-flex align-items-center" fluid>
+                    <Container id="nonBootstrapCover" className="coverPanel d-flex align-items-center" fluid>
                         <Card>
                             <Card.Body>
                                 <Card.Title><h2>Non-Bootstrap Portfolio</h2></Card.Title>
@@ -740,8 +759,47 @@ export default function Portfolio(props){
                     </Container>               
                 </Container>
             </OverlayTrigger>
-            
-            {/* End of Front Panel */}
+
+            {/* End of nonBootstrap Panel */}
+
+
+             {/* bootPortfolio Panel */}
+            <OverlayTrigger placement="top" overlay={(tooltip("Click to Toggle Cover Layer"))}>
+                    <Container id="bootPortfolio" style={{backgroundColor:'#B0C4DE'}} className="panel-container" onClick={hideBootPortfolioCover} fluid>
+                        <Card>
+                        <img src={lampTechs} height="20%" width="20%" style={{margin:'1em 0 0 40%'}} alt="Fuel CMS"/>
+                        <Card.Body>
+                            <Card.Link href="https://rsypertjr.net/bootPortfolio" target="_blank">Boot Portfolio</Card.Link>
+                            <Card.Text><object type="text/html" data="https://rsypertjr.net/bootPortfolio" height="200" width="300"></object></Card.Text>
+                            <Card.Text className="text-center app-description">
+                                Update on original work portfolio with utilization of Bootstrap for Mobile-first, responsive design to ensure website 
+                                look good on all devices. There is continued use of CodeIgniter MVC Framework,FUEL-CMS
+                                (a CodeIgniter-based Content Management System), PHP, MySQL, HTML, JavaScript,
+                                JQuery, JQuery UI, JQuery Mobile, Angular JS, ReactJS (ngrx) CSS, CSS3, SVG, AJAX, XML,
+                                JSON, Regex, DOM, Notepad++, Cloud9 IDE, GIT, Heroku Server, Laravel MVC, GitHub API,
+                                Facebook API, Active Campaign API, Bootstrap, WordPress, Ruby On Rails,
+                                Google Developer Tools, Homestead Dev, Vagrant VMs, Adobe InDesign,
+                                GIMP (like Photoshop), and other technologies.
+                            </Card.Text>
+                        </Card.Body>
+                    </Card>                
+                    <Container id="bootPortfolioCover" className="coverPanel d-flex align-items-center" fluid>
+                        <Card>
+                            <Card.Body>
+                                <Card.Title><h2>Bootstrap Portfolio</h2></Card.Title>
+                                <Card.Text><i className="bi bi-lightbulb"></i></Card.Text>
+                                <Card.Text className="text-center">
+                                    Update on original work portfolio with utilization of Bootstrap for Mobile-first, responsive design to ensure website 
+                                    look good on all devices.
+                                </Card.Text>
+                            </Card.Body>
+                        </Card>
+                    </Container>               
+                </Container>
+            </OverlayTrigger>
+
+            {/* End of bootPortfolio Panel */}
+
 
 
 			{/* Footer Section */}
