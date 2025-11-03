@@ -710,10 +710,10 @@ export default function Portfolio(props){
                         <img src={jobdone} height="15%" width="15%" style={{margin:'1em 0 0 42.5%'}} alt="Job Done"/>
                         <Card.Body>
                             <ScrollToTop />
-                            <Card.Link href="https://rsypertjr.net/dynResume" target="_blank">Dynamic HTML Resume w/Downloads</Card.Link>
-                            <Card.Text><object type="text/html" data="https://rsypertjr.net/dynResume" height="200" width="300"></object></Card.Text>
+                            <Card.Link href="https://rsypertjr.net/index.php/pdfResume" target="_blank">PDF Version of My Resume</Card.Link>
+                            <Card.Text><object type="text/html" data="https://rsypertjr.net/index.php/pdfResume" height="200" width="300"></object></Card.Text>
                             <Card.Text className="text-center app-description">
-                                Here is a link to my resume which uses dynamic CSS formatting.
+                                Here is a link to A PDF version of my Resume.
                             </Card.Text>
                         </Card.Body>
                     </Card>
@@ -724,7 +724,7 @@ export default function Portfolio(props){
                                 <Card.Title><h2>Resume</h2></Card.Title>
                                 <Card.Text><i className="bi bi-book"></i></Card.Text>
                                 <Card.Text className="text-center">
-                                    A Dynamic HTML and CSS version of my Resume.  Also a Download Link for a PDF version
+                                    A PDF version of my Resume is linked below. Click this cover panel to see.  
                                 </Card.Text>
                             </Card.Body>
                         </Card>
