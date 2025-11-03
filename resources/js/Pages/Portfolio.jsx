@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 
 import { Head } from '@inertiajs/react';
-import { Container, Row, Col, Nav, Navbar, CardText, Tooltip, OverlayTrigger} from 'react-bootstrap';
+import { Container, Row, Col, Nav, Navbar, CardText, Tooltip, OverlayTrigger, Button} from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import Card from 'react-bootstrap/Card';
 import NavDropdown from 'react-bootstrap/NavDropdown';
@@ -115,6 +115,10 @@ export default function Portfolio(props){
             $('#homeCover').css('visibility','visible');
     };
 
+    const allCoversShow = () => {
+        $('#mobileCover').css('visibility','visible');
+    };
+
     const selectNavItem = (e, pTitle) => {
       //console.log(e.target);
       setPageTitle(pTitle);
@@ -127,6 +131,17 @@ export default function Portfolio(props){
       }
     };
 
+    const ScrollToTop = () => {
+   
+        return (
+            <div className="d-flex p-1 justify-content-center">
+                <Button onClick={() => window.scrollTo(0,0)}  style={{backgroundColor:'black',cursor:'pointer'}}>
+                    Scroll to Top
+                </Button>
+            </div>
+           
+        );
+    };
 
 
     const tooltip = (text) => {
@@ -264,6 +279,7 @@ export default function Portfolio(props){
                     <Card style={{backgroundColor:'#F0FFFF'}}>
                         <img src={websiteconstruction} height="15%" width="15%" style={{margin:'1em 0 0 42.5%'}} alt="Website Construction"/>
                         <Card.Body>
+                            <ScrollToTop />
                             <Card.Body>
                                 <Card.Link href="https://github.com/Rsypertjr/fuelCMS/tree/fuelPF"  target="_blank">GitHub Code Repository</Card.Link>
                                 <Card.Text className="text-center app-description">Link to GIT Repository for this FuelCMS-based Site</Card.Text>
@@ -292,6 +308,7 @@ export default function Portfolio(props){
                     <Card>
                         <img src={technologyideas} height="15%" width="15%" style={{margin:'1em 0 0 42.5%', backgroundColor:'#FFE4C4'}} alt="Technology Ideas"/>
                         <Card.Body>
+                            <ScrollToTop />
                             <Card.Link href="https://rsypertjr.net/webTech" target="_blank">Web Technologies Used</Card.Link>                        
                             <Card.Text className="text-center app-description">
                                 This is a page that gives explanation of the programming technologies used on this site.
@@ -333,6 +350,7 @@ export default function Portfolio(props){
                     <Card style={{backgroundColor:'#90EE90'}}>
                         <img src={dataanalysis} height="15%" width="15%" style={{margin:'1em 0 0 42.5%'}} alt="Data Analysis"/> 
                         <Card.Body>
+                            <ScrollToTop />
                             <Card.Link href="https://rsypertjr.net/amino" target="_blank">Amino Acid Code Sequence Analyzer</Card.Link>
                             <Card.Text><object data="https://rsypertjr.net/amino" height="200" width="300"></object></Card.Text>
                             <Card.Text className="app-description">
@@ -345,6 +363,7 @@ export default function Portfolio(props){
                     </Card>
                     <Card style={{backgroundColor:'#FAF0E6'}}>
                         <Card.Body>
+                            <ScrollToTop />
                             <Card.Link href="https://rsypertjr.net/orominer1" target="_blank">Human Organ System Analyzer 1</Card.Link>
                             <Card.Text><object data="https://rsypertjr.net/orominer1" height="200" width="300"></object></Card.Text>
                             <Card.Text className="app-description">
@@ -359,6 +378,7 @@ export default function Portfolio(props){
                     </Card>
                     <Card style={{backgroundColor:'#F5FFFA'}}>
                         <Card.Body>
+                            <ScrollToTop />
                             <Card.Link href="https://rsypertjr.net/orominer2" target="_blank">Human Organ System Analyzer 2</Card.Link>
                             <Card.Text><object data="https://rsypertjr.net/orominer2" height="200" width="300"></object></Card.Text>
                             <Card.Text className="app-description">
@@ -372,6 +392,7 @@ export default function Portfolio(props){
                     <Card style={{backgroundColor:'#D8BFD8'}}>
                         <img src={othellogameimage} height="15%" width="15%" style={{margin:'1em 0 0 42.5%'}} alt="Othello Game Image"/> 
                         <Card.Body>
+                            <ScrollToTop />
                             <Card.Link href="https://rsypertjr.net/othello" target="_blank">Play Othello Game thru AJAX</Card.Link>
                             <Card.Text><object data="https://rsypertjr.net/othello" height="200" width="300"></object></Card.Text>
                             <Card.Text className="app-description">
@@ -405,10 +426,12 @@ export default function Portfolio(props){
             {/* Mobile Panel */}
             <OverlayTrigger placement="top" overlay={(tooltip("Click to Toggle Cover Layer"))}>
                 <Container id="mobile" style={{backgroundColor:'#BC8F8F'}} className="panel-container" onClick={hideMobileCover} fluid>
+                    
                     <Card style={{backgroundColor:'#FFEFD5'}}>
                         <img src={mobiledevelopmentimage} height="15%" width="15%" style={{margin:'1em 0 0 42.5%'}} alt="Mobile Development Image"/> 
                         <Card.Body>
-                            <Card.Body>
+                            <ScrollToTop />
+                            <Card.Body>                                
                                 <Card.Link href="https://rsypertjr.net/mobile" target="_blank">Jquery Mobile Web Development</Card.Link>
                                 <Card.Text><object data="https://rsypertjr.net/mobile" height="200" width="300"></object></Card.Text>
                                 <Card.Text className="text-center app-description">Link to a Mobile version of My work portfolio. I developed it using JQuery Mobile
@@ -421,7 +444,7 @@ export default function Portfolio(props){
 
                     <Container id="mobileCover" className="coverPanel d-flex align-items-center" fluid>
                         <Card>
-                            <Card.Body>
+                            <Card.Body>      
                                 <Card.Title><h2>Mobile Portfolio</h2></Card.Title>
                                 <Card.Body>
                                     <Card.Text><i className="bi bi-phone"></i></Card.Text>
@@ -441,7 +464,8 @@ export default function Portfolio(props){
                 <Container  style={{backgroundColor:'#6A5ACD'}} className="panel-container" onClick={hideFrameworksCover} fluid>
                     <Card style={{backgroundColor:'#b3f5daff'}}>
                         <img src={tictactoe} className="rounded mb-2" height="15%" width="15%" style={{margin:'1em 0 0 42.5%'}} alt="Tic Tac Toe Image"/> 
-                        <Card.Body>             
+                        <Card.Body>   
+                            <ScrollToTop />         
                             <Card.Link href="https://codestorage.vercel.app/" target="_blank">AI-CoPilot-Next.js-Suprabase-Voting Analyzer</Card.Link>
                             <Card.Text><object data="https://codestorage.vercel.app/" height="200" width="300"></object></Card.Text>
                             <Card.Text className="text-center app-description">New Next.js-AI-CoPilot Developed Presidential Voting Analyzer.&nbsp;&nbsp;Supabase SQL Integration for Front-End Dynamic Interaction, with Server-Side Rendering for SEO.&nbsp;&nbsp;
@@ -451,7 +475,8 @@ export default function Portfolio(props){
                     </Card>
                     <Card style={{backgroundColor:'#F5DEB3'}}>
                         <img src={tictactoe} className="rounded mb-2" height="15%" width="15%" style={{margin:'1em 0 0 42.5%'}} alt="Tic Tac Toe Image"/> 
-                        <Card.Body>             
+                        <Card.Body>    
+                            <ScrollToTop />         
                             <Card.Link href="tictactoe" target="_blank">React Javascript Tic-Tac-Toe</Card.Link>
                             <Card.Text><object data="https://rsypertjr.net/tictactoe" height="200" width="300"></object></Card.Text>
                             <Card.Text className="text-center app-description">
@@ -462,7 +487,8 @@ export default function Portfolio(props){
                     </Card>
                     <Card style={{backgroundColor:'#7FFFD4'}}>
                         <img src={dataanalysis} className="rounded mb-2" height="15%" width="15%" style={{margin:'1em 0 0 42.5%'}} alt="Data Analysis Image"/> 
-                        <Card.Body>             
+                        <Card.Body>  
+                            <ScrollToTop />           
                             <Card.Link href="/amino" target="_blank">Amino Acid Code Sequence Analyzer</Card.Link>
                             <Card.Text><object data="/amino" height="200" width="300"></object></Card.Text>
                             <Card.Text className="text-center app-description">
@@ -476,6 +502,7 @@ export default function Portfolio(props){
                     <Card style={{backgroundColor:'#FFFAFA'}}>
                         <img src={dataanalysis} className="rounded mb-2" height="15%" width="15%" style={{margin:'1em 0 0 42.5%'}} alt="Data Analysis Image"/> 
                         <Card.Body>
+                            <ScrollToTop />
                             <Card.Link href="https://lar10reactmix.rsypertjr.net/votes-table" target="_blank">Laravel(Mix) w/React & Chart.js & Bootstrap.js Vote Parser</Card.Link>
                             <Card.Text><object data="https://lar10reactmix.rsypertjr.net/votes-table" height="200" width="300"></object></Card.Text>
                             <Card.Text className="text-center app-description">
@@ -489,7 +516,8 @@ export default function Portfolio(props){
 
                     <Card style={{backgroundColor:'#7FFFD4'}}>
                         <img src={dataanalysis} className="rounded mb-2" height="15%" width="15%" style={{margin:'1em 0 0 42.5%'}} alt="Data Analysis Image"/> 
-                        <Card.Body>             
+                        <Card.Body> 
+                            <ScrollToTop />            
                             <Card.Link href="https://laravelportfolio.rsypertjr.net/orominer1" target="_blank">New Laravel/React/Bootstrap Orominer</Card.Link>
                             <Card.Text><object data="https://laravelportfolio.rsypertjr.net/orominer1" height="200" width="300"></object></Card.Text>
                             <Card.Text className="text-center app-description">
@@ -503,6 +531,7 @@ export default function Portfolio(props){
                     <Card style={{backgroundColor:'#FFFAFA'}}>
                         <img src={dataanalysis} className="rounded mb-2" height="15%" width="15%" style={{margin:'1em 0 0 42.5%'}} alt="Data Analysis Image"/> 
                         <Card.Body>
+                            <ScrollToTop />
                             <Card.Link href="https://lar10reactmix.rsypertjr.net/votes-table" target="_blank">Laravel(Mix) w/React & Chart.js & Bootstrap.js Vote Parser</Card.Link>
                             <Card.Text><object data="https://lar10reactmix.rsypertjr.net/votes-table" height="200" width="300"></object></Card.Text>
                             <Card.Text className="text-center app-description">
@@ -517,6 +546,7 @@ export default function Portfolio(props){
                     <Card style={{backgroundColor:'#EEE8AA'}}>
                         <img src={dataanalysis} className="rounded mb-2" height="15%" width="15%" style={{margin:'1em 0 0 42.5%'}} alt="Data Analysis Image"/> 
                         <Card.Body>
+                            <ScrollToTop />
                             <Card.Link href="https://vue3chartjs.rsypertjr.net/" target="_blank">Vue 3 Composition API & Chart.js & Bootstrap.js Vote Parser</Card.Link>
                             <Card.Text><object data="https://vue3chartjs.rsypertjr.net/"></object></Card.Text>
                             <Card.Text className="text-center app-description">The app uses Vue 3 Composition API. NPM is used to managed the Node-based Vue 3 dependencies. 
@@ -528,6 +558,7 @@ export default function Portfolio(props){
                     <Card style={{backgroundColor:'#FDF5E6'}}>
                         <img src={mern} className="rounded mb-2" height="15%" width="15%" style={{margin:'1em 0 0 42.5%'}} alt="Mern Stack Image"/>                        
                         <Card.Body>
+                            <ScrollToTop />
                             <Card.Link href="https://carinfo.rsypertjr.net" target="_blank">React-Bootstrap with Express ATLAS Cloud MongoDb Backend</Card.Link>
                             <Card.Text><object data="https://carinfo.rsypertjr.net" height="200" width="300"></object></Card.Text>
                             <Card.Text className="text-center app-description">
@@ -539,6 +570,7 @@ export default function Portfolio(props){
                     </Card>
                     <Card>
                         <Card.Body>
+                            <ScrollToTop /> 
                             <Card.Link href="https://preselections.rsypertjr.net" target="_blank">Docker based Laravel Vite, React, Bootstrap 5, Chart.js, MongoDb App</Card.Link>
                             <Card.Text><object data="https://preselections.rsypertjr.net" height="200" width="300"></object></Card.Text>
                             <Card.Text className="text-center app-description">A Docker based app that uses Laravel/Bootstrap 5 with Vite management of React.js with a networked containers of: Nginx, PHP, Mariadb, Composer, Artisan, NPM, Redis, 
@@ -551,7 +583,7 @@ export default function Portfolio(props){
 
                     <Container id="frameworksCover" className="coverPanel d-flex align-items-center" fluid>
                         <Card>
-                            <Card.Body>
+                            <Card.Body>         
                                 <Card.Title><h1>Frameworks</h1></Card.Title>
                                 <Card.Text><i className="bi bi-tree"></i></Card.Text>
                                 <Card.Text className="text-center">
@@ -575,7 +607,8 @@ export default function Portfolio(props){
                 <Container id="manuals" style={{backgroundColor:'#708090'}} className="panel-container" onClick={hideManualsCover} fluid>
                     <Card style={{backgroundColor:'#D3D3D3'}}>
                         <img src={technicalwritingimage} height="15%" width="15%" style={{margin:'1em 0 0 42.5%'}} alt="Technical Writing"/> 
-                        <Card.Body>
+                        <Card.Body>                           
+                            <ScrollToTop /> 
                             <Card.Link href="https://rsypertjr.net/graingerABCDE" target="_blank">Grainger ABCDE Series B</Card.Link>
                             <Card.Text><object type="text/html" data="https://rsypertjr.net/graingerABCDE" height="200" width="300"></object></Card.Text>
                             <Card.Text className="text-center app-description"> 
@@ -588,6 +621,7 @@ export default function Portfolio(props){
                     <Card style={{backgroundColor:'#5F9EA0'}}>
                         <img src={technicalwritingimage} height="15%" width="15%" style={{margin:'1em 0 0 42.5%'}} alt="Technical Writing"/>                       
                         <Card.Body>
+                            <ScrollToTop />
                             <Card.Link href="https://rsypertjr.net/graingerCDE" target="_blank">Grainger CDE</Card.Link>
                             <Card.Text><object data="https://rsypertjr.net/graingerCDE" height="200" width="300"></object></Card.Text>
                             <Card.Text className="text-center app-description">
@@ -600,6 +634,7 @@ export default function Portfolio(props){
                     <Card style={{backgroundColor:'#F0E68C'}}>
                         <img src={techWriter} height="15%" width="15%" style={{margin:'1em 0 0 42.5%'}} alt="Technical Writer"/>  
                         <Card.Body>
+                            <ScrollToTop />
                             <Card.Link href="https://rsypertjr.net/mecPManual" target="_blank">MEC Product Manual VT 1.6</Card.Link>
                             <Card.Text><object data="https://rsypertjr.net/mecPManual" height="200" width="300"></object></Card.Text>
                             <Card.Text className="text-center app-description">
@@ -631,6 +666,7 @@ export default function Portfolio(props){
                     <Card style={{backgroundColor:'#DEB887'}}>
                         <img src={engProcessSpec} height="15%" width="15%" style={{margin:'1em 0 0 42.5%'}} alt="Engineering Process Specification"/>   
                         <Card.Body>
+                            <ScrollToTop />
                             <Card.Link href="https://rsypertjr.net/whitePaper" target="_blank">Technical Writing</Card.Link>
                             <Card.Text><object type="text/html" data="https://rsypertjr.net/whitePaper" height="200" width="300"></object></Card.Text>
                             <Card.Text className="text-center app-description">
@@ -641,6 +677,7 @@ export default function Portfolio(props){
                     </Card>
                     <Card style={{backgroundColor:'#FFF8DC'}}>
                         <Card.Body>
+                            <ScrollToTop />
                             <Card.Link href="https://rsypertjr.net/engSpec" target="_blank">Engineering Specification</Card.Link>
                             <Card.Text><object data="https://rsypertjr.net/engSpec" height="200" width="300"></object></Card.Text>
                             <Card.Text className="text-center app-description">
@@ -672,6 +709,7 @@ export default function Portfolio(props){
                     <Card style={{backgroundColor:'#8B0000'}}>
                         <img src={jobdone} height="15%" width="15%" style={{margin:'1em 0 0 42.5%'}} alt="Job Done"/>
                         <Card.Body>
+                            <ScrollToTop />
                             <Card.Link href="https://rsypertjr.net/dynResume" target="_blank">Dynamic HTML Resume w/Downloads</Card.Link>
                             <Card.Text><object type="text/html" data="https://rsypertjr.net/dynResume" height="200" width="300"></object></Card.Text>
                             <Card.Text className="text-center app-description">
@@ -703,6 +741,7 @@ export default function Portfolio(props){
                     <Card style={{backgroundColor:'#ADD8E6'}}>        
                         <img src={vegas} height="15%" width="15%" style={{margin:'1em 0 0 42.5%'}} alt="Welcome to Las Vegas"/>           
                         <Card.Body>
+                            <ScrollToTop />
                             <Card.Link href="https://rsypertjr.net/inVegas" target="_blank">Having Vegas Family Fun</Card.Link>
                             <Card.Text><object type="text/html" data="https://rsypertjr.net/inVegas" height="200" width="300"></object></Card.Text>
                             <Card.Text className="text-center app-description">
@@ -731,6 +770,7 @@ export default function Portfolio(props){
                     <Card>
                         <img src={lampTechs} height="20%" width="20%" style={{margin:'1em 0 0 40%'}} alt="Fuel CMS"/>
                         <Card.Body>
+                            <ScrollToTop />
                             <Card.Link href="https://rsypertjr.net/frontCMS" target="_blank">Non-Bootstrap Work Portfolio</Card.Link>
                             <Card.Text><object type="text/html" data="https://rsypertjr.net/frontCMS" height="200" width="300"></object></Card.Text>
                             <Card.Text className="text-center app-description">
@@ -769,6 +809,7 @@ export default function Portfolio(props){
                         <Card>
                         <img src={lampTechs} height="20%" width="20%" style={{margin:'1em 0 0 40%'}} alt="Fuel CMS"/>
                         <Card.Body>
+                            <ScrollToTop /> 
                             <Card.Link href="https://rsypertjr.net/bootPortfolio" target="_blank">Boot Portfolio</Card.Link>
                             <Card.Text><object type="text/html" data="https://rsypertjr.net/bootPortfolio" height="200" width="300"></object></Card.Text>
                             <Card.Text className="text-center app-description">
