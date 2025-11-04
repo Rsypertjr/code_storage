@@ -25,6 +25,7 @@ import mobiledevelopmentimage from '../../images/mobiledevelopmentimage.jpg';
 import tictactoe from '../../images/tictactoe.png';
 import mern from '../../images/mern.jpeg';
 import vegas from '../../images/vegas/vegas6.jpg';
+import nextjs from '../../images/nextjs.png';   
 import { set } from 'lodash';
 
 export default function Portfolio(props){  
@@ -227,11 +228,7 @@ export default function Portfolio(props){
                 $('.nav-link').add('.dropdown').on('mouseout', function() {
                     $(this).css('background-color','black');
                 });
-    //    });
-
-
-
-     });
+     },[]);
 
     return(
        
@@ -473,7 +470,7 @@ export default function Portfolio(props){
             <OverlayTrigger placement="top" overlay={(tooltip("Click to Toggle Cover Layer"))}>
                 <Container id="nextJs"  style={{backgroundColor:'#B7AC66'}} className="panel-container" onClick={nextJsCover} fluid>
                     <Card style={{backgroundColor:'#B78466'}}>
-                        <img src={tictactoe} className="rounded mb-2" height="15%" width="15%" style={{margin:'1em 0 0 42.5%'}} alt="Tic Tac Toe Image"/> 
+                        <img src={nextjs} className="rounded mb-2" height="15%" width="15%" style={{margin:'1em 0 0 42.5%'}} alt="Tic Tac Toe Image"/> 
                         <Card.Body>   
                             <ScrollToTop />         
                             <Card.Link href="https://ksense-test.vercel.app/show-patients" target="_blank">Next.js Patient Risk Analyzewr</Card.Link>
@@ -486,7 +483,7 @@ export default function Portfolio(props){
                         </Card.Body>
                     </Card>
                     <Card style={{backgroundColor:'#b3f5daff'}}>
-                        <img src={tictactoe} className="rounded mb-2" height="15%" width="15%" style={{margin:'1em 0 0 42.5%'}} alt="Tic Tac Toe Image"/> 
+                        <img src={nextjs} className="rounded mb-2" height="15%" width="15%" style={{margin:'1em 0 0 42.5%'}} alt="Tic Tac Toe Image"/> 
                         <Card.Body>   
                             <ScrollToTop />         
                             <Card.Link href="https://codestorage.vercel.app/" target="_blank">AI-CoPilot-Next.js-Suprabase-Voting Analyzer</Card.Link>
