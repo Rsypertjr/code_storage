@@ -108,6 +108,13 @@ export default function Portfolio(props){
             $('#bootPortfolioCover').css('visibility','visible');
     };  
 
+      const nextJsCover = (e) => {
+        if($('#nextJsCover').css('visibility') == 'visible')
+            $('#nextJsCover').css('visibility','hidden');
+        else
+            $('#nextJsCover').css('visibility','visible');
+    };  
+
     const hideHomeCover = (e) => {
         if($('#homeCover').css('visibility') == 'visible')
             $('#homeCover').css('visibility','hidden');
@@ -209,6 +216,10 @@ export default function Portfolio(props){
                     $('#bootPortfolioCover').css('visibility','visible');    
                 });
 
+                $('#nextJs').on('mouseenter',function(){
+                    $('#nextJsCover').css('visibility','visible');    
+                });
+
                 $('.nav-link').add('.dropdown').on('mouseover', function() {
                     $(this).css('background-color','#515a5a');
                 });
@@ -249,6 +260,9 @@ export default function Portfolio(props){
                                     <NavDropdown.Item href="#mobile" onClick={(e) => selectNavItem(e,"JQuery Mobile")}>JQuery Mobile</NavDropdown.Item>
                                     <NavDropdown.Divider />
                                     <NavDropdown.Item href="#frameworks" onClick={(e) => selectNavItem(e,"Frameworks")}>Frameworks</NavDropdown.Item>
+                                    <NavDropdown.Divider />
+                                    <NavDropdown.Item href="#nextJs" onClick={(e) => selectNavItem(e,"Next.js")}>Next.js</NavDropdown.Item>
+
                                 </NavDropdown>
                                 <NavDropdown title="Technical Writing" id="basic-nav-dropdown">
                                     <NavDropdown.Item href="#manuals" onClick={(e) => selectNavItem(e,"Production and Maintenance Manuals")}>Production and Maintenance Manuals</NavDropdown.Item>
@@ -288,12 +302,10 @@ export default function Portfolio(props){
                     </Card>
                     <Container id="homeCover" className="coverPanel" fluid>
                         <Card>
-                            <Card.Body>
-                                <Card.Body>                                
-                                    <Card.Text><h2>Code Repository</h2></Card.Text>
-                                    <Card.Text><i className="bi bi-file-earmark-code-fill"></i></Card.Text>
-                                    <Card.Text className="text-center">Beneath are links to FuelCMS-based site Code</Card.Text>
-                                </Card.Body>
+                            <Card.Body style={{fontSize:'1.5em'}}>                                
+                                <Card.Text style={{fontSize:'1.2em'}}>Code Repository</Card.Text>
+                                <Card.Text style={{fontSize:'1.2em'}}><i className="bi bi-file-earmark-code-fill"></i></Card.Text>
+                                <Card.Text className="text-center">Beneath are links to FuelCMS-based site Code</Card.Text>
                             </Card.Body>
                         </Card>
                     </Container>   
@@ -307,7 +319,7 @@ export default function Portfolio(props){
                 <Container id="about" className="panel-container" style={{backgroundColor:'#FFE4C4'}} onClick={hideAboutCover} fluid>
                     <Card>
                         <img src={technologyideas} height="15%" width="15%" style={{margin:'1em 0 0 42.5%', backgroundColor:'#FFE4C4'}} alt="Technology Ideas"/>
-                        <Card.Body>
+                        <Card.Body >
                             <ScrollToTop />
                             <Card.Link href="https://rsypertjr.net/webTech" target="_blank">Web Technologies Used</Card.Link>                        
                             <Card.Text className="text-center app-description">
@@ -330,8 +342,8 @@ export default function Portfolio(props){
                     </Card>
                     <Container id="aboutCover" className="coverPanel d-flex align-items-center" fluid>
                         <Card>
-                            <Card.Body>
-                                <Card.Title><h2>About</h2></Card.Title>
+                            <Card.Body style={{fontSize:'1.8em'}}>
+                                <Card.Title style={{fontSize:'1.8em'}}>About</Card.Title>
                                 <Card.Text><i className="bi bi-wrench"></i></Card.Text>
                                 <Card.Text>Beneath there is a page about technologies that I've used, and an email contact page.  Also you can see more about me on my LinkedIn profile page.  
                                     Click this cover panel to see.
@@ -404,10 +416,10 @@ export default function Portfolio(props){
                
 
                     <Container id="lampCover" className="coverPanel d-flex align-items-center" fluid>
-                        <Card>
-                            <Card.Body>
-                                <Card.Title><h2>LAMP Technologies</h2></Card.Title>
-                                <Card.Text><i className="bi bi-lightbulb"></i></Card.Text>
+                        <Card style={{marginTop:'-30em'}}>
+                            <Card.Body style={{fontSize:'1.8em'}}>
+                                <Card.Title style={{fontSize:'1.8em'}}>LAMP Technologies</Card.Title>
+                                <Card.Text style={{fontSize:'1.8em'}}><i className="bi bi-lightbulb"></i></Card.Text>
                                 <Card.Text className="text-center">
                                     PHP/MySQL is used on the back-end for these apps. Regex is used to parse text files into a database.  
                                         I programmatically converted flat non-relational tables into a relational-XMLfile for app data.  PHP/SQL is
@@ -444,8 +456,8 @@ export default function Portfolio(props){
 
                     <Container id="mobileCover" className="coverPanel d-flex align-items-center" fluid>
                         <Card>
-                            <Card.Body>      
-                                <Card.Title><h2>Mobile Portfolio</h2></Card.Title>
+                            <Card.Body style={{fontSize:'1.8em'}}>      
+                                <Card.Title style={{fontSize:'1.8em'}}>Mobile Portfolio</Card.Title>
                                 <Card.Body>
                                     <Card.Text><i className="bi bi-phone"></i></Card.Text>
                                     <Card.Text className="text-center">Beneath is a JQuery Mobile version of my portfolio that is mobile-device-responsive.</Card.Text>
@@ -458,10 +470,64 @@ export default function Portfolio(props){
             {/* End of Mobile Panel */}				  
 
 
+            <OverlayTrigger placement="top" overlay={(tooltip("Click to Toggle Cover Layer"))}>
+                <Container id="nextJs"  style={{backgroundColor:'#B7AC66'}} className="panel-container" onClick={nextJsCover} fluid>
+                    <Card style={{backgroundColor:'#B78466'}}>
+                        <img src={tictactoe} className="rounded mb-2" height="15%" width="15%" style={{margin:'1em 0 0 42.5%'}} alt="Tic Tac Toe Image"/> 
+                        <Card.Body>   
+                            <ScrollToTop />         
+                            <Card.Link href="https://ksense-test.vercel.app/show-patients" target="_blank">Next.js Patient Risk Analyzewr</Card.Link>
+                            <Card.Text><object data="https://ksense-test.vercel.app/show-patients" height="200" width="300"></object></Card.Text>
+                            <Card.Text className="text-center app-description"><p>Next.js and Typescript with API that performs error checking to recover various fetching responses 
+                                including service having internal server errors, and timeouts due to rate limiting.  This app also captures wrong data input formatting and displays 
+                                these errors.</p>
+                                <p><a href="https://github.com/Rsypertjr/ksense-test.git" target="_blank">Here is the Code.</a></p>
+                            </Card.Text>
+                        </Card.Body>
+                    </Card>
+                    <Card style={{backgroundColor:'#b3f5daff'}}>
+                        <img src={tictactoe} className="rounded mb-2" height="15%" width="15%" style={{margin:'1em 0 0 42.5%'}} alt="Tic Tac Toe Image"/> 
+                        <Card.Body>   
+                            <ScrollToTop />         
+                            <Card.Link href="https://codestorage.vercel.app/" target="_blank">AI-CoPilot-Next.js-Suprabase-Voting Analyzer</Card.Link>
+                            <Card.Text><object data="https://codestorage.vercel.app/" height="200" width="300"></object></Card.Text>
+                            <Card.Text className="text-center app-description">New Next.js-AI-CoPilot Developed Presidential Voting Analyzer.&nbsp;&nbsp;Supabase SQL Integration for Front-End Dynamic Interaction, with Server-Side Rendering for SEO.&nbsp;&nbsp;
+										GitHub Copilot AI is used for Code Management and Intelligent Code Generation.<a href="https://github.com/Rsypertjr/code_storage/tree/presidentelect" target="_blank">Here is the Code.</a>
+                            </Card.Text>
+                        </Card.Body>
+                    </Card>
+                    <Container id="nextJsCover" className="coverPanel d-flex align-items-center" fluid>
+                        <Card style={{marginTop:'-30em'}}>
+                            <Card.Body style={{fontSize:'1.8em'}}>         
+                                <Card.Title style={{fontSize:'1.5em'}}>Next.js/Typescript Apps/TailwindCSS</Card.Title>
+                                <Card.Text><i className="bi bi-tree"></i></Card.Text>
+                                <Card.Text className="text-center">
+                                    <p>Next.js and Typescript apps that use TailwindCSS for styling.  One app is also Copilot AI assisted.</p>
+                                </Card.Text>
+                            </Card.Body>
+                        </Card>
+                    </Container>               
+                </Container>                
+            </OverlayTrigger>
+          
+
             {/* Frameworks Panel */}
             <section id="frameworks">
             <OverlayTrigger placement="top" overlay={(tooltip("Click to Toggle Cover Layer"))}>
                 <Container  style={{backgroundColor:'#6A5ACD'}} className="panel-container" onClick={hideFrameworksCover} fluid>
+                    <Card style={{backgroundColor:'#b3f5daff'}}>
+                        <img src={tictactoe} className="rounded mb-2" height="15%" width="15%" style={{margin:'1em 0 0 42.5%'}} alt="Tic Tac Toe Image"/> 
+                        <Card.Body>   
+                            <ScrollToTop />         
+                            <Card.Link href="https://ksense-test.vercel.app/show-patients" target="_blank">Next.js Patient Risk Analyzewr</Card.Link>
+                            <Card.Text><object data="https://ksense-test.vercel.app/show-patients" height="200" width="300"></object></Card.Text>
+                            <Card.Text className="text-center app-description"><p>Next.js and Typescript with API that performs error checking to recover various fetching responses 
+                                including service having internal server errors, and timeouts due to rate limiting.  This app also captures wrong data input formatting and displays 
+                                these errors.</p>
+                                <p><a href="https://github.com/Rsypertjr/ksense-test.git" target="_blank">Here is the Code.</a></p>
+                            </Card.Text>
+                        </Card.Body>
+                    </Card>
                     <Card style={{backgroundColor:'#b3f5daff'}}>
                         <img src={tictactoe} className="rounded mb-2" height="15%" width="15%" style={{margin:'1em 0 0 42.5%'}} alt="Tic Tac Toe Image"/> 
                         <Card.Body>   
@@ -492,7 +558,7 @@ export default function Portfolio(props){
                             <Card.Link href="/amino" target="_blank">Amino Acid Code Sequence Analyzer</Card.Link>
                             <Card.Text><object data="/amino" height="200" width="300"></object></Card.Text>
                             <Card.Text className="text-center app-description">
-                                This App is refactored and improved using Laravel11 with controller back-end for Mysql operations using Laravel's DB facade.  
+                                This App is refactored and improved using Laravel 11 with controller back-end for Mysql operations using Laravel's DB facade.  
                                 The front end code is formulated with React components rendered as routes by Vite technology.  
                                 State variables are maintained within components to enable dynamic data/status representations.
                                 &nbsp;&nbsp;<a href="https://github.com/Rsypertjr/code_storage/tree/laravel-portfolio-dev" target="_blank">Here is the Code.</a>
@@ -581,12 +647,14 @@ export default function Portfolio(props){
                     </Card>
 
 
-                    <Container id="frameworksCover" className="coverPanel d-flex align-items-center" fluid>
-                        <Card>
-                            <Card.Body>         
-                                <Card.Title><h1>Frameworks</h1></Card.Title>
+                    <Container id="frameworksCover" 
+                        className="coverPanel d-flex align-items-center" 
+                    fluid>
+                        <Card style={{marginTop:'-200em'}}>
+                            <Card.Body style={{fontSize:'1.2em'}}>         
+                                <Card.Title style={{fontSize:'2.5em'}}>Frameworks</Card.Title>
                                 <Card.Text><i className="bi bi-tree"></i></Card.Text>
-                                <Card.Text className="text-center">
+                                <Card.Text className="text-center" style={{fontSize:'2em'}}>
                                     Programming I've done using:  Node.js based technologies of Vue, Angular, and React.  Some utilization of the Laravel MVC Framework and Node Express.
                                     Docker and Docker Compose Technologies used withth NPM and Webpack dependency management.
                                     <br/>Added GitHub Copilot AI for Intelligent Code Generation and Management of Vercel-hosted Presidential Voting Analyzer App.
@@ -645,9 +713,9 @@ export default function Portfolio(props){
                     </Card>
                 
                     <Container id="manualsCover" className="coverPanel d-flex align-items-center" fluid>
-                        <Card>
-                            <Card.Body>
-                                <Card.Title><h2>Production Manuals</h2></Card.Title>
+                        <Card style={{marginTop:'-30em'}}>
+                            <Card.Body style={{fontSize:'2em'}}>
+                                <Card.Title style={{fontSize:'1.5em'}}>Production Manuals</Card.Title>
                                 <Card.Text><i className="bi bi-pen"></i></Card.Text>
                                 <Card.Text className="text-center">
                                     Operation and Maintenance Manuals for an Electro-Mechanical Application
@@ -689,9 +757,9 @@ export default function Portfolio(props){
                 
                     <Container id="specificationsCover" className="coverPanel d-flex align-items-center" fluid>
                         <Card>
-                            <Card.Body>
-                                <Card.Title><h2>Technical Specifications</h2></Card.Title>
-                                <Card.Text><i className="bi bi-card-checklist"></i></Card.Text>
+                            <Card.Body style={{fontSize:'1.8em'}}>
+                                <Card.Title style={{fontSize:'1.8em'}}>Technical Specifications</Card.Title>
+                                <Card.Text style={{fontSize:'1.8em'}}><i className="bi bi-card-checklist"></i></Card.Text>
                                 <Card.Text className="text-center">
                                     Technology Explanation (White Paper) and Business Process Description
                                 </Card.Text>
@@ -720,9 +788,9 @@ export default function Portfolio(props){
                 
                     <Container id="resumeCover" className="coverPanel d-flex align-items-center" fluid>
                         <Card>
-                            <Card.Body>
-                                <Card.Title><h2>Resume</h2></Card.Title>
-                                <Card.Text><i className="bi bi-book"></i></Card.Text>
+                            <Card.Body style={{fontSize:'1.8em'}}>
+                                <Card.Title style={{fontSize:'1.8em'}}>Resume</Card.Title>
+                                <Card.Text style={{fontSize:'1.8em'}}><i className="bi bi-book"></i></Card.Text>
                                 <Card.Text className="text-center">
                                     A PDF version of my Resume is linked below. Click this cover panel to see.  
                                 </Card.Text>
@@ -751,9 +819,9 @@ export default function Portfolio(props){
                     </Card>                
                     <Container id="livingCover" className="coverPanel" fluid>
                         <Card>
-                            <Card.Body>
-                                <Card.Title><h2>Living In Vegas</h2></Card.Title>
-                                <Card.Text><i className="bi bi-camera2"/></Card.Text>
+                            <Card.Body style={{fontSize:'1.8em'}}>
+                                <Card.Title style={{fontSize:'1.8em'}}>Living In Vegas</Card.Title>
+                                <Card.Text style={{fontSize:'1.8em'}}><i className="bi bi-camera2"/></Card.Text>
                                 <Card.Text className="text-center">
                                     How to Have Family Fun in and around Vegas!  Although a little dated.
                                 </Card.Text>
@@ -786,9 +854,9 @@ export default function Portfolio(props){
                     </Card>                
                     <Container id="nonBootstrapCover" className="coverPanel d-flex align-items-center" fluid>
                         <Card>
-                            <Card.Body>
-                                <Card.Title><h2>Non-Bootstrap Portfolio</h2></Card.Title>
-                                <Card.Text><i className="bi bi-lightbulb"></i></Card.Text>
+                            <Card.Body style={{fontSize:'1.3em'}}>
+                                <Card.Title style={{fontSize:'1.3em'}}>Non-Bootstrap Portfolio</Card.Title>
+                                <Card.Text style={{fontSize:'1.3em'}}><i className="bi bi-lightbulb"></i></Card.Text>
                                 <Card.Text className="text-center">
                                     CodeIgniter,Fuel CMS, and Lamp technologies are used as the MVC framework. They are based on PHP/LAMP technologies. 
                                     Includes lot of built-in routing, modular storage of code in a database, and Active Object database access.  
@@ -826,9 +894,9 @@ export default function Portfolio(props){
                     </Card>                
                     <Container id="bootPortfolioCover" className="coverPanel d-flex align-items-center" fluid>
                         <Card>
-                            <Card.Body>
-                                <Card.Title><h2>Bootstrap Portfolio</h2></Card.Title>
-                                <Card.Text><i className="bi bi-lightbulb"></i></Card.Text>
+                            <Card.Body style={{fontSize:'1.4em'}}>
+                                <Card.Title style={{fontSize:'1.4em'}}>Bootstrap Portfolio</Card.Title>
+                                <Card.Text style={{fontSize:'1.4em'}}><i className="bi bi-lightbulb"></i></Card.Text>
                                 <Card.Text className="text-center">
                                     Update on original work portfolio with utilization of Bootstrap for Mobile-first, responsive design to ensure website 
                                     look good on all devices.

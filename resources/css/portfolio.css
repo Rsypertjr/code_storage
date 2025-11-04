@@ -290,6 +290,30 @@ div#mobileCover {
  }
 
 
+ div#nextJsCover {
+    position:absolute;
+    height:100%;
+    width:100%;
+    opacity:0.85;
+    left:0;
+    top:0;
+    z-index:2;
+    background-color:black;
+    -webkit-transition: all .5s ease-in-out;
+    transition: all .5s ease-in-out;
+    }
+
+ div#nextJsCover > div.card {
+    width:80%;
+    height:auto;
+    margin:0 10% 0 10%;
+    background-color:black;
+    font-size:1.75em;
+    color:white;    
+ }
+
+
+
 
 
  div.panel-container {
