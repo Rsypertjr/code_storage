@@ -134,7 +134,7 @@ export default function Portfolio(props){
         e.preventDefault();
         $('html, body').animate({
           scrollTop: targetEl.offset().top
-        }, 500); // Adjust the duration (in milliseconds) for the animation speed
+        }, 250); // Adjust the duration (in milliseconds) for the animation speed
       }
     };
 
