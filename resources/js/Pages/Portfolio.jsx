@@ -26,6 +26,7 @@ import tictactoe from '../../images/tictactoe.png';
 import mern from '../../images/mern.jpeg';
 import vegas from '../../images/vegas/vegas6.jpg';
 import nextjs from '../../images/nextjs.png';   
+import typescript from '../../images/typescript.png';
 import { set } from 'lodash';
 
 export default function Portfolio(props){  
@@ -496,8 +497,10 @@ export default function Portfolio(props){
                     <Container id="nextJsCover" className="coverPanel d-flex align-items-center" fluid>
                         <Card style={{marginTop:'-30em'}}>
                             <Card.Body style={{fontSize:'1.8em'}}>         
-                                <Card.Title style={{fontSize:'1.5em'}}>Next.js/Typescript Apps/TailwindCSS</Card.Title>
-                                <Card.Text><i className="bi bi-tree"></i></Card.Text>
+                                <Card.Title style={{fontSize:'1.5em'}}>Next.js & Typescript &TailwindCSS Apps</Card.Title>
+                                <Card.Text>
+                                    <img src={typescript} className="rounded mb-2" height="15%" width="15%"  alt="Tic Tac Toe Image"/> 
+                                </Card.Text>
                                 <Card.Text className="text-center">
                                     <p>Next.js and Typescript apps that use TailwindCSS for styling.  One app is also Copilot AI assisted.</p>
                                 </Card.Text>
