@@ -651,7 +651,7 @@ export default function Portfolio(props){
                         <Container id="frameworksCover" 
                             className="coverPanel d-flex align-items-center" 
                             fluid>
-                            <Card style={{marginTop:'-20em'}}>
+                            <Card style={{marginTop:'-50em'}}>
                                 <Card.Body style={{fontSize:'1.2em'}}>         
                                     <Card.Title style={{fontSize:'2.5em'}}>Frameworks</Card.Title>
                                     <Card.Text><i className="bi bi-tree"></i></Card.Text>
