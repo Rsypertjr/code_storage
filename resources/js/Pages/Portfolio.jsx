@@ -138,14 +138,16 @@ export default function Portfolio(props){
 
     const selectNavItem = (e, pTitle) => {
       //console.log(e.target);
-      setPageTitle(pTitle);
+     
       var targetEl = $(e.target.getAttribute('href'));
       if (targetEl.length) {
         e.preventDefault();
         $('html, body').animate({
           scrollTop: targetEl.offset().top
         }, 250); // Adjust the duration (in milliseconds) for the animation speed
+        setPageTitle(pTitle);
       }
+      
     };
 
     const ScrollToTop = () => {
