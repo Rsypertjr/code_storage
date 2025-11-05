@@ -245,7 +245,7 @@ div#mobileCover {
 
 
 
- div#nonBootstrapCover, div#bootPortfolioCover {
+ div#nonBootstrapCover, div#bootPortfolioCover, div#laravelReactCover {
     position:absolute;
     height:100%;
     width:100%;
@@ -258,7 +258,7 @@ div#mobileCover {
     transition: all .5s ease-in-out;
     }
 
- div#nonBootstrapCover > div.card, div#bootPortfolioCover > div.card {
+ div#nonBootstrapCover > div.card, div#bootPortfolioCover > div.card, div#laravelReactCover > div.card {
     width:80%;
     margin:0 10% 0 10%;
     background-color:black;

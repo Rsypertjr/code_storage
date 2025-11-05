@@ -27,6 +27,7 @@ import mern from '../../images/mern.jpeg';
 import vegas from '../../images/vegas/vegas6.jpg';
 import nextjs from '../../images/nextjs.png';   
 import typescript from '../../images/typescript.png';
+import react from '../../images/react.svg';
 import { set } from 'lodash';
 
 export default function Portfolio(props){  
@@ -124,6 +125,13 @@ export default function Portfolio(props){
             $('#homeCover').css('visibility','visible');
     };
 
+    const laravelReactCover = (e) => {
+        if($('#laravelReactCover').css('visibility') == 'visible')
+            $('#laravelReactCover').css('visibility','hidden');
+        else
+            $('#laravelReactCover').css('visibility','visible');  
+    }
+
     const allCoversShow = () => {
         $('#mobileCover').css('visibility','visible');
     };
@@ -218,6 +226,10 @@ export default function Portfolio(props){
                     $('#bootPortfolioCover').css('visibility','visible');    
                 });
 
+                $('#laravelReact').on('mouseenter',function(){
+                    $('#laravelReactCover').css('visibility','visible');    
+                });
+
                 $('#nextJs').on('mouseenter',function(){
                     $('#nextJsCover').css('visibility','visible');    
                 });
@@ -258,6 +270,8 @@ export default function Portfolio(props){
                                     <NavDropdown.Item href="#mobile" onClick={(e) => selectNavItem(e,"JQuery Mobile")}>JQuery Mobile</NavDropdown.Item>
                                     <NavDropdown.Divider />
                                     <NavDropdown.Item href="#frameworks" onClick={(e) => selectNavItem(e,"Frameworks")}>Frameworks</NavDropdown.Item>
+                                    <NavDropdown.Divider />
+                                    <NavDropdown.Item href="#laravelReact" onClick={(e) => selectNavItem(e,"Laravel React")}>Laravel React Apps</NavDropdown.Item>
                                     <NavDropdown.Divider />
                                     <NavDropdown.Item href="#nextJs" onClick={(e) => selectNavItem(e,"Next.js")}>Next.js</NavDropdown.Item>
 
@@ -511,47 +525,9 @@ export default function Portfolio(props){
             </OverlayTrigger>
           
 
-            {/* Frameworks Panel */}
-            <section id="frameworks">
             <OverlayTrigger placement="top" overlay={(tooltip("Click to Toggle Cover Layer"))}>
-                <Container  style={{backgroundColor:'#6A5ACD'}} className="panel-container" onClick={hideFrameworksCover} fluid>
-                    <Card style={{backgroundColor:'#b3f5daff'}}>
-                        <img src={tictactoe} className="rounded mb-2" height="15%" width="15%" style={{margin:'1em 0 0 42.5%'}} alt="Tic Tac Toe Image"/> 
-                        <Card.Body>   
-                            <ScrollToTop />         
-                            <Card.Link href="https://ksense-test.vercel.app/show-patients" target="_blank">Next.js Patient Risk Analyzewr</Card.Link>
-                            <Card.Text><object data="https://ksense-test.vercel.app/show-patients" height="200" width="300"></object></Card.Text>
-                            <Card.Text className="text-center app-description"><p>Next.js and Typescript with API that performs error checking to recover various fetching responses 
-                                including service having internal server errors, and timeouts due to rate limiting.  This app also captures wrong data input formatting and displays 
-                                these errors.</p>
-                                <p><a href="https://github.com/Rsypertjr/ksense-test.git" target="_blank">Here is the Code.</a></p>
-                            </Card.Text>
-                        </Card.Body>
-                    </Card>
-                    <Card style={{backgroundColor:'#b3f5daff'}}>
-                        <img src={tictactoe} className="rounded mb-2" height="15%" width="15%" style={{margin:'1em 0 0 42.5%'}} alt="Tic Tac Toe Image"/> 
-                        <Card.Body>   
-                            <ScrollToTop />         
-                            <Card.Link href="https://codestorage.vercel.app/" target="_blank">AI-CoPilot-Next.js-Suprabase-Voting Analyzer</Card.Link>
-                            <Card.Text><object data="https://codestorage.vercel.app/" height="200" width="300"></object></Card.Text>
-                            <Card.Text className="text-center app-description">New Next.js-AI-CoPilot Developed Presidential Voting Analyzer.&nbsp;&nbsp;Supabase SQL Integration for Front-End Dynamic Interaction, with Server-Side Rendering for SEO.&nbsp;&nbsp;
-										GitHub Copilot AI is used for Code Management and Intelligent Code Generation.<a href="https://github.com/Rsypertjr/code_storage/tree/presidentelect" target="_blank">Here is the Code.</a>
-                            </Card.Text>
-                        </Card.Body>
-                    </Card>
-                    <Card style={{backgroundColor:'#F5DEB3'}}>
-                        <img src={tictactoe} className="rounded mb-2" height="15%" width="15%" style={{margin:'1em 0 0 42.5%'}} alt="Tic Tac Toe Image"/> 
-                        <Card.Body>    
-                            <ScrollToTop />         
-                            <Card.Link href="tictactoe" target="_blank">React Javascript Tic-Tac-Toe</Card.Link>
-                            <Card.Text><object data="https://rsypertjr.net/tictactoe" height="200" width="300"></object></Card.Text>
-                            <Card.Text className="text-center app-description">
-                                React Javascript Tic Tac Toe app with CSS animations for victory celebration.
-                                &nbsp;&nbsp;<a href="https://github.com/Rsypertjr/fuelCMS/blob/newfuel/fuel/application/views/tictactoe.php" target="_blank">Here is the Code.</a>
-                            </Card.Text>
-                        </Card.Body>
-                    </Card>
-                    <Card style={{backgroundColor:'#7FFFD4'}}>
+                <Container id="laravelReact"  style={{backgroundColor:'#B7AC66'}} className="panel-container" onClick={laravelReactCover} fluid>
+                     <Card style={{backgroundColor:'#7FFFD4'}}>
                         <img src={dataanalysis} className="rounded mb-2" height="15%" width="15%" style={{margin:'1em 0 0 42.5%'}} alt="Data Analysis Image"/> 
                         <Card.Body>  
                             <ScrollToTop />           
@@ -608,6 +584,56 @@ export default function Portfolio(props){
                             </Card.Text>
                         </Card.Body>
                     </Card>
+                    <Card>
+                        <Card.Body>
+                            <ScrollToTop /> 
+                            <Card.Link href="https://preselections.rsypertjr.net" target="_blank">Docker based Laravel Vite, React, Bootstrap 5, Chart.js, MongoDb App</Card.Link>
+                            <Card.Text><object data="https://preselections.rsypertjr.net" height="200" width="300"></object></Card.Text>
+                            <Card.Text className="text-center app-description">A Docker based app that uses Laravel/Bootstrap 5 with Vite management of React.js with a networked containers of: Nginx, PHP, Mariadb, Composer, Artisan, NPM, Redis, 
+                                Phpmyadmin. Utilizes Laravel Api for a Cloud-based MongoDb backend.
+                                &nbsp;&nbsp;<a href="https://github.com/Rsypertjr/Docker-Laravel-Vite-React-Bootstrap-Chartjs/tree/lar-vite-chart-boot" target="_blank">Here is the Code.</a>
+                            </Card.Text>
+                        </Card.Body>
+                    </Card>
+
+                    <Container id="laravelReactCover" className="coverPanel d-flex align-items-center" fluid>
+                        <Card style={{marginTop:'-90em'}}>
+                            <Card.Body style={{fontSize:'1.8em'}}>         
+                                <Card.Title style={{fontSize:'1.5em'}}>Laravel & React Apps</Card.Title>
+                                <Card.Text>
+                                    <img src={react} className="rounded mb-2" height="15%" width="15%"  alt="Tic Tac Toe Image"/> 
+                                </Card.Text>
+                                <Card.Text className="text-center">
+                                    <p>Laravel Framework and React front-end development.  One app is also Copilot AI assisted.</p>
+                                </Card.Text>
+                            </Card.Body>
+                        </Card>
+                    </Container>               
+                </Container>                
+            </OverlayTrigger>
+          
+
+
+
+
+
+            {/* Frameworks Panel */}
+            <section id="frameworks">
+            <OverlayTrigger placement="top" overlay={(tooltip("Click to Toggle Cover Layer"))}>
+                <Container  style={{backgroundColor:'#6A5ACD'}} className="panel-container" onClick={hideFrameworksCover} fluid>                   
+                    <Card style={{backgroundColor:'#F5DEB3'}}>
+                        <img src={tictactoe} className="rounded mb-2" height="15%" width="15%" style={{margin:'1em 0 0 42.5%'}} alt="Tic Tac Toe Image"/> 
+                        <Card.Body>    
+                            <ScrollToTop />         
+                            <Card.Link href="tictactoe" target="_blank">React Javascript Tic-Tac-Toe</Card.Link>
+                            <Card.Text><object data="https://rsypertjr.net/tictactoe" height="200" width="300"></object></Card.Text>
+                            <Card.Text className="text-center app-description">
+                                React Javascript Tic Tac Toe app with CSS animations for victory celebration.
+                                &nbsp;&nbsp;<a href="https://github.com/Rsypertjr/fuelCMS/blob/newfuel/fuel/application/views/tictactoe.php" target="_blank">Here is the Code.</a>
+                            </Card.Text>
+                        </Card.Body>
+                    </Card>
+                   
 
                     <Card style={{backgroundColor:'#EEE8AA'}}>
                         <img src={dataanalysis} className="rounded mb-2" height="15%" width="15%" style={{margin:'1em 0 0 42.5%'}} alt="Data Analysis Image"/> 
@@ -634,30 +660,18 @@ export default function Portfolio(props){
                                </Card.Text>
                         </Card.Body>
                     </Card>
-                    <Card>
-                        <Card.Body>
-                            <ScrollToTop /> 
-                            <Card.Link href="https://preselections.rsypertjr.net" target="_blank">Docker based Laravel Vite, React, Bootstrap 5, Chart.js, MongoDb App</Card.Link>
-                            <Card.Text><object data="https://preselections.rsypertjr.net" height="200" width="300"></object></Card.Text>
-                            <Card.Text className="text-center app-description">A Docker based app that uses Laravel/Bootstrap 5 with Vite management of React.js with a networked containers of: Nginx, PHP, Mariadb, Composer, Artisan, NPM, Redis, 
-                                Phpmyadmin. Utilizes Laravel Api for a Cloud-based MongoDb backend.
-                                &nbsp;&nbsp;<a href="https://github.com/Rsypertjr/Docker-Laravel-Vite-React-Bootstrap-Chartjs/tree/lar-vite-chart-boot" target="_blank">Here is the Code.</a>
-                            </Card.Text>
-                        </Card.Body>
-                    </Card>
-
+                  
 
                     <Container id="frameworksCover" 
                         className="coverPanel d-flex align-items-center" 
                     fluid>
-                        <Card style={{marginTop:'-200em'}}>
+                        <Card style={{marginTop:'-20em'}}>
                             <Card.Body style={{fontSize:'1.2em'}}>         
                                 <Card.Title style={{fontSize:'2.5em'}}>Frameworks</Card.Title>
                                 <Card.Text><i className="bi bi-tree"></i></Card.Text>
                                 <Card.Text className="text-center" style={{fontSize:'2em'}}>
-                                    Programming I've done using:  Node.js based technologies of Vue, Angular, and React.  Some utilization of the Laravel MVC Framework and Node Express.
-                                    Docker and Docker Compose Technologies used withth NPM and Webpack dependency management.
-                                    <br/>Added GitHub Copilot AI for Intelligent Code Generation and Management of Vercel-hosted Presidential Voting Analyzer App.
+                                    Programming I've done using:  Node.js based technologies of Vue, Angular,React and Node Express.
+                                    Docker and Docker Compose Technologies used with NPM and Webpack dependency management.
                                 </Card.Text>
                             </Card.Body>
                         </Card>
