@@ -299,7 +299,7 @@ export default function Portfolio(props){
 		    {/* -------- Display Panels with Cover Layers --------------- */}
 
             {/* Home Panel */}
-            <OverlayTrigger placement="top" overlay={(tooltip("Click to Toggle Cover Layer"))}>
+          
                 <Container id="home" className="panel-container" onClick={hideHomeCover} 
                     style={{ backgroundColor:'#F5F5DC'}} fluid>                
                     <Card style={{backgroundColor:'#F0FFFF'}}>
@@ -312,22 +312,23 @@ export default function Portfolio(props){
                             </Card.Body>
                         </Card.Body>
                     </Card>
-                    <Container id="homeCover" className="coverPanel" fluid>
-                        <Card>
-                            <Card.Body style={{fontSize:'1.5em'}}>                                
-                                <Card.Text style={{fontSize:'1.2em'}}>Code Repository</Card.Text>
-                                <Card.Text style={{fontSize:'1.2em'}}><i className="bi bi-file-earmark-code-fill"></i></Card.Text>
-                                <Card.Text className="text-center">Beneath are links to FuelCMS-based site Code</Card.Text>
-                            </Card.Body>
-                        </Card>
-                    </Container>   
+                    <OverlayTrigger placement="top" overlay={(tooltip("Click to Toggle Cover Layer"))}>
+                        <Container id="homeCover" className="coverPanel" fluid>
+                            <Card>
+                                <Card.Body style={{fontSize:'1.5em'}}>                                
+                                    <Card.Text style={{fontSize:'1.2em'}}>Code Repository</Card.Text>
+                                    <Card.Text style={{fontSize:'1.2em'}}><i className="bi bi-file-earmark-code-fill"></i></Card.Text>
+                                    <Card.Text className="text-center">Beneath are links to FuelCMS-based site Code</Card.Text>
+                                </Card.Body>
+                            </Card>
+                        </Container>   
+                    </OverlayTrigger>
                 </Container>                        
-            </OverlayTrigger>
+            
             {/* End of Home Panel */}
 				  
 		
             {/* About Panel */}
-            <OverlayTrigger placement="top" overlay={(tooltip("Click to Toggle Cover Layer"))}>
                 <Container id="about" className="panel-container" style={{backgroundColor:'#FFE4C4'}} onClick={hideAboutCover} fluid>
                     <Card>
                         <img src={technologyideas} height="15%" width="15%" style={{margin:'1em 0 0 42.5%', backgroundColor:'#FFE4C4'}} alt="Technology Ideas"/>
@@ -352,24 +353,26 @@ export default function Portfolio(props){
                             <Card.Text className="text-center app-description">You can view my Linked-In Personal Profile for more info on me.</Card.Text>
                         </Card.Body>
                     </Card>
-                    <Container id="aboutCover" className="coverPanel d-flex align-items-center" fluid>
-                        <Card>
-                            <Card.Body style={{fontSize:'1.8em'}}>
-                                <Card.Title style={{fontSize:'1.8em'}}>About</Card.Title>
-                                <Card.Text><i className="bi bi-wrench"></i></Card.Text>
-                                <Card.Text>Beneath there is a page about technologies that I've used, and an email contact page.  Also you can see more about me on my LinkedIn profile page.  
-                                    Click this cover panel to see.
-                                </Card.Text>
-                            </Card.Body>
-                        </Card>
-                    </Container>         
+                    <OverlayTrigger placement="top" overlay={(tooltip("Click to Toggle Cover Layer"))}>
+                        <Container id="aboutCover" className="coverPanel d-flex align-items-center" fluid>
+                            <Card>
+                                <Card.Body style={{fontSize:'1.8em'}}>
+                                    <Card.Title style={{fontSize:'1.8em'}}>About</Card.Title>
+                                    <Card.Text><i className="bi bi-wrench"></i></Card.Text>
+                                    <Card.Text>Beneath there is a page about technologies that I've used, and an email contact page.  Also you can see more about me on my LinkedIn profile page.  
+                                        Click this cover panel to see.
+                                    </Card.Text>
+                                </Card.Body>
+                            </Card>
+                        </Container>    
+                    </OverlayTrigger>     
                 </Container>
-            </OverlayTrigger>
+           
             {/* End of About Panel */}
 
 
             {/* Lamp Panel */}
-            <OverlayTrigger placement="top" overlay={(tooltip("Click to Toggle Cover Layer"))}>
+            
                 <Container id="lamp" className="panel-container" onClick={hideLampCover} style={{backgroundColor:'#FAFAD2'}} fluid>
                     <Card style={{backgroundColor:'#90EE90'}}>
                         <img src={dataanalysis} height="15%" width="15%" style={{margin:'1em 0 0 42.5%'}} alt="Data Analysis"/> 
@@ -426,29 +429,28 @@ export default function Portfolio(props){
                         </Card.Body>
                     </Card>
                
-
-                    <Container id="lampCover" className="coverPanel d-flex align-items-center" fluid>
-                        <Card style={{marginTop:'-30em'}}>
-                            <Card.Body style={{fontSize:'1.8em'}}>
-                                <Card.Title style={{fontSize:'1.8em'}}>LAMP Technologies</Card.Title>
-                                <Card.Text style={{fontSize:'1.8em'}}><i className="bi bi-lightbulb"></i></Card.Text>
-                                <Card.Text className="text-center">
-                                    PHP/MySQL is used on the back-end for these apps. Regex is used to parse text files into a database.  
-                                        I programmatically converted flat non-relational tables into a relational-XMLfile for app data.  PHP/SQL is
-                                        used to query database and send tabular results to front-end.  Javascript/JQuery is used for dynamic DOM manipulation
-                                        and SVG graphic element generation. AJAX is also used to update and process game-board data, as well as
-                                        load XML data files.  Click on this Panel to see apps.
-                                </Card.Text>
-                            </Card.Body>
-                        </Card>
-                    </Container>               
-                </Container>            
-            </OverlayTrigger>
+                    <OverlayTrigger placement="top" overlay={(tooltip("Click to Toggle Cover Layer"))}>
+                        <Container id="lampCover" className="coverPanel d-flex align-items-center" fluid>
+                            <Card style={{marginTop:'-30em'}}>
+                                <Card.Body style={{fontSize:'1.8em'}}>
+                                    <Card.Title style={{fontSize:'1.8em'}}>LAMP Technologies</Card.Title>
+                                    <Card.Text style={{fontSize:'1.8em'}}><i className="bi bi-lightbulb"></i></Card.Text>
+                                    <Card.Text className="text-center">
+                                        PHP/MySQL is used on the back-end for these apps. Regex is used to parse text files into a database.  
+                                            I programmatically converted flat non-relational tables into a relational-XMLfile for app data.  PHP/SQL is
+                                            used to query database and send tabular results to front-end.  Javascript/JQuery is used for dynamic DOM manipulation
+                                            and SVG graphic element generation. AJAX is also used to update and process game-board data, as well as
+                                            load XML data files.  Click on this Panel to see apps.
+                                    </Card.Text>
+                                </Card.Body>
+                            </Card>
+                        </Container>                                 
+                    </OverlayTrigger>            
+                </Container>  
             {/* End of Lamp Panel */}
             
           
             {/* Mobile Panel */}
-            <OverlayTrigger placement="top" overlay={(tooltip("Click to Toggle Cover Layer"))}>
                 <Container id="mobile" style={{backgroundColor:'#BC8F8F'}} className="panel-container" onClick={hideMobileCover} fluid>
                     
                     <Card style={{backgroundColor:'#FFEFD5'}}>
@@ -465,25 +467,24 @@ export default function Portfolio(props){
                         </Card.Body>
                     </Card>
                 
-
-                    <Container id="mobileCover" className="coverPanel d-flex align-items-center" fluid>
-                        <Card>
-                            <Card.Body style={{fontSize:'1.8em'}}>      
-                                <Card.Title style={{fontSize:'1.8em'}}>Mobile Portfolio</Card.Title>
-                                <Card.Body>
-                                    <Card.Text><i className="bi bi-phone"></i></Card.Text>
-                                    <Card.Text className="text-center">Beneath is a JQuery Mobile version of my portfolio that is mobile-device-responsive.</Card.Text>
+                    <OverlayTrigger placement="top" overlay={(tooltip("Click to Toggle Cover Layer"))}>           
+                        <Container id="mobileCover" className="coverPanel d-flex align-items-center" fluid>
+                            <Card>
+                                <Card.Body style={{fontSize:'1.8em'}}>      
+                                    <Card.Title style={{fontSize:'1.8em'}}>Mobile Portfolio</Card.Title>
+                                    <Card.Body>
+                                        <Card.Text><i className="bi bi-phone"></i></Card.Text>
+                                        <Card.Text className="text-center">Beneath is a JQuery Mobile version of my portfolio that is mobile-device-responsive.</Card.Text>
+                                    </Card.Body>
                                 </Card.Body>
-                            </Card.Body>
-                        </Card>
-                    </Container>               
+                            </Card>
+                        </Container>                       
+                    </OverlayTrigger>            
                 </Container>
-            </OverlayTrigger>
             {/* End of Mobile Panel */}				  
 
 
-            <OverlayTrigger placement="top" overlay={(tooltip("Click to Toggle Cover Layer"))}>
-                <Container id="nextJs"  style={{backgroundColor:'#B7AC66'}} className="panel-container" onClick={nextJsCover} fluid>
+              <Container id="nextJs"  style={{backgroundColor:'#B7AC66'}} className="panel-container" onClick={nextJsCover} fluid>
                     <Card style={{backgroundColor:'#B78466'}}>
                         <img src={nextjs} className="rounded mb-2" height="15%" width="15%" style={{margin:'1em 0 0 42.5%'}} alt="Tic Tac Toe Image"/> 
                         <Card.Body>   
@@ -508,24 +509,26 @@ export default function Portfolio(props){
                             </Card.Text>
                         </Card.Body>
                     </Card>
-                    <Container id="nextJsCover" className="coverPanel d-flex align-items-center" fluid>
-                        <Card style={{marginTop:'-30em'}}>
-                            <Card.Body style={{fontSize:'1.8em'}}>         
-                                <Card.Title style={{fontSize:'1.5em'}}>Next.js & Typescript &TailwindCSS Apps</Card.Title>
-                                <Card.Text>
-                                    <img src={typescript} className="rounded mb-2" height="15%" width="15%"  alt="Tic Tac Toe Image"/> 
-                                </Card.Text>
-                                <Card.Text className="text-center">
-                                    <p>Next.js and Typescript apps that use TailwindCSS for styling.  One app is also Copilot AI assisted.</p>
-                                </Card.Text>
-                            </Card.Body>
-                        </Card>
-                    </Container>               
+                    <OverlayTrigger placement="top" overlay={(tooltip("Click to Toggle Cover Layer"))}>
+                        <Container id="nextJsCover" className="coverPanel d-flex align-items-center" fluid>
+                            <Card style={{marginTop:'-30em'}}>
+                                <Card.Body style={{fontSize:'1.8em'}}>         
+                                    <Card.Title style={{fontSize:'1.5em'}}>Next.js & Typescript &TailwindCSS Apps</Card.Title>
+                                    <Card.Text>
+                                        <img src={typescript} className="rounded mb-2" height="15%" width="15%"  alt="Tic Tac Toe Image"/> 
+                                    </Card.Text>
+                                    <Card.Text className="text-center">
+                                        <p>Next.js and Typescript apps that use TailwindCSS for styling.  One app is also Copilot AI assisted.</p>
+                                    </Card.Text>
+                                </Card.Body>
+                            </Card>
+                        </Container>     
+                    </OverlayTrigger>          
                 </Container>                
-            </OverlayTrigger>
+           
           
 
-            <OverlayTrigger placement="top" overlay={(tooltip("Click to Toggle Cover Layer"))}>
+           
                 <Container id="laravelReact"  style={{backgroundColor:'#B7AC66'}} className="panel-container" onClick={laravelReactCover} fluid>
                      <Card style={{backgroundColor:'#7FFFD4'}}>
                         <img src={dataanalysis} className="rounded mb-2" height="15%" width="15%" style={{margin:'1em 0 0 42.5%'}} alt="Data Analysis Image"/> 
@@ -595,31 +598,28 @@ export default function Portfolio(props){
                             </Card.Text>
                         </Card.Body>
                     </Card>
-
-                    <Container id="laravelReactCover" className="coverPanel d-flex align-items-center" fluid>
-                        <Card style={{marginTop:'-90em'}}>
-                            <Card.Body style={{fontSize:'1.8em'}}>         
-                                <Card.Title style={{fontSize:'1.5em'}}>Laravel & React Apps</Card.Title>
-                                <Card.Text>
-                                    <img src={react} className="rounded mb-2" height="15%" width="15%"  alt="Tic Tac Toe Image"/> 
-                                </Card.Text>
-                                <Card.Text className="text-center">
-                                    <p>Laravel Framework and React front-end development.  One app is also Copilot AI assisted.</p>
-                                </Card.Text>
-                            </Card.Body>
-                        </Card>
-                    </Container>               
-                </Container>                
-            </OverlayTrigger>
-          
-
+                    <OverlayTrigger placement="top" overlay={(tooltip("Click to Toggle Cover Layer"))}>
+                        <Container id="laravelReactCover" className="coverPanel d-flex align-items-center" fluid>
+                            <Card style={{marginTop:'-90em'}}>
+                                <Card.Body style={{fontSize:'1.8em'}}>         
+                                    <Card.Title style={{fontSize:'1.5em'}}>Laravel & React Apps</Card.Title>
+                                    <Card.Text>
+                                        <img src={react} className="rounded mb-2" height="15%" width="15%"  alt="Tic Tac Toe Image"/> 
+                                    </Card.Text>
+                                    <Card.Text className="text-center">
+                                        <p>Laravel Framework and React front-end development.  One app is also Copilot AI assisted.</p>
+                                    </Card.Text>
+                                </Card.Body>
+                            </Card>
+                        </Container>      
+                    </OverlayTrigger>          
+                </Container>               
 
 
 
 
             {/* Frameworks Panel */}
-            <section id="frameworks">
-            <OverlayTrigger placement="top" overlay={(tooltip("Click to Toggle Cover Layer"))}>
+            <section id="frameworks">            
                 <Container  style={{backgroundColor:'#6A5ACD'}} className="panel-container" onClick={hideFrameworksCover} fluid>                   
                     <Card style={{backgroundColor:'#F5DEB3'}}>
                         <img src={tictactoe} className="rounded mb-2" height="15%" width="15%" style={{margin:'1em 0 0 42.5%'}} alt="Tic Tac Toe Image"/> 
@@ -661,23 +661,24 @@ export default function Portfolio(props){
                         </Card.Body>
                     </Card>
                   
-
-                    <Container id="frameworksCover" 
-                        className="coverPanel d-flex align-items-center" 
-                    fluid>
-                        <Card style={{marginTop:'-20em'}}>
-                            <Card.Body style={{fontSize:'1.2em'}}>         
-                                <Card.Title style={{fontSize:'2.5em'}}>Frameworks</Card.Title>
-                                <Card.Text><i className="bi bi-tree"></i></Card.Text>
-                                <Card.Text className="text-center" style={{fontSize:'2em'}}>
-                                    Programming I've done using:  Node.js based technologies of Vue, Angular,React and Node Express.
-                                    Docker and Docker Compose Technologies used with NPM and Webpack dependency management.
-                                </Card.Text>
-                            </Card.Body>
-                        </Card>
-                    </Container>               
+                    <OverlayTrigger placement="top" overlay={(tooltip("Click to Toggle Cover Layer"))}>    
+                        <Container id="frameworksCover" 
+                            className="coverPanel d-flex align-items-center" 
+                            fluid>
+                            <Card style={{marginTop:'-20em'}}>
+                                <Card.Body style={{fontSize:'1.2em'}}>         
+                                    <Card.Title style={{fontSize:'2.5em'}}>Frameworks</Card.Title>
+                                    <Card.Text><i className="bi bi-tree"></i></Card.Text>
+                                    <Card.Text className="text-center" style={{fontSize:'2em'}}>
+                                        Programming I've done using:  Node.js based technologies of Vue, Angular,React and Node Express.
+                                        Docker and Docker Compose Technologies used with NPM and Webpack dependency management.
+                                    </Card.Text>
+                                </Card.Body>
+                            </Card>
+                        </Container>  
+                    </OverlayTrigger>             
                 </Container>                
-            </OverlayTrigger>
+           
           
             {/* End of Frameworks Panel */}
             
@@ -685,7 +686,6 @@ export default function Portfolio(props){
             
 
             {/* Manuals Panel */}                
-            <OverlayTrigger placement="top" overlay={(tooltip("Click to Toggle Cover Layer"))}>
                 <Container id="manuals" style={{backgroundColor:'#708090'}} className="panel-container" onClick={hideManualsCover} fluid>
                     <Card style={{backgroundColor:'#D3D3D3'}}>
                         <img src={technicalwritingimage} height="15%" width="15%" style={{margin:'1em 0 0 42.5%'}} alt="Technical Writing"/> 
@@ -725,25 +725,25 @@ export default function Portfolio(props){
                             </Card.Text>
                         </Card.Body>
                     </Card>
-                
-                    <Container id="manualsCover" className="coverPanel d-flex align-items-center" fluid>
-                        <Card style={{marginTop:'-30em'}}>
-                            <Card.Body style={{fontSize:'2em'}}>
-                                <Card.Title style={{fontSize:'1.5em'}}>Production Manuals</Card.Title>
-                                <Card.Text><i className="bi bi-pen"></i></Card.Text>
-                                <Card.Text className="text-center">
-                                    Operation and Maintenance Manuals for an Electro-Mechanical Application
-                                </Card.Text>
-                            </Card.Body>
-                        </Card>
-                    </Container>               
+                    <OverlayTrigger placement="top" overlay={(tooltip("Click to Toggle Cover Layer"))}>            
+                        <Container id="manualsCover" className="coverPanel d-flex align-items-center" fluid>
+                            <Card style={{marginTop:'-30em'}}>
+                                <Card.Body style={{fontSize:'2em'}}>
+                                    <Card.Title style={{fontSize:'1.5em'}}>Production Manuals</Card.Title>
+                                    <Card.Text><i className="bi bi-pen"></i></Card.Text>
+                                    <Card.Text className="text-center">
+                                        Operation and Maintenance Manuals for an Electro-Mechanical Application
+                                    </Card.Text>
+                                </Card.Body>
+                            </Card>
+                        </Container>   
+                    </OverlayTrigger>                   
                 </Container> 
-            </OverlayTrigger>           
+              
             {/* End of Manuals Panel */}
             
         
-            {/* Specifications Panel */}
-            <OverlayTrigger placement="top" overlay={(tooltip("Click to Toggle Cover Layer"))}>
+            {/* Specifications Panel */}          
                 <Container id="specifications" style={{backgroundColor:'#D2691E'}} className="panel-container" onClick={hideSpecificationsCover} fluid>
                     <Card style={{backgroundColor:'#DEB887'}}>
                         <img src={engProcessSpec} height="15%" width="15%" style={{margin:'1em 0 0 42.5%'}} alt="Engineering Process Specification"/>   
@@ -768,25 +768,24 @@ export default function Portfolio(props){
                             </Card.Text>
                         </Card.Body>
                     </Card>               
-                
-                    <Container id="specificationsCover" className="coverPanel d-flex align-items-center" fluid>
-                        <Card>
-                            <Card.Body style={{fontSize:'1.8em'}}>
-                                <Card.Title style={{fontSize:'1.8em'}}>Technical Specifications</Card.Title>
-                                <Card.Text style={{fontSize:'1.8em'}}><i className="bi bi-card-checklist"></i></Card.Text>
-                                <Card.Text className="text-center">
-                                    Technology Explanation (White Paper) and Business Process Description
-                                </Card.Text>
-                            </Card.Body>
-                        </Card>
-                    </Container>               
+                    <OverlayTrigger placement="top" overlay={(tooltip("Click to Toggle Cover Layer"))}>
+                        <Container id="specificationsCover" className="coverPanel d-flex align-items-center" fluid>
+                            <Card>
+                                <Card.Body style={{fontSize:'1.8em'}}>
+                                    <Card.Title style={{fontSize:'1.8em'}}>Technical Specifications</Card.Title>
+                                    <Card.Text style={{fontSize:'1.8em'}}><i className="bi bi-card-checklist"></i></Card.Text>
+                                    <Card.Text className="text-center">
+                                        Technology Explanation (White Paper) and Business Process Description
+                                    </Card.Text>
+                                </Card.Body>
+                            </Card>
+                        </Container>     
+                    </OverlayTrigger>                    
                 </Container>   
-            </OverlayTrigger>
-          
+           
             {/* End of Specifications Panel */}		  
               
             {/* Resume Panel */}
-            <OverlayTrigger placement="top" overlay={(tooltip("Click to Toggle Cover Layer"))}>
                 <Container id="resume" style={{backgroundColor:'#000000'}} className="panel-container" onClick={hideResumeCover} fluid>
                     <Card style={{backgroundColor:'#8B0000'}}>
                         <img src={jobdone} height="15%" width="15%" style={{margin:'1em 0 0 42.5%'}} alt="Job Done"/>
@@ -800,25 +799,27 @@ export default function Portfolio(props){
                         </Card.Body>
                     </Card>
                 
-                    <Container id="resumeCover" className="coverPanel d-flex align-items-center" fluid>
-                        <Card>
-                            <Card.Body style={{fontSize:'1.8em'}}>
-                                <Card.Title style={{fontSize:'1.8em'}}>Resume</Card.Title>
-                                <Card.Text style={{fontSize:'1.8em'}}><i className="bi bi-book"></i></Card.Text>
-                                <Card.Text className="text-center">
-                                    A PDF version of my Resume is linked below. Click this cover panel to see.  
-                                </Card.Text>
-                            </Card.Body>
-                        </Card>
-                    </Container>               
+                    <OverlayTrigger placement="top" overlay={(tooltip("Click to Toggle Cover Layer"))}>
+                        <Container id="resumeCover" className="coverPanel d-flex align-items-center" fluid>
+                            <Card>
+                                <Card.Body style={{fontSize:'1.8em'}}>
+                                    <Card.Title style={{fontSize:'1.8em'}}>Resume</Card.Title>
+                                    <Card.Text style={{fontSize:'1.8em'}}><i className="bi bi-book"></i></Card.Text>
+                                    <Card.Text className="text-center">
+                                        A PDF version of my Resume is linked below. Click this cover panel to see.  
+                                    </Card.Text>
+                                </Card.Body>
+                            </Card>
+                        </Container>     
+                    </OverlayTrigger>           
                 </Container>
-            </OverlayTrigger>
+           
             
             {/* End of Resume Panel */}
 
 
             {/* Living Panel */}
-            <OverlayTrigger placement="top" overlay={(tooltip("Click to Toggle Cover Layer"))}>
+           
                 <Container style={{backgroundColor:'#FFFACD'}} id="living" className="panel-container" onClick={hideLivingCover} fluid>
                     <Card style={{backgroundColor:'#ADD8E6'}}>        
                         <img src={vegas} height="15%" width="15%" style={{margin:'1em 0 0 42.5%'}} alt="Welcome to Las Vegas"/>           
@@ -830,24 +831,25 @@ export default function Portfolio(props){
                                 See a slide show and facts about Family Fun In Vegas.
                             </Card.Text>
                         </Card.Body>
-                    </Card>                
-                    <Container id="livingCover" className="coverPanel" fluid>
-                        <Card>
-                            <Card.Body style={{fontSize:'1.8em'}}>
-                                <Card.Title style={{fontSize:'1.8em'}}>Living In Vegas</Card.Title>
-                                <Card.Text style={{fontSize:'1.8em'}}><i className="bi bi-camera2"/></Card.Text>
-                                <Card.Text className="text-center">
-                                    How to Have Family Fun in and around Vegas!  Although a little dated.
-                                </Card.Text>
-                            </Card.Body>
-                        </Card>
-                    </Container>               
+                    </Card>   
+                    <OverlayTrigger placement="top" overlay={(tooltip("Click to Toggle Cover Layer"))}>             
+                        <Container id="livingCover" className="coverPanel" fluid>
+                            <Card>
+                                <Card.Body style={{fontSize:'1.8em'}}>
+                                    <Card.Title style={{fontSize:'1.8em'}}>Living In Vegas</Card.Title>
+                                    <Card.Text style={{fontSize:'1.8em'}}><i className="bi bi-camera2"/></Card.Text>
+                                    <Card.Text className="text-center">
+                                        How to Have Family Fun in and around Vegas!  Although a little dated.
+                                    </Card.Text>
+                                </Card.Body>
+                            </Card>
+                        </Container>  
+                    </OverlayTrigger>               
                 </Container>
-            </OverlayTrigger>            
+                     
             {/* End of Living Panel */}
 
-            {/* nonBootstrap Panel */}
-            <OverlayTrigger placement="top" overlay={(tooltip("Click to Toggle Cover Layer"))}>
+            {/* nonBootstrap Panel */}            
                 <Container id="nonBootstrap" style={{backgroundColor:'#B0C4DE'}} className="panel-container" onClick={hideNonBootstrapCover} fluid>
                     <Card>
                         <img src={lampTechs} height="20%" width="20%" style={{margin:'1em 0 0 40%'}} alt="Fuel CMS"/>
@@ -865,28 +867,29 @@ export default function Portfolio(props){
                                 GIMP (like Photoshop), and other technologies.
                             </Card.Text>
                         </Card.Body>
-                    </Card>                
-                    <Container id="nonBootstrapCover" className="coverPanel d-flex align-items-center" fluid>
-                        <Card>
-                            <Card.Body style={{fontSize:'1.3em'}}>
-                                <Card.Title style={{fontSize:'1.3em'}}>Non-Bootstrap Portfolio</Card.Title>
-                                <Card.Text style={{fontSize:'1.3em'}}><i className="bi bi-lightbulb"></i></Card.Text>
-                                <Card.Text className="text-center">
-                                    CodeIgniter,Fuel CMS, and Lamp technologies are used as the MVC framework. They are based on PHP/LAMP technologies. 
-                                    Includes lot of built-in routing, modular storage of code in a database, and Active Object database access.  
-                                    On the front-end, CSS 2-D and 3-D tranformations are used to produce animations.
-                                </Card.Text>
-                            </Card.Body>
-                        </Card>
-                    </Container>               
+                    </Card>   
+                    <OverlayTrigger placement="top" overlay={(tooltip("Click to Toggle Cover Layer"))}>
+                        <Container id="nonBootstrapCover" className="coverPanel d-flex align-items-center" fluid>
+                            <Card>
+                                <Card.Body style={{fontSize:'1.3em'}}>
+                                    <Card.Title style={{fontSize:'1.3em'}}>Non-Bootstrap Portfolio</Card.Title>
+                                    <Card.Text style={{fontSize:'1.3em'}}><i className="bi bi-lightbulb"></i></Card.Text>
+                                    <Card.Text className="text-center">
+                                        CodeIgniter,Fuel CMS, and Lamp technologies are used as the MVC framework. They are based on PHP/LAMP technologies. 
+                                        Includes lot of built-in routing, modular storage of code in a database, and Active Object database access.  
+                                        On the front-end, CSS 2-D and 3-D tranformations are used to produce animations.
+                                    </Card.Text>
+                                </Card.Body>
+                            </Card>
+                        </Container>    
+                    </OverlayTrigger>           
                 </Container>
-            </OverlayTrigger>
+           
 
             {/* End of nonBootstrap Panel */}
 
 
              {/* bootPortfolio Panel */}
-            <OverlayTrigger placement="top" overlay={(tooltip("Click to Toggle Cover Layer"))}>
                     <Container id="bootPortfolio" style={{backgroundColor:'#B0C4DE'}} className="panel-container" onClick={hideBootPortfolioCover} fluid>
                         <Card>
                         <img src={lampTechs} height="20%" width="20%" style={{margin:'1em 0 0 40%'}} alt="Fuel CMS"/>
@@ -905,22 +908,22 @@ export default function Portfolio(props){
                                 GIMP (like Photoshop), and other technologies.
                             </Card.Text>
                         </Card.Body>
-                    </Card>                
-                    <Container id="bootPortfolioCover" className="coverPanel d-flex align-items-center" fluid>
-                        <Card>
-                            <Card.Body style={{fontSize:'1.4em'}}>
-                                <Card.Title style={{fontSize:'1.4em'}}>Bootstrap Portfolio</Card.Title>
-                                <Card.Text style={{fontSize:'1.4em'}}><i className="bi bi-lightbulb"></i></Card.Text>
-                                <Card.Text className="text-center">
-                                    Update on original work portfolio with utilization of Bootstrap for Mobile-first, responsive design to ensure website 
-                                    look good on all devices.
-                                </Card.Text>
-                            </Card.Body>
-                        </Card>
-                    </Container>               
-                </Container>
-            </OverlayTrigger>
-
+                    </Card>   
+                    <OverlayTrigger placement="top" overlay={(tooltip("Click to Toggle Cover Layer"))}> 
+                        <Container id="bootPortfolioCover" className="coverPanel d-flex align-items-center" fluid>
+                            <Card>
+                                <Card.Body style={{fontSize:'1.4em'}}>
+                                    <Card.Title style={{fontSize:'1.4em'}}>Bootstrap Portfolio</Card.Title>
+                                    <Card.Text style={{fontSize:'1.4em'}}><i className="bi bi-lightbulb"></i></Card.Text>
+                                    <Card.Text className="text-center">
+                                        Update on original work portfolio with utilization of Bootstrap for Mobile-first, responsive design to ensure website 
+                                        look good on all devices.
+                                    </Card.Text>
+                                </Card.Body>
+                            </Card>
+                        </Container>  
+                    </OverlayTrigger>             
+                </Container>     
             {/* End of bootPortfolio Panel */}
 
 
