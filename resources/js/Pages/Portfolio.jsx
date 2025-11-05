@@ -592,7 +592,8 @@ export default function Portfolio(props){
                                         <img src={react} className="rounded mb-2" height="15%" width="15%"  alt="Tic Tac Toe Image"/> 
                                     </Card.Text>
                                     <Card.Text className="text-center">
-                                        <p>Laravel Framework and React front-end development.  One app is also Copilot AI assisted.</p>
+                                        <p>Laravel Framework and React front-end development. Docker and Docker Compose Technologies used with NPM and 
+                                            Webpack dependency management.  One app is also Copilot AI assisted.</p>
                                     </Card.Text>
                                 </Card.Body>
                             </Card>
@@ -656,7 +657,6 @@ export default function Portfolio(props){
                                     <Card.Text><i className="bi bi-tree"></i></Card.Text>
                                     <Card.Text className="text-center" style={{fontSize:'2em'}}>
                                         Programming I've done using:  Node.js based technologies of Vue, Angular,React and Node Express.
-                                        Docker and Docker Compose Technologies used with NPM and Webpack dependency management.
                                     </Card.Text>
                                 </Card.Body>
                             </Card>
