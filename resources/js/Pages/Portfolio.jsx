@@ -533,7 +533,19 @@ export default function Portfolio(props){
 
            
                 <Container id="laravelReact"  style={{backgroundColor:'#422D29'}} className="panel-container" onClick={laravelReactCover} fluid>
-                     <Card style={{backgroundColor:'#EEE9F2'}}>
+
+                    <Card>
+                        <Card.Body>
+                            <ScrollToTop /> 
+                            <Card.Link href="https://preselections.rsypertjr.net" target="_blank">Docker based Laravel Vite, React, Bootstrap 5, Chart.js, MongoDb App</Card.Link>
+                            <Card.Text><object data="https://preselections.rsypertjr.net" height="200" width="300"></object></Card.Text>
+                            <Card.Text className="text-center app-description">A Docker based app that uses Laravel/Bootstrap 5 with Vite management of React.js with a networked containers of: Nginx, PHP, Mariadb, Composer, Artisan, NPM, Redis, 
+                                Phpmyadmin. Utilizes Laravel Api for a Cloud-based MongoDb backend.
+                                &nbsp;&nbsp;<a href="https://github.com/Rsypertjr/Docker-Laravel-Vite-React-Bootstrap-Chartjs/tree/lar-vite-chart-boot" target="_blank">Here is the Code.</a>
+                            </Card.Text>
+                        </Card.Body>
+                    </Card>
+                    <Card style={{backgroundColor:'#EEE9F2'}}>
                         <img src={dataanalysis} className="rounded mb-2" height="15%" width="15%" style={{margin:'1em 0 0 42.5%'}} alt="Data Analysis Image"/> 
                         <Card.Body>  
                             <ScrollToTop />           
@@ -547,21 +559,6 @@ export default function Portfolio(props){
                             </Card.Text>
                         </Card.Body>
                     </Card>
-                    <Card style={{backgroundColor:'#D6CFCE'}}>
-                        <img src={dataanalysis} className="rounded mb-2" height="15%" width="15%" style={{margin:'1em 0 0 42.5%'}} alt="Data Analysis Image"/> 
-                        <Card.Body>
-                            <ScrollToTop />
-                            <Card.Link href="https://lar10reactmix.rsypertjr.net/votes-table" target="_blank">Laravel(Mix) w/React & Chart.js & Bootstrap.js Vote Parser</Card.Link>
-                            <Card.Text><object data="https://lar10reactmix.rsypertjr.net/votes-table" height="200" width="300"></object></Card.Text>
-                            <Card.Text className="text-center app-description">
-                               <p>Laravel (Mix) with React.js,&nbsp;React Router,&nbsp;Chart.js,&nbsp;and Bootstrap is used in this app:&nbsp;<a href="https://laravelvotes.rsypertjr.net/votes-table" 
-								target="_blank">See App</a>.&nbsp;&nbsp;This app uses React Hooks like UseEffect and UseState for functional components.&nbsp;&nbsp;
-								Here is code link:&nbsp;<a href="https://github.com/Rsypertjr/Laravel-React-Chartjs-Votes-Parser/tree/latest2" target="_blank">See Code</a>.
-								</p>	
-                            </Card.Text>
-                        </Card.Body>
-                    </Card>
-
                     <Card style={{backgroundColor:'#D3E9ED'}}>
                         <img src={dataanalysis} className="rounded mb-2" height="15%" width="15%" style={{margin:'1em 0 0 42.5%'}} alt="Data Analysis Image"/> 
                         <Card.Body> 
@@ -575,15 +572,18 @@ export default function Portfolio(props){
                                 &nbsp;&nbsp;<a href="https://github.com/Rsypertjr/code_storage/tree/laravel-portfolio-dev" target="_blank">Here is the Code.</a>
                             </Card.Text>
                         </Card.Body>
-                    </Card>                  
-                    <Card>
+                    </Card>  
+                    <Card style={{backgroundColor:'#D6CFCE'}}>
+                        <img src={dataanalysis} className="rounded mb-2" height="15%" width="15%" style={{margin:'1em 0 0 42.5%'}} alt="Data Analysis Image"/> 
                         <Card.Body>
-                            <ScrollToTop /> 
-                            <Card.Link href="https://preselections.rsypertjr.net" target="_blank">Docker based Laravel Vite, React, Bootstrap 5, Chart.js, MongoDb App</Card.Link>
-                            <Card.Text><object data="https://preselections.rsypertjr.net" height="200" width="300"></object></Card.Text>
-                            <Card.Text className="text-center app-description">A Docker based app that uses Laravel/Bootstrap 5 with Vite management of React.js with a networked containers of: Nginx, PHP, Mariadb, Composer, Artisan, NPM, Redis, 
-                                Phpmyadmin. Utilizes Laravel Api for a Cloud-based MongoDb backend.
-                                &nbsp;&nbsp;<a href="https://github.com/Rsypertjr/Docker-Laravel-Vite-React-Bootstrap-Chartjs/tree/lar-vite-chart-boot" target="_blank">Here is the Code.</a>
+                            <ScrollToTop />
+                            <Card.Link href="https://lar10reactmix.rsypertjr.net/votes-table" target="_blank">Laravel(Mix) w/React & Chart.js & Bootstrap.js Vote Parser</Card.Link>
+                            <Card.Text><object data="https://lar10reactmix.rsypertjr.net/votes-table" height="200" width="300"></object></Card.Text>
+                            <Card.Text className="text-center app-description">
+                               <p>Laravel (Mix) with React.js,&nbsp;React Router,&nbsp;Chart.js,&nbsp;and Bootstrap is used in this app:&nbsp;<a href="https://laravelvotes.rsypertjr.net/votes-table" 
+								target="_blank">See App</a>.&nbsp;&nbsp;This app uses React Hooks like UseEffect and UseState for functional components.&nbsp;&nbsp;
+								Here is code link:&nbsp;<a href="https://github.com/Rsypertjr/Laravel-React-Chartjs-Votes-Parser/tree/latest2" target="_blank">See Code</a>.
+								</p>	
                             </Card.Text>
                         </Card.Body>
                     </Card>
