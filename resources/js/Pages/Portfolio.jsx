@@ -28,6 +28,8 @@ import vegas from '../../images/vegas/vegas6.jpg';
 import nextjs from '../../images/nextjs.png';   
 import typescript from '../../images/typescript.png';
 import react from '../../images/react.svg';
+import laravel from '../../images/laravelMVC.jpg';
+import vite from '../../images/vite.svg';
 import { set } from 'lodash';
 
 export default function Portfolio(props){  
@@ -587,11 +589,13 @@ export default function Portfolio(props){
                     </Card>
                     <OverlayTrigger placement="top" overlay={(tooltip("Click to Toggle Cover Layer"))}>
                         <Container id="laravelReactCover" className="coverPanel d-flex align-items-center" fluid>
-                            <Card style={{marginTop:'-90em'}}>
+                            <Card style={{marginTop:'-65em'}}>
                                 <Card.Body style={{fontSize:'1.8em'}}>         
                                     <Card.Title style={{fontSize:'1.5em'}}>Laravel & React Apps</Card.Title>
                                     <Card.Text>
-                                        <img src={react} className="rounded mb-2" height="15%" width="15%"  alt="Tic Tac Toe Image"/> 
+                                        <img src={laravel} className="rounded mb-2"  height="15%" width="15%"  alt="Laravel Image"/> 
+                                        <img src={react} className="rounded mb-2" style={{marginLeft:"0.25em"}} height="15%" width="15%"  alt="React Image"/> 
+                                        <img src={vite} className="rounded mb-2" style={{marginLeft:"0.25em"}} height="15%" width="15%"  alt="Vite Image"/> 
                                     </Card.Text>
                                     <Card.Text className="text-center">
                                         <p>Laravel Framework and React front-end development. Docker and Docker Compose Technologies used with NPM and 
