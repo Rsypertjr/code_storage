@@ -25,17 +25,17 @@ import mobiledevelopmentimage from '../../images/mobiledevelopmentimage.jpg';
 import tictactoe from '../../images/tictactoe.png';
 import mern from '../../images/mern.jpeg';
 import vegas from '../../images/vegas/vegas6.jpg';
-import nextjs from '../../images/nextjs.png';   
+import nextjs from '../../images/nextjs.png';
 import typescript from '../../images/typescript.png';
 import react from '../../images/react.svg';
 import laravel from '../../images/laravelMVC.jpg';
 import vite from '../../images/vite.svg';
 import { set } from 'lodash';
 
-export default function Portfolio(props){  
+export default function Portfolio(props){
     const [putLampCover, setPutLampCover] = useState(false);
     const [pageTitle, setPageTitle] = useState("Work Portfolio");
-    
+
       useEffect(() => {
           document.title = pageTitle || 'Work Portfolio'; // Set the title
           console.log("App Router page title:",pageTitle);
@@ -111,14 +111,14 @@ export default function Portfolio(props){
             $('#bootPortfolioCover').css('visibility','hidden');
         else
             $('#bootPortfolioCover').css('visibility','visible');
-    };  
+    };
 
       const nextJsCover = (e) => {
         if($('#nextJsCover').css('visibility') == 'visible')
             $('#nextJsCover').css('visibility','hidden');
         else
             $('#nextJsCover').css('visibility','visible');
-    };  
+    };
 
     const hideHomeCover = (e) => {
         if($('#homeCover').css('visibility') == 'visible')
@@ -131,16 +131,24 @@ export default function Portfolio(props){
         if($('#laravelReactCover').css('visibility') == 'visible')
             $('#laravelReactCover').css('visibility','hidden');
         else
-            $('#laravelReactCover').css('visibility','visible');  
+            $('#laravelReactCover').css('visibility','visible');
     }
 
     const allCoversShow = () => {
         $('#mobileCover').css('visibility','visible');
     };
 
+    const aiAssistedCover = (e) => {
+        if($('#aiAssistedCover').css('visibility') == 'visible')
+            $('#aiAssistedCover').css('visibility','hidden');
+        else
+            $('#aiAssistedCover').css('visibility','visible');
+    }
+
+
     const selectNavItem = (e, pTitle) => {
       //console.log(e.target);
-     
+
       var targetEl = $(e.target.getAttribute('href'));
       if (targetEl.length) {
         e.preventDefault();
@@ -149,18 +157,18 @@ export default function Portfolio(props){
         }, 250); // Adjust the duration (in milliseconds) for the animation speed
         setPageTitle(pTitle);
       }
-      
+
     };
 
     const ScrollToTop = () => {
-   
+
         return (
             <div className="d-flex p-1 justify-content-center">
                 <Button onClick={() => window.scrollTo(0,0)}  style={{backgroundColor:'black',cursor:'pointer'}}>
                     Scroll to Top
                 </Button>
             </div>
-           
+
         );
     };
 
@@ -175,67 +183,71 @@ export default function Portfolio(props){
 
      useEffect(() => {
      //   $( window ).scroll(function() {
-        
+
             // Adjusting Cover Panels
                $('.app-description.card-text').css('background-color','#F8F8FF')
                .css('padding','1em').css('width','auto')
                .css('margin-top','1em').css('border-radius','5px').css('font-size','1.5em');
-            
+
                 $('#home').on('mouseenter',function(){
-                    $('#homeCover').css('visibility','visible');  
+                    $('#homeCover').css('visibility','visible');
                 });
-                
-                
-      
+
+
+
                 $('#about').on('mouseenter',function(){
-                    $('#aboutCover').css('visibility','visible'); 
+                    $('#aboutCover').css('visibility','visible');
                 });
-                    
-            
-      
-    
+
+
+
+
                 $('#frameworks').on('mouseenter',function(){
-                    $('#frameworksCover').css('visibility','visible');   
+                    $('#frameworksCover').css('visibility','visible');
                 });
-                                    
-    
+
+
                 $('#manuals').on('mouseenter',function(){
-                    $('#manualsCover').css('visibility','visible');  
+                    $('#manualsCover').css('visibility','visible');
                 });
-    
+
                 $('#specifications').on('mouseenter',function(){
-                    $('#specificationsCover').css('visibility','visible'); 
+                    $('#specificationsCover').css('visibility','visible');
                 });
-    
+
                 $('#resume').on('mouseenter',function(){
-                    $('#resumeCover').css('visibility','visible');  
+                    $('#resumeCover').css('visibility','visible');
                 });
-                
-      
+
+
                 $('#living').on('mouseenter',function(){
-                    $('#livingCover').css('visibility','visible');     
+                    $('#livingCover').css('visibility','visible');
                 });
-       
+
                 $('#front').on('mouseenter',function(){
-                    $('#frontCover').css('visibility','visible');    
+                    $('#frontCover').css('visibility','visible');
                 });
 
 
                 $('#nonBootstrap').on('mouseenter',function(){
-                    $('#nonBootstrapCover').css('visibility','visible');    
+                    $('#nonBootstrapCover').css('visibility','visible');
                 });
 
 
                 $('#bootPortfolio').on('mouseenter',function(){
-                    $('#bootPortfolioCover').css('visibility','visible');    
+                    $('#bootPortfolioCover').css('visibility','visible');
                 });
 
                 $('#laravelReact').on('mouseenter',function(){
-                    $('#laravelReactCover').css('visibility','visible');    
+                    $('#laravelReactCover').css('visibility','visible');
+                });
+
+                $('#aiAssisted').on('mouseenter',function(){
+                    $('#aiAssistedCover').css('visibility','visible');
                 });
 
                 $('#nextJs').on('mouseenter',function(){
-                    $('#nextJsCover').css('visibility','visible');    
+                    $('#nextJsCover').css('visibility','visible');
                 });
 
                 $('.nav-link').add('.dropdown').on('mouseover', function() {
@@ -248,13 +260,13 @@ export default function Portfolio(props){
      },[]);
 
     return(
-       
-        <>			
-			
-					
-           
+
+        <>
+
+
+
 			<Container style={{width:"95%"}} fluid>
-                <TopCarousel pageTitle={pageTitle}/> 
+                <TopCarousel pageTitle={pageTitle}/>
                 <Container className="d-flex justify-content-center" style={{backgroundColor:"black"}} fluid>
                     <Navbar expand="lg"  style={{zIndex:200}} className="bg-body-tertiary d-flex justify-content-center" id="topNav">  {/* Beginning of Navigation */}
                     {/*<a className="navbar-brand" href="#">Bootstrap Work Portfolio</a>*/}
@@ -278,6 +290,8 @@ export default function Portfolio(props){
                                     <NavDropdown.Item href="#laravelReact" onClick={(e) => selectNavItem(e,"Laravel React")}>Laravel React Apps</NavDropdown.Item>
                                     <NavDropdown.Divider />
                                     <NavDropdown.Item href="#nextJs" onClick={(e) => selectNavItem(e,"Next.js")}>Next.js</NavDropdown.Item>
+                                    <NavDropdown.Divider />
+                                    <NavDropdown.Item href="#aiAssisted">CoPilot AI-Assisted Apps</NavDropdown.Item>
 
                                 </NavDropdown>
                                 <NavDropdown title="Technical Writing" id="basic-nav-dropdown">
@@ -287,24 +301,24 @@ export default function Portfolio(props){
                                 </NavDropdown>
                                 <Nav.Link href="#resume" onClick={(e) => selectNavItem(e,"My Resume")}>My Resume</Nav.Link>
                                 <Nav.Link href="#living" onClick={(e) => selectNavItem(e,"Living In Vegas")}>Living In Vegas</Nav.Link>
-                                <Nav.Link href="#nonBootstrap" onClick={(e) => selectNavItem(e,"Non-Bootstrap Portfolio")}>Original CodeIgniter Portfolio</Nav.Link> 
-                                <Nav.Link href="#bootPortfolio" onClick={(e) => selectNavItem(e,"CodeIgniter Portfolio")}>CodeIgniter Bootstrap Portfolio</Nav.Link>      
+                                <Nav.Link href="#nonBootstrap" onClick={(e) => selectNavItem(e,"Non-Bootstrap Portfolio")}>Original CodeIgniter Portfolio</Nav.Link>
+                                <Nav.Link href="#bootPortfolio" onClick={(e) => selectNavItem(e,"CodeIgniter Portfolio")}>CodeIgniter Bootstrap Portfolio</Nav.Link>
                             </Nav>
-                        </Navbar.Collapse> 
+                        </Navbar.Collapse>
                     </Container>
-                   
-                </Navbar>    {/*---- End of Navigation Header ---------------------------------*/}	
+
+                </Navbar>    {/*---- End of Navigation Header ---------------------------------*/}
             </Container>
-                 <MidCarousel/>                 
+                 <MidCarousel/>
             </Container>
-			
+
 
 		    {/* -------- Display Panels with Cover Layers --------------- */}
 
             {/* Home Panel */}
-          
-                <Container id="home" className="panel-container" onClick={hideHomeCover} 
-                    style={{ backgroundColor:'#F5F5DC'}} fluid>                
+
+                <Container id="home" className="panel-container" onClick={hideHomeCover}
+                    style={{ backgroundColor:'#F5F5DC'}} fluid>
                     <Card style={{backgroundColor:'#F0FFFF'}}>
                         <img src={websiteconstruction} height="15%" width="15%" style={{margin:'1em 0 0 42.5%'}} alt="Website Construction"/>
                         <Card.Body>
@@ -318,26 +332,26 @@ export default function Portfolio(props){
                     <OverlayTrigger placement="top" overlay={(tooltip("Click to Toggle Cover Layer"))}>
                         <Container id="homeCover" className="coverPanel" fluid>
                             <Card>
-                                <Card.Body style={{fontSize:'1.5em'}}>                                
+                                <Card.Body style={{fontSize:'1.5em'}}>
                                     <Card.Text style={{fontSize:'1.2em'}}>Code Repository</Card.Text>
                                     <Card.Text style={{fontSize:'1.2em'}}><i className="bi bi-file-earmark-code-fill"></i></Card.Text>
                                     <Card.Text className="text-center">Beneath are links to FuelCMS-based site Code</Card.Text>
                                 </Card.Body>
                             </Card>
-                        </Container>   
+                        </Container>
                     </OverlayTrigger>
-                </Container>                        
-            
+                </Container>
+
             {/* End of Home Panel */}
-				  
-		
+
+
             {/* About Panel */}
                 <Container id="about" className="panel-container" style={{backgroundColor:'#FFE4C4'}} onClick={hideAboutCover} fluid>
                     <Card>
                         <img src={technologyideas} height="15%" width="15%" style={{margin:'1em 0 0 42.5%', backgroundColor:'#FFE4C4'}} alt="Technology Ideas"/>
                         <Card.Body >
                             <ScrollToTop />
-                            <Card.Link href="https://rsypertjr.net/webTech" target="_blank">Web Technologies Used</Card.Link>                        
+                            <Card.Link href="https://rsypertjr.net/webTech" target="_blank">Web Technologies Used</Card.Link>
                             <Card.Text className="text-center app-description">
                                 This is a page that gives explanation of the programming technologies used on this site.
                             </Card.Text>
@@ -362,29 +376,29 @@ export default function Portfolio(props){
                                 <Card.Body style={{fontSize:'1.8em'}}>
                                     <Card.Title style={{fontSize:'1.8em'}}>About</Card.Title>
                                     <Card.Text><i className="bi bi-wrench"></i></Card.Text>
-                                    <Card.Text>Beneath there is a page about technologies that I've used, and an email contact page.  Also you can see more about me on my LinkedIn profile page.  
+                                    <Card.Text>Beneath there is a page about technologies that I've used, and an email contact page.  Also you can see more about me on my LinkedIn profile page.
                                         Click this cover panel to see.
                                     </Card.Text>
                                 </Card.Body>
                             </Card>
-                        </Container>    
-                    </OverlayTrigger>     
+                        </Container>
+                    </OverlayTrigger>
                 </Container>
-           
+
             {/* End of About Panel */}
 
 
             {/* Lamp Panel */}
-            
+
                 <Container id="lamp" className="panel-container" onClick={hideLampCover} style={{backgroundColor:'#FAFAD2'}} fluid>
                     <Card style={{backgroundColor:'#90EE90'}}>
-                        <img src={dataanalysis} height="15%" width="15%" style={{margin:'1em 0 0 42.5%'}} alt="Data Analysis"/> 
+                        <img src={dataanalysis} height="15%" width="15%" style={{margin:'1em 0 0 42.5%'}} alt="Data Analysis"/>
                         <Card.Body>
                             <ScrollToTop />
                             <Card.Link href="https://rsypertjr.net/amino" target="_blank">Amino Acid Code Sequence Analyzer</Card.Link>
                             <Card.Text><object data="https://rsypertjr.net/amino" height="200" width="300"></object></Card.Text>
                             <Card.Text className="app-description">
-                                This program gives statistics for all combinations of amino acid sequences within a protein. The protein sequence is parsed by regex 
+                                This program gives statistics for all combinations of amino acid sequences within a protein. The protein sequence is parsed by regex
                                 techniques from a text file, into a MySQL database.  The first and last amino acid is chosen in the GUI, as well as, the desired statistical output.<br/>
                                 The database accessed by JavaScript-AJAX to PHP-MySQL on the server side which returns the statistics.
                                 &nbsp;&nbsp;<a href="https://github.com/Rsypertjr/fuelCMS/tree/fuelPF/fuel/application" target="_blank">Here is the Code.</a>
@@ -397,8 +411,8 @@ export default function Portfolio(props){
                             <Card.Link href="https://rsypertjr.net/orominer1" target="_blank">Human Organ System Analyzer 1</Card.Link>
                             <Card.Text><object data="https://rsypertjr.net/orominer1" height="200" width="300"></object></Card.Text>
                             <Card.Text className="app-description">
-                                The Orominer program shows a hierarchical organization of the human body constitution. 
-                                Its top level is Organ Systems.  It uses JavaScript, JQuery for event synchronization between 
+                                The Orominer program shows a hierarchical organization of the human body constitution.
+                                Its top level is Organ Systems.  It uses JavaScript, JQuery for event synchronization between
                                 hierarchical display and graphic display, as well as, dynamic generation of SVG graphical elements based on DOM HTML elements.
                                 MySQL Database information is converted into XML format using PHP for up front access by the code for generation of Hierachical Display.
                                 Unfortunately ONLY THE First 3 NODES Of DATA was developed at Project Completion.
@@ -412,15 +426,15 @@ export default function Portfolio(props){
                             <Card.Link href="https://rsypertjr.net/orominer2" target="_blank">Human Organ System Analyzer 2</Card.Link>
                             <Card.Text><object data="https://rsypertjr.net/orominer2" height="200" width="300"></object></Card.Text>
                             <Card.Text className="app-description">
-                                This orominer program contains Histological Data within the Hierarchical Organization of Human Body 
-                                makeup. Histological Data is information about Human Organs and their tissues and cells. This 
-                                application uses JavaScript Objects to store active data requests from which graphics is generated.                                         
+                                This orominer program contains Histological Data within the Hierarchical Organization of Human Body
+                                makeup. Histological Data is information about Human Organs and their tissues and cells. This
+                                application uses JavaScript Objects to store active data requests from which graphics is generated.
                                 &nbsp;&nbsp;<a href="https://github.com/Rsypertjr/fuelCMS/tree/fuelPF/fuel/application"	target="_blank">Here is the Code.</a>
                             </Card.Text>
                         </Card.Body>
                     </Card>
                     <Card style={{backgroundColor:'#D8BFD8'}}>
-                        <img src={othellogameimage} height="15%" width="15%" style={{margin:'1em 0 0 42.5%'}} alt="Othello Game Image"/> 
+                        <img src={othellogameimage} height="15%" width="15%" style={{margin:'1em 0 0 42.5%'}} alt="Othello Game Image"/>
                         <Card.Body>
                             <ScrollToTop />
                             <Card.Link href="https://rsypertjr.net/othello" target="_blank">Play Othello Game thru AJAX</Card.Link>
@@ -431,7 +445,7 @@ export default function Portfolio(props){
                             </Card.Text>
                         </Card.Body>
                     </Card>
-               
+
                     <OverlayTrigger placement="top" overlay={(tooltip("Click to Toggle Cover Layer"))}>
                         <Container id="lampCover" className="coverPanel d-flex align-items-center" fluid>
                             <Card style={{marginTop:'-30em'}}>
@@ -439,7 +453,7 @@ export default function Portfolio(props){
                                     <Card.Title style={{fontSize:'1.8em'}}>LAMP Technologies</Card.Title>
                                     <Card.Text style={{fontSize:'1.8em'}}><i className="bi bi-lightbulb"></i></Card.Text>
                                     <Card.Text className="text-center">
-                                        PHP/MySQL is used on the back-end for these apps. Regex is used to parse text files into a database.  
+                                        PHP/MySQL is used on the back-end for these apps. Regex is used to parse text files into a database.
                                             I programmatically converted flat non-relational tables into a relational-XMLfile for app data.  PHP/SQL is
                                             used to query database and send tabular results to front-end.  Javascript/JQuery is used for dynamic DOM manipulation
                                             and SVG graphic element generation. AJAX is also used to update and process game-board data, as well as
@@ -447,20 +461,20 @@ export default function Portfolio(props){
                                     </Card.Text>
                                 </Card.Body>
                             </Card>
-                        </Container>                                 
-                    </OverlayTrigger>            
-                </Container>  
+                        </Container>
+                    </OverlayTrigger>
+                </Container>
             {/* End of Lamp Panel */}
-            
-          
+
+
             {/* Mobile Panel */}
                 <Container id="mobile" style={{backgroundColor:'#BC8F8F'}} className="panel-container" onClick={hideMobileCover} fluid>
-                    
+
                     <Card style={{backgroundColor:'#FFEFD5'}}>
-                        <img src={mobiledevelopmentimage} height="15%" width="15%" style={{margin:'1em 0 0 42.5%'}} alt="Mobile Development Image"/> 
+                        <img src={mobiledevelopmentimage} height="15%" width="15%" style={{margin:'1em 0 0 42.5%'}} alt="Mobile Development Image"/>
                         <Card.Body>
                             <ScrollToTop />
-                            <Card.Body>                                
+                            <Card.Body>
                                 <Card.Link href="https://rsypertjr.net/mobile" target="_blank">Jquery Mobile Web Development</Card.Link>
                                 <Card.Text><object data="https://rsypertjr.net/mobile" height="200" width="300"></object></Card.Text>
                                 <Card.Text className="text-center app-description">Link to a Mobile version of My work portfolio. I developed it using JQuery Mobile
@@ -469,11 +483,11 @@ export default function Portfolio(props){
                             </Card.Body>
                         </Card.Body>
                     </Card>
-                
-                    <OverlayTrigger placement="top" overlay={(tooltip("Click to Toggle Cover Layer"))}>           
+
+                    <OverlayTrigger placement="top" overlay={(tooltip("Click to Toggle Cover Layer"))}>
                         <Container id="mobileCover" className="coverPanel d-flex align-items-center" fluid>
                             <Card>
-                                <Card.Body style={{fontSize:'1.8em'}}>      
+                                <Card.Body style={{fontSize:'1.8em'}}>
                                     <Card.Title style={{fontSize:'1.8em'}}>Mobile Portfolio</Card.Title>
                                     <Card.Body>
                                         <Card.Text><i className="bi bi-phone"></i></Card.Text>
@@ -481,30 +495,30 @@ export default function Portfolio(props){
                                     </Card.Body>
                                 </Card.Body>
                             </Card>
-                        </Container>                       
-                    </OverlayTrigger>            
+                        </Container>
+                    </OverlayTrigger>
                 </Container>
-            {/* End of Mobile Panel */}				  
+            {/* End of Mobile Panel */}
 
 
               <Container id="nextJs"  style={{backgroundColor:'#B7AC66'}} className="panel-container" onClick={nextJsCover} fluid>
                     <Card style={{backgroundColor:'#B78466'}}>
-                        <img src={nextjs} className="rounded mb-2" height="15%" width="15%" style={{margin:'1em 0 0 42.5%'}} alt="Tic Tac Toe Image"/> 
-                        <Card.Body>   
-                            <ScrollToTop />         
+                        <img src={nextjs} className="rounded mb-2" height="15%" width="15%" style={{margin:'1em 0 0 42.5%'}} alt="Tic Tac Toe Image"/>
+                        <Card.Body>
+                            <ScrollToTop />
                             <Card.Link href="https://ksense-test.vercel.app/show-patients" target="_blank">Next.js Patient Risk Analyzewr</Card.Link>
                             <Card.Text><object data="https://ksense-test.vercel.app/show-patients" height="200" width="300"></object></Card.Text>
-                            <Card.Text className="text-center app-description"><p>Next.js and Typescript with API that performs error checking to recover various fetching responses 
-                                including service having internal server errors, and timeouts due to rate limiting.  This app also captures wrong data input formatting and displays 
+                            <Card.Text className="text-center app-description"><p>Next.js and Typescript with API that performs error checking to recover various fetching responses
+                                including service having internal server errors, and timeouts due to rate limiting.  This app also captures wrong data input formatting and displays
                                 these errors.</p>
                                 <p><a href="https://github.com/Rsypertjr/ksense-test.git" target="_blank">Here is the Code.</a></p>
                             </Card.Text>
                         </Card.Body>
                     </Card>
                     <Card style={{backgroundColor:'#b3f5daff'}}>
-                        <img src={nextjs} className="rounded mb-2" height="15%" width="15%" style={{margin:'1em 0 0 42.5%'}} alt="Tic Tac Toe Image"/> 
-                        <Card.Body>   
-                            <ScrollToTop />         
+                        <img src={nextjs} className="rounded mb-2" height="15%" width="15%" style={{margin:'1em 0 0 42.5%'}} alt="Tic Tac Toe Image"/>
+                        <Card.Body>
+                            <ScrollToTop />
                             <Card.Link href="https://codestorage.vercel.app/" target="_blank">AI-CoPilot-Next.js-Suprabase-Voting Analyzer</Card.Link>
                             <Card.Text><object data="https://codestorage.vercel.app/" height="200" width="300"></object></Card.Text>
                             <Card.Text className="text-center app-description">New Next.js-AI-CoPilot Developed Presidential Voting Analyzer.&nbsp;&nbsp;Supabase SQL Integration for Front-End Dynamic Interaction, with Server-Side Rendering for SEO.&nbsp;&nbsp;
@@ -515,108 +529,107 @@ export default function Portfolio(props){
                     <OverlayTrigger placement="top" overlay={(tooltip("Click to Toggle Cover Layer"))}>
                         <Container id="nextJsCover" className="coverPanel d-flex align-items-center" fluid>
                             <Card style={{marginTop:'-30em'}}>
-                                <Card.Body style={{fontSize:'1.8em'}}>         
+                                <Card.Body style={{fontSize:'1.8em'}}>
                                     <Card.Title style={{fontSize:'1.5em'}}>Next.js & Typescript &TailwindCSS Apps</Card.Title>
                                     <Card.Text>
-                                        <img src={typescript} className="rounded mb-2" height="15%" width="15%"  alt="Tic Tac Toe Image"/> 
+                                        <img src={typescript} className="rounded mb-2" height="15%" width="15%"  alt="Tic Tac Toe Image"/>
                                     </Card.Text>
                                     <Card.Text className="text-center">
                                         <p>Next.js and Typescript apps that use TailwindCSS for styling.  One app is also Copilot AI assisted.</p>
                                     </Card.Text>
                                 </Card.Body>
                             </Card>
-                        </Container>     
-                    </OverlayTrigger>          
-                </Container>                
-           
-          
+                        </Container>
+                    </OverlayTrigger>
+                </Container>
 
-           
+
+
+
                 <Container id="laravelReact"  style={{backgroundColor:'#422D29'}} className="panel-container" onClick={laravelReactCover} fluid>
 
                     <Card>
                         <Card.Body>
-                            <ScrollToTop /> 
+                            <ScrollToTop />
                             <Card.Link href="https://preselections.rsypertjr.net" target="_blank">Docker based Laravel Vite, React, Bootstrap 5, Chart.js, MongoDb App</Card.Link>
                             <Card.Text><object data="https://preselections.rsypertjr.net" height="200" width="300"></object></Card.Text>
-                            <Card.Text className="text-center app-description">A Docker based app that uses Laravel/Bootstrap 5 with Vite management of React.js with a networked containers of: Nginx, PHP, Mariadb, Composer, Artisan, NPM, Redis, 
+                            <Card.Text className="text-center app-description">A Docker based app that uses Laravel/Bootstrap 5 with Vite management of React.js with a networked containers of: Nginx, PHP, Mariadb, Composer, Artisan, NPM, Redis,
                                 Phpmyadmin. Utilizes Laravel Api for a Cloud-based MongoDb backend.
                                 &nbsp;&nbsp;<a href="https://github.com/Rsypertjr/Docker-Laravel-Vite-React-Bootstrap-Chartjs/tree/lar-vite-chart-boot" target="_blank">Here is the Code.</a>
                             </Card.Text>
                         </Card.Body>
                     </Card>
                     <Card style={{backgroundColor:'#EEE9F2'}}>
-                        <img src={dataanalysis} className="rounded mb-2" height="15%" width="15%" style={{margin:'1em 0 0 42.5%'}} alt="Data Analysis Image"/> 
-                        <Card.Body>  
-                            <ScrollToTop />           
+                        <img src={dataanalysis} className="rounded mb-2" height="15%" width="15%" style={{margin:'1em 0 0 42.5%'}} alt="Data Analysis Image"/>
+                        <Card.Body>
+                            <ScrollToTop />
                             <Card.Link href="/amino" target="_blank">Amino Acid Code Sequence Analyzer</Card.Link>
                             <Card.Text><object data="/amino" height="200" width="300"></object></Card.Text>
                             <Card.Text className="text-center app-description">
-                                This App is refactored and improved using Laravel 11 with controller back-end for Mysql operations using Laravel's DB facade.  
-                                The front end code is formulated with React components rendered as routes by Vite technology.  
+                                This App is refactored and improved using Laravel 11 with controller back-end for Mysql operations using Laravel's DB facade.
+                                The front end code is formulated with React components rendered as routes by Vite technology.
                                 State variables are maintained within components to enable dynamic data/status representations.
                                 &nbsp;&nbsp;<a href="https://github.com/Rsypertjr/code_storage/tree/laravel-portfolio-dev" target="_blank">Here is the Code.</a>
                             </Card.Text>
                         </Card.Body>
                     </Card>
                     <Card style={{backgroundColor:'#D3E9ED'}}>
-                        <img src={dataanalysis} className="rounded mb-2" height="15%" width="15%" style={{margin:'1em 0 0 42.5%'}} alt="Data Analysis Image"/> 
-                        <Card.Body> 
-                            <ScrollToTop />            
+                        <img src={dataanalysis} className="rounded mb-2" height="15%" width="15%" style={{margin:'1em 0 0 42.5%'}} alt="Data Analysis Image"/>
+                        <Card.Body>
+                            <ScrollToTop />
                             <Card.Link href="https://laravelportfolio.rsypertjr.net/orominer1" target="_blank">New Laravel/React/Bootstrap Orominer</Card.Link>
                             <Card.Text><object data="https://laravelportfolio.rsypertjr.net/orominer1" height="200" width="300"></object></Card.Text>
                             <Card.Text className="text-center app-description">
-                                This App is refactored and improved using Laravel11 with controller back-end for retrieval of XML file.  
+                                This App is refactored and improved using Laravel11 with controller back-end for retrieval of XML file.
                                 The front end code is formulated with React components rendered as routes by Vite technology. SVG is used within
                                 React for graphics. State variables are maintained within components to enable dynamic data/status representations.
                                 &nbsp;&nbsp;<a href="https://github.com/Rsypertjr/code_storage/tree/laravel-portfolio-dev" target="_blank">Here is the Code.</a>
                             </Card.Text>
                         </Card.Body>
-                    </Card>  
+                    </Card>
                     <Card style={{backgroundColor:'#D6CFCE'}}>
-                        <img src={dataanalysis} className="rounded mb-2" height="15%" width="15%" style={{margin:'1em 0 0 42.5%'}} alt="Data Analysis Image"/> 
+                        <img src={dataanalysis} className="rounded mb-2" height="15%" width="15%" style={{margin:'1em 0 0 42.5%'}} alt="Data Analysis Image"/>
                         <Card.Body>
                             <ScrollToTop />
                             <Card.Link href="https://lar10reactmix.rsypertjr.net/votes-table" target="_blank">Laravel(Mix) w/React & Chart.js & Bootstrap.js Vote Parser</Card.Link>
                             <Card.Text><object data="https://lar10reactmix.rsypertjr.net/votes-table" height="200" width="300"></object></Card.Text>
                             <Card.Text className="text-center app-description">
-                               <p>Laravel (Mix) with React.js,&nbsp;React Router,&nbsp;Chart.js,&nbsp;and Bootstrap is used in this app:&nbsp;<a href="https://laravelvotes.rsypertjr.net/votes-table" 
+                               <p>Laravel (Mix) with React.js,&nbsp;React Router,&nbsp;Chart.js,&nbsp;and Bootstrap is used in this app:&nbsp;<a href="https://laravelvotes.rsypertjr.net/votes-table"
 								target="_blank">See App</a>.&nbsp;&nbsp;This app uses React Hooks like UseEffect and UseState for functional components.&nbsp;&nbsp;
 								Here is code link:&nbsp;<a href="https://github.com/Rsypertjr/Laravel-React-Chartjs-Votes-Parser/tree/latest2" target="_blank">See Code</a>.
-								</p>	
+								</p>
                             </Card.Text>
                         </Card.Body>
                     </Card>
                     <OverlayTrigger placement="top" overlay={(tooltip("Click to Toggle Cover Layer"))}>
                         <Container id="laravelReactCover" className="coverPanel d-flex align-items-center" fluid>
                             <Card style={{marginTop:'-65em'}}>
-                                <Card.Body style={{fontSize:'1.8em'}}>         
+                                <Card.Body style={{fontSize:'1.8em'}}>
                                     <Card.Title style={{fontSize:'1.5em'}}>Laravel & React Apps</Card.Title>
                                     <Card.Text>
-                                        <img src={laravel} className="rounded mb-2"  height="15%" width="15%"  alt="Laravel Image"/> 
-                                        <img src={react} className="rounded mb-2" style={{marginLeft:"0.25em"}} height="15%" width="15%"  alt="React Image"/> 
-                                        <img src={vite} className="rounded mb-2" style={{marginLeft:"0.25em"}} height="15%" width="15%"  alt="Vite Image"/> 
+                                        <img src={laravel} className="rounded mb-2"  height="15%" width="15%"  alt="Laravel Image"/>
+                                        <img src={react} className="rounded mb-2" style={{marginLeft:"0.25em"}} height="15%" width="15%"  alt="React Image"/>
+                                        <img src={vite} className="rounded mb-2" style={{marginLeft:"0.25em"}} height="15%" width="15%"  alt="Vite Image"/>
                                     </Card.Text>
                                     <Card.Text className="text-center">
-                                        <p>Laravel Framework and React front-end development. Docker and Docker Compose Technologies used with NPM and 
+                                        <p>Laravel Framework and React front-end development. Docker and Docker Compose Technologies used with NPM and
                                             Webpack dependency management.  One app is also Copilot AI assisted.</p>
                                     </Card.Text>
                                 </Card.Body>
                             </Card>
-                        </Container>      
-                    </OverlayTrigger>          
-                </Container>               
+                        </Container>
+                    </OverlayTrigger>
+                </Container>
 
 
 
 
             {/* Frameworks Panel */}
-            <section id="frameworks">            
-                <Container  style={{backgroundColor:'#6A5ACD'}} className="panel-container" onClick={hideFrameworksCover} fluid>                   
+                <Container id="frameworks" style={{backgroundColor:'#6A5ACD'}} className="panel-container" onClick={hideFrameworksCover} fluid>
                     <Card style={{backgroundColor:'#F5DEB3'}}>
-                        <img src={tictactoe} className="rounded mb-2" height="15%" width="15%" style={{margin:'1em 0 0 42.5%'}} alt="Tic Tac Toe Image"/> 
-                        <Card.Body>    
-                            <ScrollToTop />         
+                        <img src={tictactoe} className="rounded mb-2" height="15%" width="15%" style={{margin:'1em 0 0 42.5%'}} alt="Tic Tac Toe Image"/>
+                        <Card.Body>
+                            <ScrollToTop />
                             <Card.Link href="tictactoe" target="_blank">React Javascript Tic-Tac-Toe</Card.Link>
                             <Card.Text><object data="https://rsypertjr.net/tictactoe" height="200" width="300"></object></Card.Text>
                             <Card.Text className="text-center app-description">
@@ -625,22 +638,22 @@ export default function Portfolio(props){
                             </Card.Text>
                         </Card.Body>
                     </Card>
-                   
+
 
                     <Card style={{backgroundColor:'#EEE8AA'}}>
-                        <img src={dataanalysis} className="rounded mb-2" height="15%" width="15%" style={{margin:'1em 0 0 42.5%'}} alt="Data Analysis Image"/> 
+                        <img src={dataanalysis} className="rounded mb-2" height="15%" width="15%" style={{margin:'1em 0 0 42.5%'}} alt="Data Analysis Image"/>
                         <Card.Body>
                             <ScrollToTop />
                             <Card.Link href="https://vue3chartjs.rsypertjr.net/" target="_blank">Vue 3 Composition API & Chart.js & Bootstrap.js Vote Parser</Card.Link>
                             <Card.Text><object data="https://vue3chartjs.rsypertjr.net/"></object></Card.Text>
-                            <Card.Text className="text-center app-description">The app uses Vue 3 Composition API. NPM is used to managed the Node-based Vue 3 dependencies. 
-                                    Vue 3 Composition API allows for function-based components which is inspired by React w/Hooks.  Here is code link: 
+                            <Card.Text className="text-center app-description">The app uses Vue 3 Composition API. NPM is used to managed the Node-based Vue 3 dependencies.
+                                    Vue 3 Composition API allows for function-based components which is inspired by React w/Hooks.  Here is code link:
                                     &nbsp;&nbsp;<a href="https://github.com/Rsypertjr/Vue3-Chartjs-Bootstrap/tree/vue-chart-v2" target="_blank">Here is the Code.</a>
                             </Card.Text>
                         </Card.Body>
                     </Card>
                     <Card style={{backgroundColor:'#FDF5E6'}}>
-                        <img src={mern} className="rounded mb-2" height="15%" width="15%" style={{margin:'1em 0 0 42.5%'}} alt="Mern Stack Image"/>                        
+                        <img src={mern} className="rounded mb-2" height="15%" width="15%" style={{margin:'1em 0 0 42.5%'}} alt="Mern Stack Image"/>
                         <Card.Body>
                             <ScrollToTop />
                             <Card.Link href="https://carinfo.rsypertjr.net" target="_blank">React-Bootstrap with Express ATLAS Cloud MongoDb Backend</Card.Link>
@@ -652,13 +665,13 @@ export default function Portfolio(props){
                                </Card.Text>
                         </Card.Body>
                     </Card>
-                  
-                    <OverlayTrigger placement="top" overlay={(tooltip("Click to Toggle Cover Layer"))}>    
-                        <Container id="frameworksCover" 
-                            className="coverPanel d-flex align-items-center" 
+
+                    <OverlayTrigger placement="top" overlay={(tooltip("Click to Toggle Cover Layer"))}>
+                        <Container id="frameworksCover"
+                            className="coverPanel d-flex align-items-center"
                             fluid>
                             <Card style={{marginTop:'-50em'}}>
-                                <Card.Body style={{fontSize:'1.2em'}}>         
+                                <Card.Body style={{fontSize:'1.2em'}}>
                                     <Card.Title style={{fontSize:'2.5em'}}>Frameworks</Card.Title>
                                     <Card.Text><i className="bi bi-tree"></i></Card.Text>
                                     <Card.Text className="text-center" style={{fontSize:'2em'}}>
@@ -666,57 +679,90 @@ export default function Portfolio(props){
                                     </Card.Text>
                                 </Card.Body>
                             </Card>
-                        </Container>  
-                    </OverlayTrigger>             
-                </Container>                
-           
-          
-            {/* End of Frameworks Panel */}
-            
-            </section>
-            
+                        </Container>
+                    </OverlayTrigger>
+                </Container>
 
-            {/* Manuals Panel */}                
+
+            {/* End of Frameworks Panel */}
+
+
+
+            {/* AI-Assisted Panel */}
+                <Container id="aiAssisted" style={{backgroundColor:'#6A5ACD'}} className="panel-container" onClick={aiAssistedCover} fluid>
+                   <Card style={{backgroundColor:'#b3f5daff'}}>
+                        <img src={nextjs} className="rounded mb-2" height="15%" width="15%" style={{margin:'1em 0 0 42.5%'}} alt="Tic Tac Toe Image"/>
+                        <Card.Body>
+                            <ScrollToTop />
+                            <Card.Link href="https://codestorage.vercel.app/" target="_blank">AI-CoPilot-Next.js-Suprabase-Voting Analyzer</Card.Link>
+                            <Card.Text><object data="https://codestorage.vercel.app/" height="200" width="300"></object></Card.Text>
+                            <Card.Text className="text-center app-description">New Next.js-AI-CoPilot Developed Presidential Voting Analyzer.&nbsp;&nbsp;Supabase SQL Integration for Front-End Dynamic Interaction, with Server-Side Rendering for SEO.&nbsp;&nbsp;
+										GitHub Copilot AI is used for Code Management and Intelligent Code Generation.<a href="https://github.com/Rsypertjr/code_storage/tree/presidentelect" target="_blank">Here is the Code.</a>
+                            </Card.Text>
+                        </Card.Body>
+                    </Card>
+
+                    <OverlayTrigger placement="top" overlay={(tooltip("Click to Toggle Cover Layer"))}>
+                        <Container id="aiAssistedCover"
+                            className="coverPanel d-flex align-items-center"
+                            fluid>
+                            <Card style={{marginTop:'-0em'}}>
+                                <Card.Body style={{fontSize:'1.2em'}}>
+                                    <Card.Title style={{fontSize:'2.5em'}}>CoPilot AI-Assisted Apps</Card.Title>
+                                    <Card.Text><i className="bi bi-tree"></i></Card.Text>
+                                    <Card.Text className="text-center" style={{fontSize:'2em'}}>
+                                       AI-Assisted Programming I've done using CoPilot within VSCode.
+                                    </Card.Text>
+                                </Card.Body>
+                            </Card>
+                        </Container>
+                    </OverlayTrigger>
+                </Container>
+
+
+            {/* End of AI-Assisted Panel */}
+
+            {/* Manuals Panel */}
                 <Container id="manuals" style={{backgroundColor:'#708090'}} className="panel-container" onClick={hideManualsCover} fluid>
                     <Card style={{backgroundColor:'#D3D3D3'}}>
-                        <img src={technicalwritingimage} height="15%" width="15%" style={{margin:'1em 0 0 42.5%'}} alt="Technical Writing"/> 
-                        <Card.Body>                           
-                            <ScrollToTop /> 
+                        <img src={technicalwritingimage} height="15%" width="15%" style={{margin:'1em 0 0 42.5%'}} alt="Technical Writing"/>
+                        <Card.Body>
+                            <ScrollToTop />
                             <Card.Link href="https://rsypertjr.net/graingerABCDE" target="_blank">Grainger ABCDE Series B</Card.Link>
                             <Card.Text><object type="text/html" data="https://rsypertjr.net/graingerABCDE" height="200" width="300"></object></Card.Text>
-                            <Card.Text className="text-center app-description"> 
-                                This is a Maintenance and Product Information Manual tailored for a customers implementation 
+                            <Card.Text className="text-center app-description">
+                                This is a Maintenance and Product Information Manual tailored for a customers implementation
                                 of a Motor Efficiency Controller (MEC). It is a new generation product manual. I wrote it
                                 using Adobe InDesign according to the customers style rules
                             </Card.Text>
                         </Card.Body>
                     </Card>
                     <Card style={{backgroundColor:'#5F9EA0'}}>
-                        <img src={technicalwritingimage} height="15%" width="15%" style={{margin:'1em 0 0 42.5%'}} alt="Technical Writing"/>                       
+                        <img src={technicalwritingimage} height="15%" width="15%" style={{margin:'1em 0 0 42.5%'}} alt="Technical Writing"/>
                         <Card.Body>
                             <ScrollToTop />
                             <Card.Link href="https://rsypertjr.net/graingerCDE" target="_blank">Grainger CDE</Card.Link>
                             <Card.Text><object data="https://rsypertjr.net/graingerCDE" height="200" width="300"></object></Card.Text>
                             <Card.Text className="text-center app-description">
-                                This is a Maintenance and Product Information Manual tailored for a customers implementation of a 
-                                Motor Efficiency Controller (MEC). It is a new generation product manual. I wrote it in Adobe InDesign 
+                                This is a Maintenance and Product Information Manual tailored for a customers implementation of a
+                                Motor Efficiency Controller (MEC). It is a new generation product manual. I wrote it in Adobe InDesign
                                 according to the customer's style rules.
                             </Card.Text>
                         </Card.Body>
                     </Card>
                     <Card style={{backgroundColor:'#F0E68C'}}>
-                        <img src={techWriter} height="15%" width="15%" style={{margin:'1em 0 0 42.5%'}} alt="Technical Writer"/>  
+                        <img src={techWriter} height="15%" width="15%" style={{margin:'1em 0 0 42.5%'}} alt="Technical Writer"/>
                         <Card.Body>
                             <ScrollToTop />
                             <Card.Link href="https://rsypertjr.net/mecPManual" target="_blank">MEC Product Manual VT 1.6</Card.Link>
                             <Card.Text><object data="https://rsypertjr.net/mecPManual" height="200" width="300"></object></Card.Text>
                             <Card.Text className="text-center app-description">
-                                This is a Product Manual for a Motor Efficiency Controller (MEC). It is a new generation product manual. 
+                                This is a Product Manual for a Motor Efficiency Controller (MEC). It is a new generation product manual.
                                 I wrote it in Adobe InDesign according to the customer's style rules.
                             </Card.Text>
                         </Card.Body>
                     </Card>
-                    <OverlayTrigger placement="top" overlay={(tooltip("Click to Toggle Cover Layer"))}>            
+                    <OverlayTrigger placement="top" overlay={(tooltip("Click to Toggle Cover Layer"))}>
                         <Container id="manualsCover" className="coverPanel d-flex align-items-center" fluid>
                             <Card style={{marginTop:'-30em'}}>
                                 <Card.Body style={{fontSize:'2em'}}>
@@ -727,23 +773,23 @@ export default function Portfolio(props){
                                     </Card.Text>
                                 </Card.Body>
                             </Card>
-                        </Container>   
-                    </OverlayTrigger>                   
-                </Container> 
-              
+                        </Container>
+                    </OverlayTrigger>
+                </Container>
+
             {/* End of Manuals Panel */}
-            
-        
-            {/* Specifications Panel */}          
+
+
+            {/* Specifications Panel */}
                 <Container id="specifications" style={{backgroundColor:'#D2691E'}} className="panel-container" onClick={hideSpecificationsCover} fluid>
                     <Card style={{backgroundColor:'#DEB887'}}>
-                        <img src={engProcessSpec} height="15%" width="15%" style={{margin:'1em 0 0 42.5%'}} alt="Engineering Process Specification"/>   
+                        <img src={engProcessSpec} height="15%" width="15%" style={{margin:'1em 0 0 42.5%'}} alt="Engineering Process Specification"/>
                         <Card.Body>
                             <ScrollToTop />
                             <Card.Link href="https://rsypertjr.net/whitePaper" target="_blank">Technical Writing</Card.Link>
                             <Card.Text><object type="text/html" data="https://rsypertjr.net/whitePaper" height="200" width="300"></object></Card.Text>
                             <Card.Text className="text-center app-description">
-                                This is a technical specification called a White Paper which explains the technology behind 
+                                This is a technical specification called a White Paper which explains the technology behind
                                 a companies product. In this case an Electrical Motor Energy Efficiency Device.
                             </Card.Text>
                         </Card.Body>
@@ -754,11 +800,11 @@ export default function Portfolio(props){
                             <Card.Link href="https://rsypertjr.net/engSpec" target="_blank">Engineering Specification</Card.Link>
                             <Card.Text><object data="https://rsypertjr.net/engSpec" height="200" width="300"></object></Card.Text>
                             <Card.Text className="text-center app-description">
-                                This is a technical specification for the Clark County Land Development Approval process. 
+                                This is a technical specification for the Clark County Land Development Approval process.
                                 I authored it as an Environmental Health Engineer for Southern Nevada Health District.
                             </Card.Text>
                         </Card.Body>
-                    </Card>               
+                    </Card>
                     <OverlayTrigger placement="top" overlay={(tooltip("Click to Toggle Cover Layer"))}>
                         <Container id="specificationsCover" className="coverPanel d-flex align-items-center" fluid>
                             <Card>
@@ -770,12 +816,12 @@ export default function Portfolio(props){
                                     </Card.Text>
                                 </Card.Body>
                             </Card>
-                        </Container>     
-                    </OverlayTrigger>                    
-                </Container>   
-           
-            {/* End of Specifications Panel */}		  
-              
+                        </Container>
+                    </OverlayTrigger>
+                </Container>
+
+            {/* End of Specifications Panel */}
+
             {/* Resume Panel */}
                 <Container id="resume" style={{backgroundColor:'#000000'}} className="panel-container" onClick={hideResumeCover} fluid>
                     <Card style={{backgroundColor:'#8B0000'}}>
@@ -789,7 +835,7 @@ export default function Portfolio(props){
                             </Card.Text>
                         </Card.Body>
                     </Card>
-                
+
                     <OverlayTrigger placement="top" overlay={(tooltip("Click to Toggle Cover Layer"))}>
                         <Container id="resumeCover" className="coverPanel d-flex align-items-center" fluid>
                             <Card>
@@ -797,23 +843,23 @@ export default function Portfolio(props){
                                     <Card.Title style={{fontSize:'1.8em'}}>Resume</Card.Title>
                                     <Card.Text style={{fontSize:'1.8em'}}><i className="bi bi-book"></i></Card.Text>
                                     <Card.Text className="text-center">
-                                        A PDF version of my Resume is linked below. Click this cover panel to see.  
+                                        A PDF version of my Resume is linked below. Click this cover panel to see.
                                     </Card.Text>
                                 </Card.Body>
                             </Card>
-                        </Container>     
-                    </OverlayTrigger>           
+                        </Container>
+                    </OverlayTrigger>
                 </Container>
-           
-            
+
+
             {/* End of Resume Panel */}
 
 
             {/* Living Panel */}
-           
+
                 <Container style={{backgroundColor:'#FFFACD'}} id="living" className="panel-container" onClick={hideLivingCover} fluid>
-                    <Card style={{backgroundColor:'#ADD8E6'}}>        
-                        <img src={vegas} height="15%" width="15%" style={{margin:'1em 0 0 42.5%'}} alt="Welcome to Las Vegas"/>           
+                    <Card style={{backgroundColor:'#ADD8E6'}}>
+                        <img src={vegas} height="15%" width="15%" style={{margin:'1em 0 0 42.5%'}} alt="Welcome to Las Vegas"/>
                         <Card.Body>
                             <ScrollToTop />
                             <Card.Link href="https://rsypertjr.net/inVegas" target="_blank">Having Vegas Family Fun</Card.Link>
@@ -822,8 +868,8 @@ export default function Portfolio(props){
                                 See a slide show and facts about Family Fun In Vegas.
                             </Card.Text>
                         </Card.Body>
-                    </Card>   
-                    <OverlayTrigger placement="top" overlay={(tooltip("Click to Toggle Cover Layer"))}>             
+                    </Card>
+                    <OverlayTrigger placement="top" overlay={(tooltip("Click to Toggle Cover Layer"))}>
                         <Container id="livingCover" className="coverPanel" fluid>
                             <Card>
                                 <Card.Body style={{fontSize:'1.8em'}}>
@@ -834,13 +880,13 @@ export default function Portfolio(props){
                                     </Card.Text>
                                 </Card.Body>
                             </Card>
-                        </Container>  
-                    </OverlayTrigger>               
+                        </Container>
+                    </OverlayTrigger>
                 </Container>
-                     
+
             {/* End of Living Panel */}
 
-            {/* nonBootstrap Panel */}            
+            {/* nonBootstrap Panel */}
                 <Container id="nonBootstrap" style={{backgroundColor:'#B0C4DE'}} className="panel-container" onClick={hideNonBootstrapCover} fluid>
                     <Card>
                         <img src={lampTechs} height="20%" width="20%" style={{margin:'1em 0 0 40%'}} alt="Fuel CMS"/>
@@ -858,7 +904,7 @@ export default function Portfolio(props){
                                 GIMP (like Photoshop), and other technologies.
                             </Card.Text>
                         </Card.Body>
-                    </Card>   
+                    </Card>
                     <OverlayTrigger placement="top" overlay={(tooltip("Click to Toggle Cover Layer"))}>
                         <Container id="nonBootstrapCover" className="coverPanel d-flex align-items-center" fluid>
                             <Card>
@@ -866,16 +912,16 @@ export default function Portfolio(props){
                                     <Card.Title style={{fontSize:'1.3em'}}>Non-Bootstrap Portfolio</Card.Title>
                                     <Card.Text style={{fontSize:'1.3em'}}><i className="bi bi-lightbulb"></i></Card.Text>
                                     <Card.Text className="text-center">
-                                        CodeIgniter,Fuel CMS, and Lamp technologies are used as the MVC framework. They are based on PHP/LAMP technologies. 
-                                        Includes lot of built-in routing, modular storage of code in a database, and Active Object database access.  
+                                        CodeIgniter,Fuel CMS, and Lamp technologies are used as the MVC framework. They are based on PHP/LAMP technologies.
+                                        Includes lot of built-in routing, modular storage of code in a database, and Active Object database access.
                                         On the front-end, CSS 2-D and 3-D tranformations are used to produce animations.
                                     </Card.Text>
                                 </Card.Body>
                             </Card>
-                        </Container>    
-                    </OverlayTrigger>           
+                        </Container>
+                    </OverlayTrigger>
                 </Container>
-           
+
 
             {/* End of nonBootstrap Panel */}
 
@@ -885,11 +931,11 @@ export default function Portfolio(props){
                         <Card>
                         <img src={lampTechs} height="20%" width="20%" style={{margin:'1em 0 0 40%'}} alt="Fuel CMS"/>
                         <Card.Body>
-                            <ScrollToTop /> 
+                            <ScrollToTop />
                             <Card.Link href="https://rsypertjr.net/bootPortfolio" target="_blank">Boot Portfolio</Card.Link>
                             <Card.Text><object type="text/html" data="https://rsypertjr.net/bootPortfolio" height="200" width="300"></object></Card.Text>
                             <Card.Text className="text-center app-description">
-                                Update on original work portfolio with utilization of Bootstrap for Mobile-first, responsive design to ensure website 
+                                Update on original work portfolio with utilization of Bootstrap for Mobile-first, responsive design to ensure website
                                 look good on all devices. There is continued use of CodeIgniter MVC Framework,FUEL-CMS
                                 (a CodeIgniter-based Content Management System), PHP, MySQL, HTML, JavaScript,
                                 JQuery, JQuery UI, JQuery Mobile, Angular JS, ReactJS (ngrx) CSS, CSS3, SVG, AJAX, XML,
@@ -899,30 +945,30 @@ export default function Portfolio(props){
                                 GIMP (like Photoshop), and other technologies.
                             </Card.Text>
                         </Card.Body>
-                    </Card>   
-                    <OverlayTrigger placement="top" overlay={(tooltip("Click to Toggle Cover Layer"))}> 
+                    </Card>
+                    <OverlayTrigger placement="top" overlay={(tooltip("Click to Toggle Cover Layer"))}>
                         <Container id="bootPortfolioCover" className="coverPanel d-flex align-items-center" fluid>
                             <Card>
                                 <Card.Body style={{fontSize:'1.4em'}}>
                                     <Card.Title style={{fontSize:'1.4em'}}>Bootstrap Portfolio</Card.Title>
                                     <Card.Text style={{fontSize:'1.4em'}}><i className="bi bi-lightbulb"></i></Card.Text>
                                     <Card.Text className="text-center">
-                                        Update on original work portfolio with utilization of Bootstrap for Mobile-first, responsive design to ensure website 
+                                        Update on original work portfolio with utilization of Bootstrap for Mobile-first, responsive design to ensure website
                                         look good on all devices.
                                     </Card.Text>
                                 </Card.Body>
                             </Card>
-                        </Container>  
-                    </OverlayTrigger>             
-                </Container>     
+                        </Container>
+                    </OverlayTrigger>
+                </Container>
             {/* End of bootPortfolio Panel */}
 
 
 
 			{/* Footer Section */}
             <Container id="footer" style={{backgroundImage:'linear-gradient(white,)'}} className="d-flex justify-content-center" fluid>
-                <Row>     
-                    <Col>              
+                <Row>
+                    <Col>
                         <Dropdown >
                             <Dropdown.Toggle variant="dark" id="dropdown-basic">
                                 Software Development
@@ -942,8 +988,8 @@ export default function Portfolio(props){
 
                         </Dropdown>
                     </Col>
-                   
-                    <Col>              
+
+                    <Col>
                         <Dropdown>
                             <Dropdown.Toggle variant="dark" id="dropdown-basic">
                                 Technical Writing
@@ -956,9 +1002,9 @@ export default function Portfolio(props){
                                 <Dropdown.Item href="https://rsypertjr.net/engSpec" target="_blank">Engineering Specification</Dropdown.Item>
                             </Dropdown.Menu>
                         </Dropdown>
-                    </Col>                   
-                   
-                    <Col>              
+                    </Col>
+
+                    <Col>
                         <Dropdown>
                             <Dropdown.Toggle variant="dark" id="dropdown-basic">
                                 Resumes
@@ -970,8 +1016,8 @@ export default function Portfolio(props){
                             </Dropdown.Menu>
                         </Dropdown>
                     </Col>
-                   
-                    <Col>              
+
+                    <Col>
                         <Dropdown>
                             <Dropdown.Toggle variant="dark" id="dropdown-basic">
                                 Contact
@@ -985,9 +1031,9 @@ export default function Portfolio(props){
                     </Col>
 			    </Row>
 		    </Container>  {/* End of Footer Section */}
-                    
+
         </>
-               
+
     );
 
 

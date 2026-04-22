@@ -6,7 +6,7 @@ import NavDropdown from 'react-bootstrap/NavDropdown';
 import { Link } from "@inertiajs/react";
 
 export default function TopNav() {
-    return (       
+    return (
         <>
           <Navbar expand="lg" className="bg-body-tertiary d-flex justify-content-center" id="topNav">  {/* Beginning of Navigation */}
                     {/*<a className="navbar-brand" href="#">Bootstrap Work Portfolio</a>*/}
@@ -26,6 +26,8 @@ export default function TopNav() {
                                     <NavDropdown.Item href="#mobile">JQuery Mobile</NavDropdown.Item>
                                     <NavDropdown.Divider />
                                     <NavDropdown.Item href="#frameworks">Frameworks</NavDropdown.Item>
+                                    <NavDropdown.Divider />
+                                    <NavDropdown.Item href="#aiAssisted">CoPilot AI-Assisted Apps</NavDropdown.Item>
                                 </NavDropdown>
                                 <NavDropdown title="Technical Writing" id="basic-nav-dropdown">
                                     <NavDropdown.Item href="#manuals">Production and Maintenance Manuals</NavDropdown.Item>
@@ -35,11 +37,11 @@ export default function TopNav() {
                                 <Nav.Link as={Link} to="#resume">My Resume</Nav.Link>
                                 <Nav.Link as={Link} to="#living">Living In Vegas</Nav.Link>
                                 <Nav.Link as={Link} to="#nonBootstrap">Non-Bootstrap Portfolio</Nav.Link>
-                                <Nav.Link as={Link} to="#bootPortfolio">CodeIgniter Portfolio</Nav.Link> 
-                                <Nav.Link as={Link} to="#laravelreact">Laravel React Bootstrap Portfolio</Nav.Link>                                
+                                <Nav.Link as={Link} to="#bootPortfolio">CodeIgniter Portfolio</Nav.Link>
+                                <Nav.Link as={Link} to="#laravelreact">Laravel React Bootstrap Portfolio</Nav.Link>
                             </Nav>
                         </Navbar.Collapse>
-                        
+
                         {/*<div className="collapse navbar-collapse d-flex justify-content-center" id="myNavbar">
                             <ul className="navbar-nav">
                                 <li className="nav-item active">
@@ -70,8 +72,8 @@ export default function TopNav() {
                             </ul>
                         </div>*/}
                     </Container>
-                   
-            </Navbar>    {/*---- End of Navigation Header ---------------------------------*/}	        
-        </>               
+
+            </Navbar>    {/*---- End of Navigation Header ---------------------------------*/}
+        </>
     );
 }

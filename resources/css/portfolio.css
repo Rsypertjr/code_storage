@@ -6,7 +6,7 @@ body {
     width:120%;
 }
 
-#myJumboCarousel {	
+#myJumboCarousel {
     background-image: linear-gradient(white, grey);
     height:20em;
     margin-top:2em;
@@ -83,7 +83,7 @@ div#lampCover {
     margin:0 10% 0 10%;
     background-color:black;
     font-size:1.75em;
-    color:white;    
+    color:white;
  }
 
 
@@ -105,7 +105,7 @@ div#mobileCover {
     margin:0 10% 0 10%;
     background-color:black;
     font-size:1.75em;
-    color:white;    
+    color:white;
  }
 
 
@@ -127,7 +127,7 @@ div#mobileCover {
     margin:0 10% 0 10%;
     background-color:black;
     font-size:1.75em;
-    color:white;    
+    color:white;
  }
 
  div#frameworksCover {
@@ -148,7 +148,7 @@ div#mobileCover {
     margin:0 10% 0 10%;
     background-color:black;
     font-size:1.75em;
-    color:white;    
+    color:white;
  }
 
 
@@ -171,7 +171,7 @@ div#mobileCover {
     margin:0 10% 0 10%;
     background-color:black;
     font-size:1.75em;
-    color:white;    
+    color:white;
  }
 
 
@@ -194,7 +194,7 @@ div#mobileCover {
     margin:0 10% 0 10%;
     background-color:black;
     font-size:1.75em;
-    color:white;    
+    color:white;
  }
 
 
@@ -217,7 +217,7 @@ div#mobileCover {
     margin:0 10% 0 10%;
     background-color:black;
     font-size:1.75em;
-    color:white;    
+    color:white;
  }
 
 
@@ -240,7 +240,7 @@ div#mobileCover {
     margin:0 10% 0 10%;
     background-color:black;
     font-size:1.75em;
-    color:white;    
+    color:white;
  }
 
 
@@ -263,7 +263,7 @@ div#mobileCover {
     margin:0 10% 0 10%;
     background-color:black;
     font-size:1.75em;
-    color:white;    
+    color:white;
  }
 
 
@@ -286,11 +286,11 @@ div#mobileCover {
     margin:0 10% 0 10%;
     background-color:black;
     font-size:1.75em;
-    color:white;    
+    color:white;
  }
 
 
- div#nextJsCover {
+ div#nextJsCover, div#aiAssistedCover {
     position:absolute;
     height:100%;
     width:100%;
@@ -303,13 +303,13 @@ div#mobileCover {
     transition: all .5s ease-in-out;
     }
 
- div#nextJsCover > div.card {
+ div#nextJsCover > div.card, div#aiAssistedCover > div.card {
     width:80%;
     height:auto;
     margin:0 10% 0 10%;
     background-color:black;
     font-size:1.75em;
-    color:white;    
+    color:white;
  }
 
 
@@ -325,7 +325,7 @@ div#mobileCover {
     border-width: 2px;
     border-color: lightgray;
 
- }   
+ }
 
  .panel-container > .card{
     margin:1em 0 1em 0;
