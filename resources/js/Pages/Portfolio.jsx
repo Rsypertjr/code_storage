@@ -691,7 +691,7 @@ export default function Portfolio(props){
             {/* AI-Assisted Panel */}
                 <Container id="aiAssisted" style={{backgroundColor:'#6A5ACD'}} className="panel-container" onClick={aiAssistedCover} fluid>
                    <Card style={{backgroundColor:'#b3f5daff'}}>
-                        <img src={nextjs} className="rounded mb-2" height="15%" width="15%" style={{margin:'1em 0 0 42.5%'}} alt="Tic Tac Toe Image"/>
+                        <img src={nextjs} className="rounded mb-2" height="15%" width="15%" style={{margin:'1em 0 0 42.5%'}} alt="NextJS Image"/>
                         <Card.Body>
                             <ScrollToTop />
                             <Card.Link href="https://codestorage.vercel.app/" target="_blank">AI-CoPilot-Next.js-Suprabase-Voting Analyzer</Card.Link>
@@ -701,6 +701,18 @@ export default function Portfolio(props){
                             </Card.Text>
                         </Card.Body>
                     </Card>
+                    <Card style={{backgroundColor:'#b3f5daff'}}>
+                        <img src={nextjs} className="rounded mb-2" height="15%" width="15%" style={{margin:'1em 0 0 42.5%'}} alt="NextJs Image"/>
+                        <Card.Body>
+                            <ScrollToTop />
+                            <Card.Link href="https://as-amino-acid-analyzer.vercel.app/" target="_blank">AI-CoPilot-Next.js-Prisma-Suprabase-Amino Acid Sequence Analyzer</Card.Link>
+                            <Card.Text><object data="https://as-amino-acid-analyzer.vercel.app/" height="200" width="300"></object></Card.Text>
+                            <Card.Text className="text-center app-description">New Next.js-AI-CoPilot Developed Amino Acid Code Sequence Analyzer.&nbsp;&nbsp;Prisma and Supabase Postgres SQL Integration for database building and monitoring servicing.&nbsp;&nbsp;Motif-length selection to control the size of the database build.&nbsp;&nbsp;
+										GitHub Copilot AI is used for Code Management and Intelligent Code Generation.<a href="https://github.com/Rsypertjr/as-amino-acid-analyzer/tree/main" target="_blank">Here is the Code.</a>
+                            </Card.Text>
+                        </Card.Body>
+                    </Card>
+
 
                     <OverlayTrigger placement="top" overlay={(tooltip("Click to Toggle Cover Layer"))}>
                         <Container id="aiAssistedCover"
