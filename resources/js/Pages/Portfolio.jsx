@@ -27,6 +27,8 @@ import mern from '../../images/mern.jpeg';
 import vegas from '../../images/vegas/vegas6.jpg';
 import nextjs from '../../images/nextjs.png';
 import typescript from '../../images/typescript.png';
+import supabase from '../../images/supabase.png';
+import prisma from '../../images/prisma.png';
 import react from '../../images/react.svg';
 import laravel from '../../images/laravelMVC.jpg';
 import vite from '../../images/vite.svg';
@@ -702,7 +704,14 @@ export default function Portfolio(props){
                         </Card.Body>
                     </Card>
                     <Card style={{backgroundColor:'#b3f5daff'}}>
-                        <img src={nextjs} className="rounded mb-2" height="15%" width="15%" style={{margin:'1em 0 0 42.5%'}} alt="NextJs Image"/>
+                        <div>
+                                <img src={nextjs} className="rounded mb-2" height="15%" width="15%" style={{margin:'1em 0 0 0'}} alt="NextJs Image"/>
+                                <img src={supabase} className="rounded mb-2" height="15%" width="15%" style={{margin:'1em 0 0 0'}} alt="Supabase Image"/>
+                                <img src={prisma} className="rounded mb-2" height="15%" width="15%" style={{margin:'1em 0 0 0'}} alt="Prisma Image"/>
+                        </div>
+
+
+
                         <Card.Body>
                             <ScrollToTop />
                             <Card.Link href="https://as-amino-acid-analyzer.vercel.app/" target="_blank">AI-CoPilot-Next.js-Prisma-Suprabase-Amino Acid Sequence Analyzer</Card.Link>
